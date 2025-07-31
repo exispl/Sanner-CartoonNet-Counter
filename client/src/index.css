@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(60, 4.8%, 95.9%);
+  --secondary-foreground: hsl(24, 9.8%, 10%);
+  --accent: hsl(60, 4.8%, 95.9%);
+  --accent-foreground: hsl(24, 9.8%, 10%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.5rem;
+
+  /* Industrial theme colors */
+  --industrial-50: hsl(208, 21%, 97%);
+  --industrial-100: hsl(214, 20%, 93%);
+  --industrial-200: hsl(213, 12%, 89%);
+  --industrial-300: hsl(214, 10%, 82%);
+  --industrial-400: hsl(215, 9%, 63%);
+  --industrial-500: hsl(215, 8%, 47%);
+  --industrial-600: hsl(215, 12%, 34%);
+  --industrial-700: hsl(215, 18%, 22%);
+  --industrial-800: hsl(215, 23%, 11%);
+  --industrial-900: hsl(217, 33%, 9%);
+
+  /* Machine status colors */
+  --machine-green: hsl(142, 47%, 55%);
+  --machine-amber: hsl(32, 81%, 66%);
+  --machine-red: hsl(0, 65%, 66%);
+  --machine-blue: hsl(207, 73%, 57%);
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: hsl(var(--industrial-50));
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer utilities {
+  .industrial-50 { background-color: hsl(var(--industrial-50)); }
+  .industrial-100 { background-color: hsl(var(--industrial-100)); }
+  .industrial-200 { background-color: hsl(var(--industrial-200)); }
+  .industrial-300 { background-color: hsl(var(--industrial-300)); }
+  .industrial-400 { background-color: hsl(var(--industrial-400)); }
+  .industrial-500 { background-color: hsl(var(--industrial-500)); }
+  .industrial-600 { background-color: hsl(var(--industrial-600)); }
+  .industrial-700 { background-color: hsl(var(--industrial-700)); }
+  .industrial-800 { background-color: hsl(var(--industrial-800)); }
+  .industrial-900 { background-color: hsl(var(--industrial-900)); }
+
+  .text-industrial-50 { color: hsl(var(--industrial-50)); }
+  .text-industrial-100 { color: hsl(var(--industrial-100)); }
+  .text-industrial-200 { color: hsl(var(--industrial-200)); }
+  .text-industrial-300 { color: hsl(var(--industrial-300)); }
+  .text-industrial-400 { color: hsl(var(--industrial-400)); }
+  .text-industrial-500 { color: hsl(var(--industrial-500)); }
+  .text-industrial-600 { color: hsl(var(--industrial-600)); }
+  .text-industrial-700 { color: hsl(var(--industrial-700)); }
+  .text-industrial-800 { color: hsl(var(--industrial-800)); }
+  .text-industrial-900 { color: hsl(var(--industrial-900)); }
+
+  .border-industrial-100 { border-color: hsl(var(--industrial-100)); }
+  .border-industrial-200 { border-color: hsl(var(--industrial-200)); }
+  .border-industrial-300 { border-color: hsl(var(--industrial-300)); }
+  .border-industrial-400 { border-color: hsl(var(--industrial-400)); }
+  .border-industrial-500 { border-color: hsl(var(--industrial-500)); }
+  .border-industrial-600 { border-color: hsl(var(--industrial-600)); }
+  .border-industrial-700 { border-color: hsl(var(--industrial-700)); }
+
+  .bg-machine-green { background-color: hsl(var(--machine-green)); }
+  .bg-machine-amber { background-color: hsl(var(--machine-amber)); }
+  .bg-machine-red { background-color: hsl(var(--machine-red)); }
+  .bg-machine-blue { background-color: hsl(var(--machine-blue)); }
+
+  .text-machine-green { color: hsl(var(--machine-green)); }
+  .text-machine-amber { color: hsl(var(--machine-amber)); }
+  .text-machine-red { color: hsl(var(--machine-red)); }
+  .text-machine-blue { color: hsl(var(--machine-blue)); }
+
+  .animate-fill-up {
+    animation: fillUp 0.3s ease-out;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  .animate-bounce-subtle {
+    animation: bounceSubtle 1s ease-in-out infinite;
+  }
+}
+
+@keyframes fillUp {
+  0% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+}
+
+@keyframes bounceSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
