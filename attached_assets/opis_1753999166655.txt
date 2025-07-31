@@ -1,0 +1,36 @@
+
+📦 KARTONOWY NAPEŁNIACZ ONLINE v2.6.9n-SaaS
+
+➤ Zawartość:
+- index.html         — strona główna (ładująca iframe z symulacją)
+- napelniacz.html    — pełna aplikacja z dynamicznymi parametrami
+- bg.png             — tło (tu wersja przykładowa)
+- pl.gif, us.gif, de.gif — flagi do zmiany języka
+
+---
+
+🟢 INSTRUKCJA REPLIT:
+1. Wejdź na https://replit.com
+2. Kliknij „Create Repl” → HTML, CSS, JS
+3. Wgraj wszystkie pliki z tego folderu (lub przeciągnij ZIP)
+4. Upewnij się, że `index.html` jest ustawiony jako startowy
+5. Kliknij Run
+
+✅ Gotowe! Twój Karton-as-a-Service działa w chmurze.
+
+---
+
+🔵 INSTRUKCJA VERCEL:
+1. Wejdź na https://vercel.com
+2. Zaloguj się przez GitHub (albo stwórz nowy projekt)
+3. Zrób nowy repozytorium z tymi plikami i nazwij np. `kartonowy`
+4. Połącz je z Vercel i kliknij "Deploy"
+
+💥 URL w stylu: https://kartonowy.vercel.app
+
+---
+
+🤣 BONUS:
+Jeśli Twój szef zapyta co robisz:
+> „Optymalizuję dynamiczne procesy pakowania z interfejsem wielojęzycznym.”
+

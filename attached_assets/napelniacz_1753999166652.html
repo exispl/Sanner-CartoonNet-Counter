@@ -1,0 +1,210 @@
+
+<!--
+# Nazwa: Kartonowy Napełniacz
+# Wersja: v2.6.9n-dyn (parametry dynamiczne)
+# Autor: Kamil Kowalczyk + ChatGPT
+-->
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Kartonowy Napełniacz</title>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  width: 750px;
+  height: 680px;
+  font-family: Arial, sans-serif;
+  background: #f2f2f2;
+  overflow: hidden;
+}
+.machine {
+  position: absolute;
+  width: 97px;
+  height: 184px;
+  background-color: #d5c992;
+  border-radius: 6px;
+  border: 2px solid #444;
+  cursor: pointer;
+}
+#machine1 { top: 70px; left: 280px; }
+#machine2 { top: 314px; left: 280px; }
+
+.name-input {
+  position: absolute;
+  width: 112px;
+  height: 34px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  z-index: 10;
+}
+#name1 { top: 40px; left: 274px; }
+#name2 { top: 284px; left: 274px; }
+
+.bar {
+  position: absolute;
+  width: 30px;
+  height: 184px;
+  border: 1px solid #00990099;
+  border-radius: 12px;
+  background-color: rgba(0, 51, 0, 0.1);
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#bar1 { top: 70px; left: 230px; }
+#bar2 { top: 314px; left: 230px; }
+
+.fillbar {
+  width: 100%;
+  height: 0%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  border-radius: 12px;
+  z-index: -1;
+}
+
+.controls {
+  display: none;
+  position: absolute;
+  background: rgba(255,255,255,0.95);
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+.controls input[type=number], .controls input[type=text] {
+  width: 60px;
+  margin-left: 6px;
+  margin-bottom: 6px;
+}
+.controls button {
+  margin: 4px 4px 8px 0;
+}
+.controls img {
+  width: 24px;
+  height: 16px;
+  cursor: pointer;
+  margin-right: 6px;
+  margin-top: 10px;
+}
+.langs {
+  display: flex;
+  justify-content: center;
+}
+</style>
+</head>
+<body>
+
+<input id="name1" class="name-input" value="MA820051">
+<input id="name2" class="name-input" value="MA820054">
+
+<div id="machine1" class="machine" onclick="showControls(1)"></div>
+<div id="machine2" class="machine" onclick="showControls(2)"></div>
+
+<div id="bar1" class="bar"><div id="fillbar1" class="fillbar"></div><span id="percent1">0%</span></div>
+<div id="bar2" class="bar"><div id="fillbar2" class="fillbar"></div><span id="percent2">0%</span></div>
+
+<div id="controls1" class="controls" style="top: 70px; left: 390px; width: 300px;">
+  <span data-key="state">Karton:</span> <input id="boxNum1" type="number" value="1"><br>
+  <span data-key="limit">Limit:</span> <input id="current1" type="number" value="0"> / <input id="limit1" type="number" value="1000" step="10"><br>
+  <span data-key="time">Czas (min):</span> <input id="timeInput1" type="number" value="4"><br>
+  <button onclick="start(1)" data-key="start">Start</button>
+  <button onclick="pause(1)" data-key="pause">Pause</button>
+  <button onclick="reset(1)" data-key="reset">Reset</button>
+  <div class="langs">
+    <img src="pl.gif" onclick="setLang('pl')">
+    <img src="us.gif" onclick="setLang('en')">
+    <img src="de.gif" onclick="setLang('de')">
+  </div>
+</div>
+
+<div id="controls2" class="controls" style="top: 314px; left: 390px; width: 300px;">
+  <span data-key="state">Karton:</span> <input id="boxNum2" type="number" value="1"><br>
+  <span data-key="limit">Limit:</span> <input id="current2" type="number" value="0"> / <input id="limit2" type="number" value="1500" step="10"><br>
+  <span data-key="time">Czas (min):</span> <input id="timeInput2" type="number" value="5"><br>
+  <button onclick="start(2)" data-key="start">Start</button>
+  <button onclick="pause(2)" data-key="pause">Pause</button>
+  <button onclick="reset(2)" data-key="reset">Reset</button>
+  <div class="langs">
+    <img src="pl.gif" onclick="setLang('pl')">
+    <img src="us.gif" onclick="setLang('en')">
+    <img src="de.gif" onclick="setLang('de')">
+  </div>
+</div>
+
+<script>
+let interval1, interval2;
+const translations = {
+  pl: {state:"Aktualny karton:",limit:"Limit:",time:"Czas (min):",start:"Start",pause:"Pauza",reset:"Reset"},
+  en: {state:"Current box:",limit:"Limit:",time:"Time (min):",start:"Start",pause:"Pause",reset:"Reset"},
+  de: {state:"Aktueller Karton:",limit:"Limit:",time:"Zeit (Min):",start:"Start",pause:"Pause",reset:"Zurück"}
+};
+function setLang(lang) {
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const key = el.getAttribute('data-key');
+    el.textContent = translations[lang][key];
+  });
+}
+function showControls(id) {
+  document.getElementById('controls1').style.display = id === 1 ? 'block' : 'none';
+  document.getElementById('controls2').style.display = id === 2 ? 'block' : 'none';
+}
+function updateFill(id, count, limit) {
+  const percent = Math.min(100, Math.floor((count / limit) * 100));
+  document.getElementById('fillbar' + id).style.height = percent + "%";
+  document.getElementById('fillbar' + id).style.backgroundColor = `rgba(0,255,0,${Math.max(0.05, percent / 100)})`;
+  document.getElementById('percent' + id).innerText = percent + "%";
+}
+function dropCapsule(id) {
+  const currEl = document.getElementById('current' + id);
+  const limit = parseInt(document.getElementById('limit' + id).value);
+  let count = parseInt(currEl.value);
+  if (count >= limit) {
+    currEl.value = 0;
+    document.getElementById('boxNum' + id).value = parseInt(document.getElementById('boxNum' + id).value) + 1;
+    count = 0;
+  }
+  count += 1;
+  currEl.value = count;
+  updateFill(id, count, limit);
+}
+function start(id) {
+  const timeMin = parseFloat(document.getElementById('timeInput' + id).value);
+  const limit = parseInt(document.getElementById('limit' + id).value);
+  const interval = (timeMin * 60000) / limit;
+  if (id === 1) {
+    clearInterval(interval1);
+    interval1 = setInterval(() => dropCapsule(1), interval);
+  } else {
+    clearInterval(interval2);
+    interval2 = setInterval(() => dropCapsule(2), interval);
+  }
+}
+function pause(id) {
+  if (id === 1) clearInterval(interval1);
+  else clearInterval(interval2);
+}
+function reset(id) {
+  if (id === 1) {
+    clearInterval(interval1);
+    document.getElementById('current1').value = 0;
+    updateFill(1, 0, parseInt(document.getElementById('limit1').value));
+  } else {
+    clearInterval(interval2);
+    document.getElementById('current2').value = 0;
+    updateFill(2, 0, parseInt(document.getElementById('limit2').value));
+  }
+}
+</script>
+</body>
+</html>
