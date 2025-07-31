@@ -23,14 +23,18 @@ Preferred communication style: Simple, everyday language.
 
 ## Backend Architecture
 - **Framework**: Express.js with TypeScript running on Node.js
-- **Storage**: Configurable storage interface with in-memory implementation (MemStorage) and PostgreSQL schema ready for production
-- **Database ORM**: Drizzle ORM with PostgreSQL dialect configured for future database integration
+- **Database**: PostgreSQL with Neon serverless configuration, fully integrated and active
+- **Storage**: Database storage implementation (DatabaseStorage) with comprehensive CRUD operations
+- **Database ORM**: Drizzle ORM with PostgreSQL dialect for production database operations
 - **Development**: Hot reload with Vite integration for development environment
 
 ## Data Models
 - **User Schema**: Basic user management with username/password authentication using UUID primary keys
-- **Machine State**: Local state management for machine operations including progress tracking, production limits, and cycle times
-- **Session Management**: PostgreSQL session store configuration ready for production deployment
+- **Machine Schema**: Persistent machine definitions with default configurations, settings, and active status
+- **Machine Configurations**: Stored presets for machine limits, cycle times, and operational parameters
+- **Production Sessions**: Complete session tracking with start/end times, status, and efficiency metrics
+- **Box Production**: Individual box completion records with timestamps and target limits
+- **Session Management**: PostgreSQL session store configuration for production deployment
 
 ## External Dependencies
 - **Database**: PostgreSQL with Neon serverless configuration
