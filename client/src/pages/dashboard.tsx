@@ -255,39 +255,46 @@ export default function Dashboard() {
           <h3 className="text-2xl font-bold text-white mb-6 text-center">
             🎮 {t('global-controls')} 🎮
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Button
-              onClick={startAllMachines}
-              className="bg-machine-green hover:bg-machine-amber text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
-            >
-              <span className="text-3xl mr-3">🚀</span>
-              {t('start-all')}
-              <span className="text-3xl ml-3">🚀</span>
-            </Button>
-            <Button
-              onClick={pauseAllMachines}
-              className="bg-machine-amber hover:bg-machine-red text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
-            >
-              <span className="text-3xl mr-3">⏸️</span>
-              {t('pause-all')}
-              <span className="text-3xl ml-3">⏸️</span>
-            </Button>
-            <Button
-              onClick={resetAllMachines}
-              className="bg-machine-red hover:bg-red-700 text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
-            >
-              <span className="text-3xl mr-3">🔄</span>
-              {t('reset-all')}
-              <span className="text-3xl ml-3">🔄</span>
-            </Button>
-            <Button
-              onClick={exportSettings}
-              className="bg-industrial-600 hover:bg-industrial-700 text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
-            >
-              <span className="text-3xl mr-3">💾</span>
-              {t('export')}
-              <span className="text-3xl ml-3">💾</span>
-            </Button>
+          <div className="space-y-4">
+            {/* First row - Start/Pause controls */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Button
+                onClick={startAllMachines}
+                className="bg-machine-green hover:bg-machine-amber text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
+              >
+                <span className="text-3xl mr-3">🚀</span>
+                {t('start-all')}
+                <span className="text-3xl ml-3">🚀</span>
+              </Button>
+              <Button
+                onClick={pauseAllMachines}
+                className="bg-machine-amber hover:bg-machine-red text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
+              >
+                <span className="text-3xl mr-3">⏸️</span>
+                {t('pause-all')}
+                <span className="text-3xl ml-3">⏸️</span>
+              </Button>
+            </div>
+            
+            {/* Second row - Reset/Export controls */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Button
+                onClick={resetAllMachines}
+                className="bg-machine-red hover:bg-red-700 text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
+              >
+                <span className="text-3xl mr-3">🔄</span>
+                {t('reset-all')}
+                <span className="text-3xl ml-3">🔄</span>
+              </Button>
+              <Button
+                onClick={exportSettings}
+                className="bg-industrial-600 hover:bg-industrial-700 text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
+              >
+                <span className="text-3xl mr-3">💾</span>
+                {t('export')}
+                <span className="text-3xl ml-3">💾</span>
+              </Button>
+            </div>
           </div>
         </div>
 
