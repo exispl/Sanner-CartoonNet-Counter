@@ -4,6 +4,7 @@ import { LanguageSelector } from '@/components/language-selector';
 import { MachineStats } from '@/components/machine-stats';
 import { MachinePanel } from '@/components/machine-panel';
 import { NotificationToast, ToastType } from '@/components/notification-toast';
+import { EarningsCounter } from '@/components/earnings-counter';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
 
@@ -139,24 +140,26 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-industrial-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b border-industrial-200">
-        <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+      {/* Header - Enhanced with gradient and bigger emojis */}
+      <header className="bg-gradient-to-r from-machine-blue via-machine-green to-machine-amber shadow-2xl border-b-4 border-machine-blue">
+        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-machine-green rounded-lg flex items-center justify-center text-white text-xl font-bold">
+            <div className="flex items-center space-x-4">
+              <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center text-5xl animate-bounce-subtle">
                 📦
               </div>
               <div>
-                <h1 className="text-xl font-bold text-industrial-800">{t('title')}</h1>
-                <p className="text-sm text-industrial-500">v3.0 - SaaS Edition</p>
+                <h1 className="text-3xl font-bold text-white drop-shadow-lg">{t('title')}</h1>
+                <p className="text-lg text-white/80 font-semibold">v3.0 - SaaS Edition 🚀</p>
               </div>
             </div>
 
-            <LanguageSelector 
-              currentLang={currentLang} 
-              onLanguageChange={handleLanguageChange} 
-            />
+            <div className="bg-white/20 rounded-xl p-2">
+              <LanguageSelector 
+                currentLang={currentLang} 
+                onLanguageChange={handleLanguageChange} 
+              />
+            </div>
           </div>
         </div>
       </header>
@@ -212,35 +215,53 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Global Controls */}
-        <div className="mt-8 bg-white rounded-xl shadow-sm border border-industrial-200 p-6">
-          <h3 className="text-lg font-semibold text-industrial-800 mb-4">{t('global-controls')}</h3>
-          <div className="flex flex-wrap gap-4">
+        {/* Global Controls - Enhanced with bigger buttons and emojis */}
+        <div className="mt-8 bg-gradient-to-r from-machine-blue to-machine-green rounded-2xl shadow-2xl border-4 border-machine-blue p-8">
+          <h3 className="text-2xl font-bold text-white mb-6 text-center">
+            🎮 {t('global-controls')} 🎮
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Button
               onClick={startAllMachines}
-              className="bg-machine-green hover:bg-green-600 text-white"
+              className="bg-machine-green hover:bg-machine-amber text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
             >
+              <span className="text-3xl mr-3">🚀</span>
               {t('start-all')}
+              <span className="text-3xl ml-3">🚀</span>
             </Button>
             <Button
               onClick={pauseAllMachines}
-              className="bg-machine-amber hover:bg-yellow-600 text-white"
+              className="bg-machine-amber hover:bg-machine-red text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
             >
+              <span className="text-3xl mr-3">⏸️</span>
               {t('pause-all')}
+              <span className="text-3xl ml-3">⏸️</span>
             </Button>
             <Button
               onClick={resetAllMachines}
-              className="bg-machine-red hover:bg-red-600 text-white"
+              className="bg-machine-red hover:bg-red-700 text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
             >
+              <span className="text-3xl mr-3">🔄</span>
               {t('reset-all')}
+              <span className="text-3xl ml-3">🔄</span>
             </Button>
             <Button
               onClick={exportSettings}
-              className="bg-industrial-600 hover:bg-industrial-700 text-white"
+              className="bg-industrial-600 hover:bg-industrial-700 text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
             >
+              <span className="text-3xl mr-3">💾</span>
               {t('export')}
+              <span className="text-3xl ml-3">💾</span>
             </Button>
           </div>
+        </div>
+
+        {/* Earnings Counter */}
+        <div className="mt-8">
+          <EarningsCounter 
+            isRunning={activeMachines > 0} 
+            totalBoxes={Math.max(0, totalBoxes)} 
+          />
         </div>
       </main>
 

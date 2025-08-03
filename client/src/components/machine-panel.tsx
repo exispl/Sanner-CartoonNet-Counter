@@ -39,15 +39,15 @@ export function MachinePanel({
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-industrial-200 overflow-hidden">
-      <div className="border-b border-industrial-100 p-6">
+    <div className="bg-gradient-to-br from-machine-blue via-machine-green to-machine-amber rounded-2xl shadow-2xl border-4 border-white/20 overflow-hidden transform transition-all hover:scale-102">
+      <div className="border-b border-white/20 p-8">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-4">
             <div
-              className={`w-3 h-3 rounded-full ${
+              className={`w-6 h-6 rounded-full ${
                 state.running
-                  ? 'bg-machine-green animate-pulse-soft'
-                  : 'bg-industrial-400'
+                  ? 'bg-white animate-pulse-soft shadow-lg'
+                  : 'bg-white/50'
               }`}
             />
             <input
@@ -55,35 +55,38 @@ export function MachinePanel({
               value={localName}
               onChange={(e) => setLocalName(e.target.value)}
               onBlur={handleSettingsUpdate}
-              className="text-lg font-bold text-industrial-800 bg-transparent border-none focus:outline-none focus:ring-2 focus:ring-machine-blue focus:ring-opacity-20 rounded px-2 py-1"
+              className="text-2xl font-bold text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-4 focus:ring-white/50 rounded-xl px-4 py-2 placeholder-white/70"
             />
           </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-industrial-500">{t('machine')}</span>
-            <span className="text-lg font-mono font-bold text-machine-blue">#{machineId}</span>
+          <div className="flex items-center space-x-3 bg-white/20 rounded-xl px-4 py-2">
+            <span className="text-3xl">🏭</span>
+            <span className="text-lg font-bold text-white">{t('machine')}</span>
+            <span className="text-2xl font-mono font-bold text-white">#{machineId}</span>
           </div>
         </div>
       </div>
 
-      <div className="p-6">
+      <div className="p-8 bg-white/10">
         {/* Progress Visualization */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-industrial-600">{t('progress')}</span>
-            <span className="text-sm font-mono font-bold text-industrial-800">
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <span className="text-lg font-bold text-white flex items-center">
+              📊 {t('progress')} 📊
+            </span>
+            <span className="text-xl font-mono font-bold text-white bg-white/20 rounded-xl px-4 py-2">
               {state.itemsInBox} / {state.limit}
             </span>
           </div>
           <div className="relative">
-            <div className="w-full h-4 industrial-200 rounded-full overflow-hidden">
+            <div className="w-full h-8 bg-white/20 rounded-2xl overflow-hidden border-2 border-white/30">
               <div
-                className="h-full bg-gradient-to-r from-machine-green to-machine-blue transition-all duration-300 ease-out"
+                className="h-full bg-gradient-to-r from-white via-money-light to-white transition-all duration-500 ease-out animate-fill-up"
                 style={{ width: `${percentage}%` }}
               />
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-xs font-bold text-white mix-blend-difference">
-                {percentage}%
+              <span className="text-lg font-bold text-blue-900 drop-shadow-sm">
+                {percentage}% 🎯
               </span>
             </div>
           </div>
@@ -135,15 +138,15 @@ export function MachinePanel({
         </div>
 
         {/* Current Box Info */}
-        <div className="industrial-50 rounded-lg p-4 mb-6">
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="text-sm font-medium text-industrial-600">{t('current-box')}</label>
-              <div className="text-2xl font-mono font-bold text-machine-blue">{state.currentBox}</div>
+        <div className="bg-white/20 rounded-2xl p-6 mb-8 border-2 border-white/30">
+          <div className="grid grid-cols-2 gap-6">
+            <div className="text-center">
+              <label className="text-lg font-bold text-white mb-2 block">📦 {t('current-box')} 📦</label>
+              <div className="text-4xl font-mono font-bold text-white bg-white/20 rounded-xl p-4 animate-bounce-subtle">{state.currentBox}</div>
             </div>
-            <div>
-              <label className="text-sm font-medium text-industrial-600">{t('items-in-box')}</label>
-              <div className="text-2xl font-mono font-bold text-machine-green">{state.itemsInBox}</div>
+            <div className="text-center">
+              <label className="text-lg font-bold text-white mb-2 block">🔢 {t('items-in-box')} 🔢</label>
+              <div className="text-4xl font-mono font-bold text-white bg-white/20 rounded-xl p-4 animate-bounce-subtle">{state.itemsInBox}</div>
             </div>
           </div>
         </div>
