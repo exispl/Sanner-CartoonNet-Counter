@@ -9,17 +9,17 @@ export function EarningsCounter({ isRunning, totalBoxes }: EarningsCounterProps)
   const [earnings, setEarnings] = useState(0);
   const [animatingCoins, setAnimatingCoins] = useState<number[]>([]);
 
-  const hourlyRate = 35000; // EUR per hour
-  const earningsPerSecond = hourlyRate / 3600;
+  const valuePerBox = 35; // EUR per box
+  const centPerUpdate = 0.01; // Update every cent
 
   useEffect(() => {
     if (!isRunning) return;
 
     const interval = setInterval(() => {
-      setEarnings(prev => prev + earningsPerSecond);
+      setEarnings(prev => prev + centPerUpdate);
       
       // Add animated coin occasionally
-      if (Math.random() < 0.3) {
+      if (Math.random() < 0.1) {
         const coinId = Date.now();
         setAnimatingCoins(prev => [...prev, coinId]);
         
@@ -28,10 +28,10 @@ export function EarningsCounter({ isRunning, totalBoxes }: EarningsCounterProps)
           setAnimatingCoins(prev => prev.filter(id => id !== coinId));
         }, 2000);
       }
-    }, 1000);
+    }, 100); // Update every 100ms for smooth cent counting
 
     return () => clearInterval(interval);
-  }, [isRunning, earningsPerSecond]);
+  }, [isRunning, centPerUpdate]);
 
   const formatEarnings = (amount: number) => {
     return new Intl.NumberFormat('pl-PL', {
@@ -71,10 +71,10 @@ export function EarningsCounter({ isRunning, totalBoxes }: EarningsCounterProps)
         
         <div className="bg-white/20 rounded-xl p-6 mb-4 animate-counter-glow">
           <div className="text-lg text-money-light font-semibold mb-2">
-            Zarabiamy co godzinę:
+            Wartość kartonu:
           </div>
           <div className="text-4xl font-bold text-white mb-4">
-            💰 {formatEarnings(hourlyRate)}/h 💰
+            💰 {formatEarnings(valuePerBox)}/karton 💰
           </div>
           
           <div className="text-lg text-money-light font-semibold mb-2">

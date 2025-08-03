@@ -5,6 +5,7 @@ import { MachineStats } from '@/components/machine-stats';
 import { MachinePanel } from '@/components/machine-panel';
 import { NotificationToast, ToastType } from '@/components/notification-toast';
 import { EarningsCounter } from '@/components/earnings-counter';
+import { SettingsMenu } from '@/components/settings-menu';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
 
@@ -150,12 +151,18 @@ export default function Dashboard() {
               </div>
               <div>
                 <h1 className="text-3xl font-bold text-white drop-shadow-lg">{t('title')}</h1>
-                <p className="text-lg text-white/80 font-semibold">v3.0 - SaaS Edition 🚀</p>
+                <p className="text-lg text-white/80 font-semibold">Sanner CartoonCounter v1.0.1 ({totalBoxes} kartonów)</p>
               </div>
             </div>
 
-            <div className="bg-white/20 rounded-xl p-2">
-              <LanguageSelector 
+            <div className="flex items-center space-x-4">
+              <div className="bg-white/20 rounded-xl p-2">
+                <LanguageSelector 
+                  currentLang={currentLang} 
+                  onLanguageChange={handleLanguageChange} 
+                />
+              </div>
+              <SettingsMenu 
                 currentLang={currentLang} 
                 onLanguageChange={handleLanguageChange} 
               />
