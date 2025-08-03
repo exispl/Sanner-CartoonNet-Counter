@@ -36,19 +36,21 @@ function CardboardBox({ isActive, fillLevel, size, index }: CardboardBoxProps) {
         {/* Fill level indicator */}
         {isActive && fillLevel > 0 && (
           <div 
-            className="absolute bottom-2 left-2 right-2 bg-gradient-to-t from-blue-400 to-blue-300 rounded-sm transition-all duration-500 opacity-70"
-            style={{ height: `${fillHeight}px` }}
+            className="absolute bottom-2 left-2 right-2 bg-gradient-to-t from-cyan-400 to-cyan-300 rounded-sm transition-all duration-500 animate-blink-cyan"
+            style={{ 
+              height: `${fillHeight}px`
+            }}
           >
             {/* Cross-hatch pattern */}
             <div className="absolute inset-0 opacity-30">
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-600 to-transparent transform rotate-45 scale-150"></div>
-              <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-blue-600 to-transparent transform -rotate-45 scale-150"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-cyan-600 to-transparent transform rotate-45 scale-150"></div>
+              <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-cyan-600 to-transparent transform -rotate-45 scale-150"></div>
             </div>
           </div>
         )}
         
         {/* SANNER label */}
-        <div className="absolute top-1 left-1 text-xs font-bold text-orange-800 opacity-60">
+        <div className="absolute top-1 left-1 right-1 text-center text-xs font-bold text-orange-800 opacity-60">
           SANNER
         </div>
         
@@ -99,7 +101,7 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
       </div>
       
       {/* 2x2 grid of boxes */}
-      <div className="grid grid-cols-2 gap-4 justify-items-center">
+      <div className="grid grid-cols-2 gap-2 justify-items-center">
         {[0, 1, 2, 3].map((index) => (
           <CardboardBox
             key={index}

@@ -32,8 +32,8 @@ export function MachinePanel({
   const [localCycleTime, setLocalCycleTime] = useState(state.cycleTime);
   const [localName, setLocalName] = useState(state.name);
   const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 16 : 51);
-  const [boxSize, setBoxSize] = useState<'5T' | '6T' | '10T'>('6T');
-  const [capsuleCount, setCapsuleCount] = useState(180);
+  const [cardboardType, setCardboardType] = useState('6/ALU');
+  const [capsuleCount, setCapsuleCount] = useState(1500);
 
   const percentage = Math.min(100, Math.floor((state.itemsInBox / state.limit) * 100));
 
@@ -188,7 +188,7 @@ export function MachinePanel({
         <div className="mb-4">
           <CardboardBoxVisualization
             currentProgress={percentage}
-            boxSize={boxSize}
+            boxSize={'6T' as '5T' | '6T' | '10T'}
             completedBoxes={Math.max(0, state.currentBox - 1)}
           />
         </div>
@@ -196,9 +196,9 @@ export function MachinePanel({
         {/* Machine Controls */}
         <div className="mb-4">
           <MachineControls
-            boxSize={boxSize}
+            cardboardType={cardboardType}
             capsuleCount={capsuleCount}
-            onBoxSizeChange={setBoxSize}
+            onCardboardTypeChange={setCardboardType}
             onCapsuleCountChange={setCapsuleCount}
             t={t}
           />

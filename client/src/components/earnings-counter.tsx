@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { ChevronDown, ChevronRight, TrendingUp, DollarSign, Eye } from 'lucide-react';
 
 interface EarningsCounterProps {
   isRunning: boolean;
@@ -6,109 +8,110 @@ interface EarningsCounterProps {
 }
 
 export function EarningsCounter({ isRunning, totalBoxes }: EarningsCounterProps) {
-  const [earnings, setEarnings] = useState(0);
-  const [animatingCoins, setAnimatingCoins] = useState<number[]>([]);
-
-  const valuePerBox = 35; // EUR per box
-  const centPerUpdate = 0.01; // Update every cent
+  const [isOpen, setIsOpen] = useState(false);
+  const [totalEarnings, setTotalEarnings] = useState(0);
+  const [showHint, setShowHint] = useState(true);
 
   useEffect(() => {
-    if (!isRunning) return;
+    if (isRunning) {
+      const interval = setInterval(() => {
+        setTotalEarnings(prev => prev + Math.random() * 2.5 + 1.5);
+      }, 3000);
+      return () => clearInterval(interval);
+    }
+  }, [isRunning]);
 
-    const interval = setInterval(() => {
-      setEarnings(prev => prev + centPerUpdate);
-      
-      // Add animated coin occasionally
-      if (Math.random() < 0.1) {
-        const coinId = Date.now();
-        setAnimatingCoins(prev => [...prev, coinId]);
-        
-        // Remove coin after animation
-        setTimeout(() => {
-          setAnimatingCoins(prev => prev.filter(id => id !== coinId));
-        }, 2000);
-      }
-    }, 100); // Update every 100ms for smooth cent counting
-
-    return () => clearInterval(interval);
-  }, [isRunning, centPerUpdate]);
-
-  const formatEarnings = (amount: number) => {
-    return new Intl.NumberFormat('pl-PL', {
-      style: 'currency',
-      currency: 'EUR',
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(amount);
-  };
+  const earningsPerBox = 12.50;
+  const estimatedRevenue = totalBoxes * earningsPerBox + totalEarnings;
 
   return (
-    <div className="relative bg-gradient-to-br from-money-dark to-money-gold rounded-2xl p-8 shadow-2xl border-4 border-money-light">
-      {/* Animated coins */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {animatingCoins.map(coinId => (
-          <div
-            key={coinId}
-            className="absolute text-3xl animate-money-drop"
-            style={{
-              left: `${Math.random() * 80 + 10}%`,
-              top: '10%'
-            }}
-          >
-            💰
+    <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl shadow-2xl border-4 border-green-400/30 overflow-hidden">
+      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+        <CollapsibleTrigger className="w-full p-4 flex items-center justify-between hover:bg-white/10 transition-colors">
+          <div className="flex items-center gap-3">
+            <TrendingUp className="w-6 h-6 text-white" />
+            <h3 className="text-xl font-bold text-white">
+              💰 Zyski firmy
+            </h3>
+            {showHint && !isOpen && (
+              <div className="flex items-center gap-2 text-white/80 text-sm animate-pulse">
+                <Eye className="w-4 h-4" />
+                <span>Kliknij aby odkryć</span>
+              </div>
+            )}
           </div>
-        ))}
-      </div>
-
-      <div className="text-center relative z-10">
-        <div className="flex items-center justify-center mb-4">
-          <span className="text-6xl mr-4 animate-coin-spin">💎</span>
-          <h3 className="text-2xl font-bold text-white">
-            ZYSKI FIRMY
-          </h3>
-          <span className="text-6xl ml-4 animate-coin-spin">💎</span>
-        </div>
+          <div className="flex items-center gap-2">
+            {!isOpen && (
+              <span className="text-white/80 text-sm font-medium">
+                €{estimatedRevenue.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
+            )}
+            {isOpen ? (
+              <ChevronDown className="w-5 h-5 text-white" />
+            ) : (
+              <ChevronRight className="w-5 h-5 text-white" />
+            )}
+          </div>
+        </CollapsibleTrigger>
         
-        <div className="bg-white/20 rounded-xl p-6 mb-4 animate-counter-glow">
-          <div className="text-lg text-money-light font-semibold mb-2">
-            Wartość kartonu:
-          </div>
-          <div className="text-4xl font-bold text-white mb-4">
-            💰 {formatEarnings(valuePerBox)}/karton 💰
-          </div>
-          
-          <div className="text-lg text-money-light font-semibold mb-2">
-            Całkowite zyski tej sesji:
-          </div>
-          <div className="text-5xl font-bold text-white animate-earnings-pulse">
-            🤑 {formatEarnings(earnings)} 🤑
-          </div>
-        </div>
-
-        <div className="flex justify-center items-center space-x-4 text-money-light">
-          <span className="text-2xl">📦</span>
-          <span className="text-lg font-semibold">
-            Kartony wyprodukowane: {totalBoxes}
-          </span>
-          <span className="text-2xl">📦</span>
-        </div>
-
-        <div className="mt-4 text-sm text-money-light/80">
-          {isRunning ? (
-            <div className="flex items-center justify-center space-x-2">
-              <span className="animate-pulse">💸</span>
-              <span>PIENIĄDZE PŁYNĄ!</span>
-              <span className="animate-pulse">💸</span>
+        <CollapsibleContent>
+          <div className="px-4 pb-4 space-y-4">
+            {isOpen && (() => { setShowHint(false); return null; })()}
+            
+            <div className="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white">
+                    {totalBoxes.toLocaleString()}
+                  </div>
+                  <div className="text-white/80 text-sm">Wyprodukowane kartony</div>
+                </div>
+                
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-white">
+                    €{earningsPerBox.toFixed(2)}
+                  </div>
+                  <div className="text-white/80 text-sm">Za karton</div>
+                </div>
+              </div>
             </div>
-          ) : (
-            <div className="flex items-center justify-center space-x-2">
-              <span>😴</span>
-              <span>Maszyny zatrzymane - brak zarobków</span>
-              <span>😴</span>
+
+            <div className="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-white font-medium">Przychód z produkcji:</span>
+                <span className="text-white font-bold">
+                  €{(totalBoxes * earningsPerBox).toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
+              </div>
+              
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-white font-medium">Bonusy wydajności:</span>
+                <span className="text-white font-bold">
+                  €{totalEarnings.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </span>
+              </div>
+              
+              <div className="border-t border-white/20 pt-2 mt-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-white font-bold text-lg flex items-center gap-2">
+                    <DollarSign className="w-5 h-5" />
+                    Całkowity zysk:
+                  </span>
+                  <span className="text-yellow-300 font-bold text-xl">
+                    €{estimatedRevenue.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </span>
+                </div>
+              </div>
             </div>
-          )}
-        </div>
-      </div>
+
+            {isRunning && (
+              <div className="text-center text-white/80 text-sm animate-pulse">
+                💡 Maszyny pracują - zyski rosną w czasie rzeczywistym!
+              </div>
+            )}
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
     </div>
   );
 }

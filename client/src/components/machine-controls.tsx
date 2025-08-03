@@ -1,42 +1,47 @@
-import { useState } from 'react';
-import { Slider } from '@/components/ui/slider';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Slider } from '@/components/ui/slider';
+import { CardboardTypeSelector } from './cardboard-type-selector';
 
 interface MachineControlsProps {
-  boxSize: '5T' | '6T' | '10T';
+  cardboardType: string;
   capsuleCount: number;
-  onBoxSizeChange: (size: '5T' | '6T' | '10T') => void;
+  onCardboardTypeChange: (type: string) => void;
   onCapsuleCountChange: (count: number) => void;
   t: (key: string) => string;
 }
 
 export function MachineControls({ 
-  boxSize, 
+  cardboardType, 
   capsuleCount, 
-  onBoxSizeChange, 
+  onCardboardTypeChange, 
   onCapsuleCountChange,
   t 
 }: MachineControlsProps) {
+  // Custom marks for the slider with emphasized stations
+  const marks = [
+    { value: 900, label: '900' },
+    { value: 1000, label: '1000', emphasized: false },
+    { value: 1500, label: '1500', emphasized: true },
+    { value: 2000, label: '2000', emphasized: false },
+    { value: 3000, label: '3000', emphasized: true },
+    { value: 5000, label: '5000', emphasized: false },
+    { value: 10000, label: '10k', emphasized: false }
+  ];
+
   return (
     <div className="bg-white/10 rounded-xl p-4 border-2 border-white/20 space-y-4">
       <h3 className="text-lg font-semibold text-white text-center">
         ⚙️ Konfiguracja produkcji
       </h3>
       
-      {/* Box Size Selector */}
+      {/* Cardboard Type Selector */}
       <div className="space-y-2">
-        <Label className="text-white font-medium">Rozmiar kartonu:</Label>
-        <Select value={boxSize} onValueChange={onBoxSizeChange}>
-          <SelectTrigger className="bg-white/20 border-white/30 text-white">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent className="bg-white dark:bg-industrial-800 border-industrial-200 dark:border-industrial-600">
-            <SelectItem value="5T" className="text-industrial-800 dark:text-white">5T - Mały</SelectItem>
-            <SelectItem value="6T" className="text-industrial-800 dark:text-white">6T - Średni</SelectItem>
-            <SelectItem value="10T" className="text-industrial-800 dark:text-white">10T - Duży</SelectItem>
-          </SelectContent>
-        </Select>
+        <Label className="text-white font-medium">Typ kartonu:</Label>
+        <CardboardTypeSelector
+          value={cardboardType}
+          onChange={onCardboardTypeChange}
+          t={t}
+        />
       </div>
       
       {/* Capsule Count Slider */}
@@ -44,21 +49,29 @@ export function MachineControls({
         <div className="flex justify-between items-center">
           <Label className="text-white font-medium">Ilość kapsułek:</Label>
           <span className="text-white font-bold bg-white/20 px-3 py-1 rounded-lg">
-            {capsuleCount}
+            {capsuleCount.toLocaleString()}
           </span>
         </div>
-        <Slider
-          value={[capsuleCount]}
-          onValueChange={(value) => onCapsuleCountChange(value[0])}
-          min={50}
-          max={500}
-          step={10}
-          className="w-full"
-        />
-        <div className="flex justify-between text-xs text-white/70">
-          <span>50</span>
-          <span className="text-white font-medium">{capsuleCount} kapsułek</span>
-          <span>500</span>
+        <div className="px-2">
+          <Slider
+            value={[capsuleCount]}
+            onValueChange={(value) => onCapsuleCountChange(value[0])}
+            min={900}
+            max={10000}
+            step={50}
+            className="w-full"
+          />
+          {/* Custom marks */}
+          <div className="flex justify-between mt-1 text-xs text-white/70">
+            {marks.map((mark) => (
+              <div 
+                key={mark.value} 
+                className={`text-center ${mark.emphasized ? 'font-bold text-white' : ''}`}
+              >
+                {mark.label}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       
@@ -67,15 +80,15 @@ export function MachineControls({
         <div className="text-sm text-white/80">
           <div className="flex justify-between">
             <span>Typ kartonu:</span>
-            <span className="font-semibold">{boxSize}</span>
+            <span className="font-semibold">{cardboardType}</span>
           </div>
           <div className="flex justify-between">
             <span>Kapsułek na karton:</span>
-            <span className="font-semibold">{capsuleCount}</span>
+            <span className="font-semibold">{capsuleCount.toLocaleString()}</span>
           </div>
           <div className="flex justify-between">
             <span>Czas wypełnienia:</span>
-            <span className="font-semibold">~{Math.round(capsuleCount / 10)} sek</span>
+            <span className="font-semibold">~{Math.round(capsuleCount / 100)} sek</span>
           </div>
         </div>
       </div>
