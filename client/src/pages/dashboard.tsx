@@ -139,7 +139,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-industrial-50">
+    <div className="min-h-screen">
       {/* Header - Enhanced with gradient and bigger emojis */}
       <header className="bg-gradient-to-r from-machine-blue via-machine-green to-machine-amber shadow-2xl border-b-4 border-machine-blue">
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">

@@ -78,7 +78,12 @@
 
   body {
     @apply font-sans antialiased;
-    background-color: hsl(var(--industrial-50));
+    background: 
+      linear-gradient(rgba(210, 235, 255, 0.9), rgba(210, 235, 255, 0.9)),
+      url('https://sannergmbh.beep.pl/spruce_drops_dew_1364473_2560x1440.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
     color: hsl(var(--foreground));
   }
 }
