@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { Play, Pause, RotateCcw, Settings, Factory, Gauge, Box } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MachineState } from '@/hooks/use-machine-state';
+import { MachineSelector } from './machine-selector';
 
 interface MachinePanelProps {
   machineId: number;
@@ -27,6 +29,7 @@ export function MachinePanel({
   const [localLimit, setLocalLimit] = useState(state.limit);
   const [localCycleTime, setLocalCycleTime] = useState(state.cycleTime);
   const [localName, setLocalName] = useState(state.name);
+  const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 16 : 51);
 
   const percentage = Math.min(100, Math.floor((state.itemsInBox / state.limit) * 100));
 
@@ -40,38 +43,78 @@ export function MachinePanel({
 
   return (
     <div className="bg-gradient-to-br from-machine-blue via-machine-green to-machine-amber rounded-2xl shadow-2xl border-4 border-white/20 overflow-hidden transform transition-all hover:scale-102">
-      <div className="border-b border-white/20 p-8">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+      <div className="border-b border-white/20 p-4">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center space-x-3">
             <div
-              className={`w-6 h-6 rounded-full ${
+              className={`w-5 h-5 rounded-full ${
                 state.running
                   ? 'bg-white animate-pulse-soft shadow-lg'
                   : 'bg-white/50'
               }`}
             />
-            <input
-              type="text"
-              value={localName}
-              onChange={(e) => setLocalName(e.target.value)}
-              onBlur={handleSettingsUpdate}
-              className="text-2xl font-bold text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-4 focus:ring-white/50 rounded-xl px-4 py-2 placeholder-white/70"
+            <Factory className="w-6 h-6 text-white" />
+            <MachineSelector 
+              currentNumber={machineNumber}
+              onMachineChange={setMachineNumber}
+              machineId={machineId}
             />
           </div>
-          <div className="flex items-center space-x-3 bg-white/20 rounded-xl px-4 py-2">
-            <span className="text-3xl">🏭</span>
-            <span className="text-lg font-bold text-white">{t('machine')}</span>
-            <span className="text-2xl font-mono font-bold text-white">#{machineId}</span>
+          <div className="flex items-center space-x-2">
+            <Button
+              onClick={onStart}
+              disabled={state.running}
+              size="sm"
+              className="bg-green-600/80 hover:bg-green-600 text-white border-0 h-8 w-8 p-0"
+              data-testid={`start-machine-${machineId}`}
+            >
+              <Play className="w-4 h-4" />
+            </Button>
+            <Button
+              onClick={onPause}
+              disabled={!state.running}
+              size="sm"
+              className="bg-yellow-600/80 hover:bg-yellow-600 text-white border-0 h-8 w-8 p-0"
+              data-testid={`pause-machine-${machineId}`}
+            >
+              <Pause className="w-4 h-4" />
+            </Button>
+            <Button
+              onClick={onReset}
+              size="sm"
+              className="bg-red-600/80 hover:bg-red-600 text-white border-0 h-8 w-8 p-0"
+              data-testid={`reset-machine-${machineId}`}
+            >
+              <RotateCcw className="w-4 h-4" />
+            </Button>
+            <Button
+              onClick={toggleControls}
+              size="sm"
+              className="bg-white/20 hover:bg-white/30 text-white border-0 h-8 w-8 p-0"
+              data-testid={`settings-machine-${machineId}`}
+            >
+              <Settings className="w-4 h-4" />
+            </Button>
           </div>
         </div>
+        
+        <input
+          type="text"
+          value={localName}
+          onChange={(e) => setLocalName(e.target.value)}
+          onBlur={handleSettingsUpdate}
+          className="w-full text-lg font-semibold text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg px-3 py-2 placeholder-white/70"
+          placeholder="Nazwa maszyny..."
+        />
       </div>
 
-      <div className="p-8 bg-white/10">
+      <div className="p-4 bg-white/10">
         {/* Progress Visualization */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <span className="text-lg font-bold text-white flex items-center">
-              📊 {t('progress')} 📊
+        <div className="mb-4">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-semibold text-white flex items-center">
+              <Gauge className="w-4 h-4 mr-2" />
+              {t('progress')}
             </span>
             <span className="text-xl font-mono font-bold text-white bg-white/20 rounded-xl px-4 py-2">
               {state.itemsInBox} / {state.limit}

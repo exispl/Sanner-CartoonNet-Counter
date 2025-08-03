@@ -1,30 +1,36 @@
-import { translations, Language } from '@/lib/translations';
+import { Language } from '@/lib/translations';
 
 interface LanguageSelectorProps {
   currentLang: Language;
   onLanguageChange: (lang: Language) => void;
 }
 
-export function LanguageSelector({ currentLang, onLanguageChange }: LanguageSelectorProps) {
-  const languages = [
-    { code: 'pl' as Language, flag: '🇵🇱', label: 'PL' },
-    { code: 'en' as Language, flag: '🇺🇸', label: 'EN' },
-    { code: 'de' as Language, flag: '🇩🇪', label: 'DE' }
-  ];
+const languageOptions = [
+  { code: 'pl' as Language, flag: '🇵🇱', label: 'PL' },
+  { code: 'en' as Language, flag: '🇺🇸', label: 'EN' },
+  { code: 'de' as Language, flag: '🇩🇪', label: 'DE' },
+  { code: 'ar' as Language, flag: '🇸🇦', label: 'AR' },
+  { code: 'fr' as Language, flag: '🇫🇷', label: 'FR' },
+  { code: 'it' as Language, flag: '🇮🇹', label: 'IT' },
+  { code: 'hr' as Language, flag: '🇭🇷', label: 'HR' }
+];
 
+export function LanguageSelector({ currentLang, onLanguageChange }: LanguageSelectorProps) {
   return (
-    <div className="flex items-center space-x-2 industrial-100 p-1 rounded-lg">
-      {languages.map(({ code, flag, label }) => (
+    <div className="flex items-center space-x-2 bg-white/10 rounded-lg p-2">
+      {languageOptions.map(({ code, flag, label }) => (
         <button
           key={code}
           onClick={() => onLanguageChange(code)}
-          className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+          className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all text-sm font-medium ${
             currentLang === code
-              ? 'bg-machine-blue text-white'
-              : 'text-industrial-600 hover:text-industrial-800'
+              ? 'bg-white text-industrial-800 shadow-lg scale-105'
+              : 'text-white hover:bg-white/20 hover:scale-105'
           }`}
+          data-testid={`lang-${code}`}
         >
-          {flag} {label}
+          <span className="text-lg">{flag}</span>
+          <span>{label}</span>
         </button>
       ))}
     </div>

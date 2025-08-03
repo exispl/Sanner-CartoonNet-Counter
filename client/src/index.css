@@ -1,3 +1,8 @@
+@import '@fontsource/montserrat/400.css';
+@import '@fontsource/montserrat/500.css';
+@import '@fontsource/montserrat/600.css';
+@import '@fontsource/montserrat/700.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -24,23 +29,23 @@
   --ring: hsl(20, 14.3%, 4.1%);
   --radius: 0.5rem;
 
-  /* Blue gradient theme colors */
-  --industrial-50: hsl(210, 100%, 97%);
-  --industrial-100: hsl(210, 85%, 93%);
-  --industrial-200: hsl(210, 80%, 88%);
-  --industrial-300: hsl(210, 75%, 80%);
-  --industrial-400: hsl(210, 65%, 65%);
-  --industrial-500: hsl(210, 55%, 50%);
-  --industrial-600: hsl(210, 75%, 35%);
-  --industrial-700: hsl(210, 85%, 25%);
-  --industrial-800: hsl(210, 90%, 15%);
-  --industrial-900: hsl(210, 95%, 8%);
+  /* Blue gradient theme colors - Enhanced contrast */
+  --industrial-50: hsl(210, 100%, 98%);
+  --industrial-100: hsl(210, 90%, 95%);
+  --industrial-200: hsl(210, 85%, 90%);
+  --industrial-300: hsl(210, 80%, 82%);
+  --industrial-400: hsl(210, 70%, 68%);
+  --industrial-500: hsl(210, 60%, 55%);
+  --industrial-600: hsl(210, 80%, 40%);
+  --industrial-700: hsl(210, 90%, 30%);
+  --industrial-800: hsl(210, 95%, 20%);
+  --industrial-900: hsl(210, 100%, 10%);
 
-  /* Machine status colors - blue palette */
-  --machine-green: hsl(195, 85%, 65%);
-  --machine-amber: hsl(185, 90%, 55%);
-  --machine-red: hsl(200, 95%, 45%);
-  --machine-blue: hsl(210, 100%, 60%);
+  /* Machine status colors - Enhanced contrast */
+  --machine-green: hsl(145, 80%, 50%);
+  --machine-amber: hsl(45, 95%, 55%);
+  --machine-red: hsl(5, 85%, 55%);
+  --machine-blue: hsl(210, 100%, 65%);
   
   /* Money/earnings colors */
   --money-gold: hsl(45, 100%, 60%);
@@ -49,26 +54,44 @@
 }
 
 .dark {
-  --background: hsl(240, 10%, 3.9%);
-  --foreground: hsl(0, 0%, 98%);
-  --muted: hsl(240, 3.7%, 15.9%);
-  --muted-foreground: hsl(240, 5%, 64.9%);
-  --popover: hsl(240, 10%, 3.9%);
-  --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(240, 10%, 3.9%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --border: hsl(240, 3.7%, 15.9%);
-  --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(207, 90%, 54%);
-  --primary-foreground: hsl(211, 100%, 99%);
-  --secondary: hsl(240, 3.7%, 15.9%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --accent: hsl(240, 3.7%, 15.9%);
-  --accent-foreground: hsl(0, 0%, 98%);
-  --destructive: hsl(0, 62.8%, 30.6%);
+  --background: hsl(215, 15%, 8%);
+  --foreground: hsl(0, 0%, 95%);
+  --muted: hsl(215, 10%, 15%);
+  --muted-foreground: hsl(215, 5%, 65%);
+  --popover: hsl(215, 15%, 12%);
+  --popover-foreground: hsl(0, 0%, 95%);
+  --card: hsl(215, 15%, 12%);
+  --card-foreground: hsl(0, 0%, 95%);
+  --border: hsl(215, 10%, 25%);
+  --input: hsl(215, 10%, 20%);
+  --primary: hsl(210, 90%, 60%);
+  --primary-foreground: hsl(0, 0%, 5%);
+  --secondary: hsl(215, 10%, 18%);
+  --secondary-foreground: hsl(0, 0%, 90%);
+  --accent: hsl(215, 10%, 20%);
+  --accent-foreground: hsl(0, 0%, 90%);
+  --destructive: hsl(5, 75%, 55%);
   --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(240, 4.9%, 83.9%);
+  --ring: hsl(210, 90%, 60%);
   --radius: 0.5rem;
+
+  /* Dark mode industrial colors */
+  --industrial-50: hsl(215, 15%, 85%);
+  --industrial-100: hsl(215, 12%, 75%);
+  --industrial-200: hsl(215, 10%, 65%);
+  --industrial-300: hsl(215, 8%, 55%);
+  --industrial-400: hsl(215, 6%, 45%);
+  --industrial-500: hsl(215, 5%, 35%);
+  --industrial-600: hsl(215, 8%, 25%);
+  --industrial-700: hsl(215, 10%, 18%);
+  --industrial-800: hsl(215, 15%, 12%);
+  --industrial-900: hsl(215, 20%, 8%);
+
+  /* Dark mode machine colors */
+  --machine-green: hsl(145, 70%, 45%);
+  --machine-amber: hsl(45, 85%, 60%);
+  --machine-red: hsl(5, 75%, 60%);
+  --machine-blue: hsl(210, 85%, 60%);
 }
 
 @layer base {
@@ -77,7 +100,8 @@
   }
 
   body {
-    @apply font-sans antialiased;
+    font-family: 'Montserrat', sans-serif;
+    @apply antialiased;
     background: 
       linear-gradient(rgba(210, 235, 255, 0.9), rgba(210, 235, 255, 0.9)),
       url('https://sannergmbh.beep.pl/spruce_drops_dew_1364473_2560x1440.jpg');

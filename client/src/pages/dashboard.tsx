@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [currentLang, setCurrentLang] = useState<Language>('pl');
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [uptime, setUptime] = useState('00:00:00');
+  const [sessionBoxes, setSessionBoxes] = useState(0);
   const { settings } = useAppSettings();
   const [toast, setToast] = useState<{
     visible: boolean;
@@ -47,6 +48,14 @@ export default function Dashboard() {
   const handleLanguageChange = (lang: Language) => {
     setCurrentLang(lang);
     localStorage.setItem('preferred-language', lang);
+  };
+
+  const resetSession = () => {
+    machine1.reset();
+    machine2.reset();
+    setSessionBoxes(0);
+    setStartTime(new Date());
+    showToast(t('session-reset'), 'info');
   };
 
   const startAllMachines = () => {
@@ -175,8 +184,21 @@ export default function Dashboard() {
         </div>
       </header>
 
+      {/* Session Reset Button */}
+      <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+        <div className="flex justify-center">
+          <Button
+            onClick={resetSession}
+            className="bg-white/20 hover:bg-white/30 text-industrial-800 dark:text-white border-2 border-white/30 rounded-xl px-6 py-2 text-sm font-medium backdrop-blur-sm transition-all"
+            data-testid="session-reset-button"
+          >
+            🔄 {t('session-reset')}
+          </Button>
+        </div>
+      </div>
+
       {/* Main Dashboard */}
-      <main className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
         <MachineStats
           activeMachines={activeMachines}
           totalBoxes={Math.max(0, totalBoxes)}

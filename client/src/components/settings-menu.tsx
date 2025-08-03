@@ -93,11 +93,15 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                     <Globe className="w-5 h-5 text-machine-blue" />
                     <Label className="text-lg font-semibold text-industrial-800">Język / Language</Label>
                   </div>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-4 gap-2">
                     {[
                       { code: 'pl' as Language, flag: '🇵🇱', label: 'Polski' },
                       { code: 'en' as Language, flag: '🇺🇸', label: 'English' },
-                      { code: 'de' as Language, flag: '🇩🇪', label: 'Deutsch' }
+                      { code: 'de' as Language, flag: '🇩🇪', label: 'Deutsch' },
+                      { code: 'ar' as Language, flag: '🇸🇦', label: 'العربية' },
+                      { code: 'fr' as Language, flag: '🇫🇷', label: 'Français' },
+                      { code: 'it' as Language, flag: '🇮🇹', label: 'Italiano' },
+                      { code: 'hr' as Language, flag: '🇭🇷', label: 'Hrvatski' }
                     ].map(({ code, flag, label }) => (
                       <button
                         key={code}
