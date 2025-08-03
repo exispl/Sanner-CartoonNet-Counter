@@ -6,6 +6,8 @@ import { MachineStats } from '@/components/machine-stats';
 import { MachinePanel } from '@/components/machine-panel';
 import { NotificationToast, ToastType } from '@/components/notification-toast';
 import { EarningsCounter } from '@/components/earnings-counter';
+import { UserLoginSelector } from '@/components/user-login-selector';
+import { EmployeeBonusSystem } from '@/components/employee-bonus-system';
 import { SettingsMenu } from '@/components/settings-menu';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
@@ -15,6 +17,7 @@ export default function Dashboard() {
   const [currentLang, setCurrentLang] = useState<Language>('pl');
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [uptime, setUptime] = useState('00:00:00');
+  const [currentUser, setCurrentUser] = useState('SoG1917');
   const [sessionBoxes, setSessionBoxes] = useState(0);
   const { settings } = useAppSettings();
   const [toast, setToast] = useState<{
@@ -171,6 +174,10 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-center space-x-4">
+              <UserLoginSelector 
+                currentUser={currentUser} 
+                onUserChange={setCurrentUser} 
+              />
               <div className="bg-white/20 rounded-xl p-2">
                 <LanguageSelector 
                   currentLang={currentLang} 
@@ -208,6 +215,15 @@ export default function Dashboard() {
           efficiency={oscillatingEfficiency}
           t={t}
         />
+
+        {/* Statistics Cards */}
+        <div className="mb-8">
+          <EmployeeBonusSystem 
+            currentUser={currentUser}
+            totalBoxes={totalBoxes}
+            isRunning={activeMachines > 0} 
+          />
+        </div>
 
         {/* Machine Controls Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

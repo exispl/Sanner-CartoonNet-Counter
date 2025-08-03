@@ -7,6 +7,7 @@ import { MachineState } from '@/hooks/use-machine-state';
 import { MachineSelector } from './machine-selector';
 import { CardboardBoxVisualization } from './cardboard-box-visualization';
 import { MachineControls } from './machine-controls';
+import { TimerProgressBar } from './timer-progress-bar';
 
 interface MachinePanelProps {
   machineId: number;
@@ -204,10 +205,15 @@ export function MachinePanel({
           />
         </div>
 
+        {/* Timer Progress Bar */}
+        <div className="mb-4">
+          <TimerProgressBar isActive={state.running} />
+        </div>
+
         {/* Control Panel */}
         {showControls && (
-          <div className="border-t border-industrial-200 pt-6">
-            <h3 className="text-lg font-semibold text-industrial-800 mb-4">{t('machine-settings')}</h3>
+          <div className="bg-white/10 rounded-xl p-4 border-2 border-white/20">
+            <h3 className="text-lg font-semibold text-white mb-4">{t('machine-settings')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div>
                 <Label htmlFor={`limit-${machineId}`} className="text-sm font-medium text-industrial-600">

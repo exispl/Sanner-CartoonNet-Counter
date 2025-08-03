@@ -12,6 +12,13 @@ export function EarningsCounter({ isRunning, totalBoxes }: EarningsCounterProps)
   const [totalEarnings, setTotalEarnings] = useState(0);
   const [showHint, setShowHint] = useState(true);
 
+  const handleToggle = (open: boolean) => {
+    setIsOpen(open);
+    if (open) {
+      setShowHint(false);
+    }
+  };
+
   useEffect(() => {
     if (isRunning) {
       const interval = setInterval(() => {
@@ -26,7 +33,7 @@ export function EarningsCounter({ isRunning, totalBoxes }: EarningsCounterProps)
 
   return (
     <div className="bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl shadow-2xl border-4 border-green-400/30 overflow-hidden">
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
+      <Collapsible open={isOpen} onOpenChange={handleToggle}>
         <CollapsibleTrigger className="w-full p-4 flex items-center justify-between hover:bg-white/10 transition-colors">
           <div className="flex items-center gap-3">
             <TrendingUp className="w-6 h-6 text-white" />
@@ -56,7 +63,7 @@ export function EarningsCounter({ isRunning, totalBoxes }: EarningsCounterProps)
         
         <CollapsibleContent>
           <div className="px-4 pb-4 space-y-4">
-            {isOpen && (() => { setShowHint(false); return null; })()}
+
             
             <div className="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
               <div className="grid grid-cols-2 gap-4">
