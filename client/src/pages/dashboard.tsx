@@ -8,11 +8,13 @@ import { EarningsCounter } from '@/components/earnings-counter';
 import { SettingsMenu } from '@/components/settings-menu';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
+import { useAppSettings } from '@/hooks/use-app-settings';
 
 export default function Dashboard() {
   const [currentLang, setCurrentLang] = useState<Language>('pl');
   const [startTime, setStartTime] = useState<Date | null>(null);
   const [uptime, setUptime] = useState('00:00:00');
+  const { settings } = useAppSettings();
   const [toast, setToast] = useState<{
     visible: boolean;
     message: string;
@@ -30,7 +32,9 @@ export default function Dashboard() {
   const t = (key: string) => translations[currentLang][key as keyof typeof translations[typeof currentLang]] || key;
 
   const showToast = (message: string, type: ToastType = 'info', submessage?: string) => {
-    setToast({ visible: true, message, type, submessage });
+    if (settings.notificationsEnabled) {
+      setToast({ visible: true, message, type, submessage });
+    }
   };
 
   const hideToast = () => {

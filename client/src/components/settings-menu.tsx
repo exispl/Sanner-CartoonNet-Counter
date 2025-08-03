@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Settings, Info, X, Palette, Volume2, Globe, Database } from 'lucide-react';
+import { Settings, Info, X, Palette, Volume2, Globe, Database, Moon, Sun, Bell, BellOff, Zap, ZapOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { translations, Language } from '@/lib/translations';
+import { useAppSettings } from '@/hooks/use-app-settings';
 
 interface SettingsMenuProps {
   currentLang: Language;
@@ -13,6 +14,7 @@ interface SettingsMenuProps {
 export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<'settings' | 'about'>('settings');
+  const { settings, updateSettings, resetSettings } = useAppSettings();
 
   const t = (key: string) => translations[currentLang][key as keyof typeof translations[typeof currentLang]] || key;
 
@@ -35,7 +37,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
 
       {/* Expanded Menu */}
       {isOpen && (
-        <div className="absolute top-0 right-0 w-96 bg-white rounded-2xl shadow-2xl border-4 border-machine-blue/20 z-50 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 bg-white dark:bg-industrial-800 rounded-2xl shadow-2xl border-4 border-machine-blue/20 z-50 overflow-hidden">
           {/* Header */}
           <div className="bg-gradient-to-r from-machine-blue to-machine-green p-4">
             <div className="flex items-center justify-between">
@@ -118,40 +120,95 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
                     <Palette className="w-5 h-5 text-machine-green" />
-                    <Label className="text-lg font-semibold text-industrial-800">Motyw / Theme</Label>
+                    <Label className="text-lg font-semibold text-industrial-800 dark:text-white">Motyw / Theme</Label>
                   </div>
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="p-3 rounded-lg border-2 border-machine-blue bg-machine-blue/10 text-center">
-                      <div className="text-xl mb-1">🌊</div>
-                      <div className="text-sm font-medium text-machine-blue">Blue Ocean</div>
-                      <div className="text-xs text-machine-blue/70">Aktywny</div>
-                    </div>
-                    <div className="p-3 rounded-lg border-2 border-industrial-200 text-center opacity-50">
-                      <div className="text-xl mb-1">🌙</div>
-                      <div className="text-sm font-medium">Dark Mode</div>
-                      <div className="text-xs text-industrial-500">Wkrótce</div>
-                    </div>
+                    <button
+                      onClick={() => updateSettings({ isDarkMode: false })}
+                      className={`p-3 rounded-lg border-2 transition-all text-center ${
+                        !settings.isDarkMode
+                          ? 'border-machine-blue bg-machine-blue/10 text-machine-blue'
+                          : 'border-industrial-200 hover:border-machine-blue/50 dark:border-industrial-600'
+                      }`}
+                      data-testid="theme-light"
+                    >
+                      <Sun className="w-6 h-6 mx-auto mb-1" />
+                      <div className="text-sm font-medium">Jasny</div>
+                      {!settings.isDarkMode && <div className="text-xs text-machine-blue/70">Aktywny</div>}
+                    </button>
+                    <button
+                      onClick={() => updateSettings({ isDarkMode: true })}
+                      className={`p-3 rounded-lg border-2 transition-all text-center ${
+                        settings.isDarkMode
+                          ? 'border-machine-blue bg-machine-blue/10 text-machine-blue'
+                          : 'border-industrial-200 hover:border-machine-blue/50 dark:border-industrial-600'
+                      }`}
+                      data-testid="theme-dark"
+                    >
+                      <Moon className="w-6 h-6 mx-auto mb-1" />
+                      <div className="text-sm font-medium">Ciemny</div>
+                      {settings.isDarkMode && <div className="text-xs text-machine-blue/70">Aktywny</div>}
+                    </button>
                   </div>
                 </div>
 
-                {/* Sound Settings */}
+                {/* Notifications & Sound Settings */}
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
-                    <Volume2 className="w-5 h-5 text-machine-amber" />
-                    <Label className="text-lg font-semibold text-industrial-800">Dźwięki / Sounds</Label>
+                    <Bell className="w-5 h-5 text-machine-amber" />
+                    <Label className="text-lg font-semibold text-industrial-800 dark:text-white">Powiadomienia & Dźwięki</Label>
                   </div>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm">Powiadomienia</span>
-                      <div className="w-12 h-6 bg-machine-green rounded-full relative">
-                        <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5 shadow-sm"></div>
+                      <div className="flex items-center space-x-2">
+                        {settings.notificationsEnabled ? <Bell className="w-4 h-4" /> : <BellOff className="w-4 h-4" />}
+                        <span className="text-sm">Powiadomienia</span>
                       </div>
+                      <button
+                        onClick={() => updateSettings({ notificationsEnabled: !settings.notificationsEnabled })}
+                        className={`w-12 h-6 rounded-full relative transition-colors ${
+                          settings.notificationsEnabled ? 'bg-machine-green' : 'bg-industrial-300 dark:bg-industrial-600'
+                        }`}
+                        data-testid="toggle-notifications"
+                      >
+                        <div className={`w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-sm transition-transform ${
+                          settings.notificationsEnabled ? 'right-0.5' : 'left-0.5'
+                        }`}></div>
+                      </button>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm">Efekty dźwiękowe</span>
-                      <div className="w-12 h-6 bg-industrial-300 rounded-full relative">
-                        <div className="w-5 h-5 bg-white rounded-full absolute top-0.5 left-0.5 shadow-sm"></div>
+                      <div className="flex items-center space-x-2">
+                        <Volume2 className="w-4 h-4" />
+                        <span className="text-sm">Efekty dźwiękowe</span>
                       </div>
+                      <button
+                        onClick={() => updateSettings({ soundEffectsEnabled: !settings.soundEffectsEnabled })}
+                        className={`w-12 h-6 rounded-full relative transition-colors ${
+                          settings.soundEffectsEnabled ? 'bg-machine-green' : 'bg-industrial-300 dark:bg-industrial-600'
+                        }`}
+                        data-testid="toggle-sounds"
+                      >
+                        <div className={`w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-sm transition-transform ${
+                          settings.soundEffectsEnabled ? 'right-0.5' : 'left-0.5'
+                        }`}></div>
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        {settings.animationsEnabled ? <Zap className="w-4 h-4" /> : <ZapOff className="w-4 h-4" />}
+                        <span className="text-sm">Animacje</span>
+                      </div>
+                      <button
+                        onClick={() => updateSettings({ animationsEnabled: !settings.animationsEnabled })}
+                        className={`w-12 h-6 rounded-full relative transition-colors ${
+                          settings.animationsEnabled ? 'bg-machine-green' : 'bg-industrial-300 dark:bg-industrial-600'
+                        }`}
+                        data-testid="toggle-animations"
+                      >
+                        <div className={`w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-sm transition-transform ${
+                          settings.animationsEnabled ? 'right-0.5' : 'left-0.5'
+                        }`}></div>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -160,14 +217,18 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                 <div className="space-y-3">
                   <div className="flex items-center space-x-2">
                     <Database className="w-5 h-5 text-machine-red" />
-                    <Label className="text-lg font-semibold text-industrial-800">Dane / Data</Label>
+                    <Label className="text-lg font-semibold text-industrial-800 dark:text-white">Dane / Data</Label>
                   </div>
                   <div className="space-y-2">
                     <Button className="w-full bg-machine-amber hover:bg-machine-amber/80 text-white">
                       📊 Eksportuj historię
                     </Button>
-                    <Button className="w-full bg-machine-red hover:bg-machine-red/80 text-white">
-                      🗑️ Wyczyść dane
+                    <Button 
+                      onClick={resetSettings}
+                      className="w-full bg-machine-red hover:bg-machine-red/80 text-white"
+                      data-testid="reset-settings"
+                    >
+                      🗑️ Reset ustawień
                     </Button>
                   </div>
                 </div>
