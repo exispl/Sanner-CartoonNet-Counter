@@ -24,7 +24,7 @@ export function MachineSelector({ currentNumber, onMachineChange, machineId }: M
       </button>
       
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-industrial-800 rounded-lg shadow-xl border border-industrial-200 dark:border-industrial-600 z-50 max-h-48 overflow-y-auto">
+        <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-industrial-900 rounded-lg shadow-xl border border-industrial-200 dark:border-industrial-600 z-50 max-h-48 overflow-y-auto">
           {machineNumbers.map((number) => (
             <button
               key={number}
@@ -34,8 +34,8 @@ export function MachineSelector({ currentNumber, onMachineChange, machineId }: M
               }}
               className={`w-full px-4 py-3 text-left hover:bg-industrial-50 dark:hover:bg-industrial-700 transition-colors border-b border-industrial-100 dark:border-industrial-700 last:border-b-0 ${
                 currentNumber === number 
-                  ? 'bg-machine-blue/10 text-machine-blue font-semibold' 
-                  : 'text-industrial-800 dark:text-white'
+                  ? 'bg-machine-blue/10 text-machine-blue dark:text-machine-blue font-semibold' 
+                  : 'text-industrial-800 dark:text-industrial-100'
               }`}
               data-testid={`machine-option-${number}`}
             >

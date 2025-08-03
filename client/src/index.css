@@ -109,6 +109,16 @@
     background-position: center;
     background-attachment: fixed;
     color: hsl(var(--foreground));
+    opacity: 0.33;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  body:hover {
+    opacity: 1;
+  }
+
+  body:focus-within {
+    opacity: 1;
   }
 
   .dark body {

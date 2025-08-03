@@ -5,6 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { MachineState } from '@/hooks/use-machine-state';
 import { MachineSelector } from './machine-selector';
+import { CardboardBoxVisualization } from './cardboard-box-visualization';
+import { MachineControls } from './machine-controls';
 
 interface MachinePanelProps {
   machineId: number;
@@ -30,6 +32,8 @@ export function MachinePanel({
   const [localCycleTime, setLocalCycleTime] = useState(state.cycleTime);
   const [localName, setLocalName] = useState(state.name);
   const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 16 : 51);
+  const [boxSize, setBoxSize] = useState<'5T' | '6T' | '10T'>('6T');
+  const [capsuleCount, setCapsuleCount] = useState(180);
 
   const percentage = Math.min(100, Math.floor((state.itemsInBox / state.limit) * 100));
 
@@ -180,18 +184,24 @@ export function MachinePanel({
           </div>
         </div>
 
-        {/* Current Box Info */}
-        <div className="bg-white/20 rounded-2xl p-6 mb-8 border-2 border-white/30">
-          <div className="grid grid-cols-2 gap-6">
-            <div className="text-center">
-              <label className="text-lg font-bold text-white mb-2 block">📦 {t('current-box')} 📦</label>
-              <div className="text-4xl font-mono font-bold text-white bg-white/20 rounded-xl p-4 animate-bounce-subtle">{state.currentBox}</div>
-            </div>
-            <div className="text-center">
-              <label className="text-lg font-bold text-white mb-2 block">🔢 {t('items-in-box')} 🔢</label>
-              <div className="text-4xl font-mono font-bold text-white bg-white/20 rounded-xl p-4 animate-bounce-subtle">{state.itemsInBox}</div>
-            </div>
-          </div>
+        {/* Current Box Visualization */}
+        <div className="mb-4">
+          <CardboardBoxVisualization
+            currentProgress={percentage}
+            boxSize={boxSize}
+            completedBoxes={Math.max(0, state.currentBox - 1)}
+          />
+        </div>
+
+        {/* Machine Controls */}
+        <div className="mb-4">
+          <MachineControls
+            boxSize={boxSize}
+            capsuleCount={capsuleCount}
+            onBoxSizeChange={setBoxSize}
+            onCapsuleCountChange={setCapsuleCount}
+            t={t}
+          />
         </div>
 
         {/* Control Panel */}

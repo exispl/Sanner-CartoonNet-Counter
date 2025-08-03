@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useMachineState } from '@/hooks/use-machine-state';
+import { useEfficiencyOscillator } from '@/hooks/use-efficiency-oscillator';
 import { LanguageSelector } from '@/components/language-selector';
 import { MachineStats } from '@/components/machine-stats';
 import { MachinePanel } from '@/components/machine-panel';
@@ -29,6 +30,7 @@ export default function Dashboard() {
 
   const machine1 = useMachineState(1, 'MA820051', 1000, 4);
   const machine2 = useMachineState(2, 'MA820054', 1500, 5);
+  const oscillatingEfficiency = useEfficiencyOscillator();
 
   const t = (key: string) => translations[currentLang][key as keyof typeof translations[typeof currentLang]] || key;
 
@@ -203,7 +205,7 @@ export default function Dashboard() {
           activeMachines={activeMachines}
           totalBoxes={Math.max(0, totalBoxes)}
           uptime={uptime}
-          efficiency={100}
+          efficiency={oscillatingEfficiency}
           t={t}
         />
 
