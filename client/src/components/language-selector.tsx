@@ -9,6 +9,7 @@ const languageOptions = [
   { code: 'pl' as Language, flag: '🇵🇱', label: 'PL' },
   { code: 'en' as Language, flag: '🇺🇸', label: 'EN' },
   { code: 'de' as Language, flag: '🇩🇪', label: 'DE' },
+  { code: 'tr' as Language, flag: '🇹🇷', label: 'TR' },
   { code: 'ar' as Language, flag: '🇸🇦', label: 'AR' },
   { code: 'fr' as Language, flag: '🇫🇷', label: 'FR' },
   { code: 'it' as Language, flag: '🇮🇹', label: 'IT' },

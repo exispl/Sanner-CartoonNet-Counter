@@ -26,7 +26,7 @@ export interface Translation {
   'produced-boxes-session': string;
 }
 
-export type Language = 'pl' | 'en' | 'de' | 'ar' | 'fr' | 'it' | 'hr';
+export type Language = 'pl' | 'en' | 'de' | 'tr' | 'ar' | 'fr' | 'it' | 'hr';
 
 export const translations: Record<Language, Translation> = {
   pl: {
@@ -163,6 +163,33 @@ export const translations: Record<Language, Translation> = {
     'export': 'Exporter les paramètres',
     'session-reset': 'Réinitialiser la session',
     'produced-boxes-session': 'Boîtes produites dans cette session'
+  },
+  tr: {
+    'title': 'Karton Doldurucu Online',
+    'active-machines': 'Aktif makineler',
+    'total-boxes': 'Üretilen kutular',
+    'uptime': 'Çalışma süresi',
+    'efficiency': 'Verimlilik',
+    'machine': 'Makine',
+    'progress': 'Doldurma ilerlemesi',
+    'fill-level': 'Dolum seviyesi',
+    'click-to-configure': 'Yapılandırmak için tıklayın',
+    'current-box': 'Mevcut kutu',
+    'items-in-box': 'Kutudaki öğeler',
+    'machine-settings': 'Makine ayarları',
+    'target-limit': 'Hedef limit',
+    'cycle-time': 'Döngü süresi (dk)',
+    'start': 'Başlat',
+    'pause': 'Duraklat',
+    'reset': 'Sıfırla',
+    'close': 'Kapat',
+    'global-controls': 'Genel kontroller',
+    'start-all': 'Hepsini başlat',
+    'pause-all': 'Hepsini duraklat',
+    'reset-all': 'Hepsini sıfırla',
+    'export': 'Ayarları dışa aktar',
+    'session-reset': 'Oturumu sıfırla',
+    'produced-boxes-session': 'Bu oturumda üretilen kutular'
   },
   it: {
     'title': 'Riempitore di Cartone Online',

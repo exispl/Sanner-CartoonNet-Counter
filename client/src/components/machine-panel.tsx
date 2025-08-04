@@ -194,29 +194,13 @@ export function MachinePanel({
           />
         </div>
 
-        {/* Machine Controls */}
-        <div className="mb-4">
-          <MachineControls
-            cardboardType={cardboardType}
-            capsuleCount={capsuleCount}
-            onCardboardTypeChange={setCardboardType}
-            onCapsuleCountChange={setCapsuleCount}
-            t={t}
-          />
-        </div>
-
-        {/* Timer Progress Bar */}
-        <div className="mb-4">
-          <TimerProgressBar isActive={state.running} />
-        </div>
-
-        {/* Control Panel */}
+        {/* Control Panel - Moved higher */}
         {showControls && (
           <div className="bg-white/10 rounded-xl p-4 border-2 border-white/20">
             <h3 className="text-lg font-semibold text-white mb-4">{t('machine-settings')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div>
-                <Label htmlFor={`limit-${machineId}`} className="text-sm font-medium text-industrial-600">
+                <Label htmlFor={`limit-${machineId}`} className="text-sm font-medium text-white">
                   {t('target-limit')}
                 </Label>
                 <Input
@@ -228,11 +212,11 @@ export function MachinePanel({
                   step={10}
                   min={1}
                   max={10000}
-                  className="font-mono"
+                  className="font-mono bg-white/20 border-white/30 text-white placeholder:text-white/60"
                 />
               </div>
               <div>
-                <Label htmlFor={`cycle-${machineId}`} className="text-sm font-medium text-industrial-600">
+                <Label htmlFor={`cycle-${machineId}`} className="text-sm font-medium text-white">
                   {t('cycle-time')}
                 </Label>
                 <Input
@@ -244,7 +228,7 @@ export function MachinePanel({
                   step={0.1}
                   min={0.1}
                   max={60}
-                  className="font-mono"
+                  className="font-mono bg-white/20 border-white/30 text-white placeholder:text-white/60"
                 />
               </div>
             </div>
@@ -274,13 +258,29 @@ export function MachinePanel({
               <Button
                 onClick={toggleControls}
                 variant="outline"
-                className="border-industrial-600 text-industrial-600 hover:bg-industrial-600 hover:text-white"
+                className="border-white/30 text-white hover:bg-white/20"
               >
                 {t('close')}
               </Button>
             </div>
           </div>
         )}
+
+        {/* Machine Controls */}
+        <div className="mb-4">
+          <MachineControls
+            cardboardType={cardboardType}
+            capsuleCount={capsuleCount}
+            onCardboardTypeChange={setCardboardType}
+            onCapsuleCountChange={setCapsuleCount}
+            t={t}
+          />
+        </div>
+
+        {/* Timer Progress Bar */}
+        <div className="mb-4">
+          <TimerProgressBar isActive={state.running} />
+        </div>
       </div>
     </div>
   );
