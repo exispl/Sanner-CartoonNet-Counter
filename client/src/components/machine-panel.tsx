@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Play, Pause, RotateCcw, Settings, Factory, Gauge, Box } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -62,6 +62,13 @@ export function MachinePanel({
     setPrufungStartTime(null);
     setPrufungExpired(false);
   };
+
+  // Auto-start Prüfung on component mount
+  useEffect(() => {
+    if (!prufungStartTime) {
+      startPrufung();
+    }
+  }, [prufungStartTime]);
 
   // Calculate Prüfung progress
   const getPrufungProgress = () => {
@@ -160,15 +167,34 @@ export function MachinePanel({
               placeholder="Nazwa maszyny..."
             />
           </div>
-          <div className="flex-1">
-            <input
-              type="text"
-              value={auftragNumber}
-              onChange={(e) => setAuftragNumber(e.target.value)}
-              onKeyPress={handleKeyPress}
-              className="w-full text-sm font-medium text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg px-2 py-1 placeholder-white/70"
-              placeholder="Nr Auftrag: 10-1X-XX-XX [H5]"
-            />
+          <div className="flex space-x-2">
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 mb-1">Nr Auftrag</span>
+              <input
+                type="text"
+                value={auftragNumber}
+                onChange={(e) => setAuftragNumber(e.target.value)}
+                onKeyPress={handleKeyPress}
+                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-32"
+                placeholder="MA820062"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 mb-1">Halle</span>
+              <input
+                type="text"
+                defaultValue="5"
+                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-16"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 mb-1">DASG-1 (color)</span>
+              <input
+                type="text"
+                placeholder="DASG-1"
+                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-24"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -364,7 +390,7 @@ export function MachinePanel({
 
             <div>
               <Label className="text-xs font-semibold text-white mb-1 block">
-                Czas cyklu (min)
+                Szacowany czas 1 kartonu (minuty)
               </Label>
               <Input
                 type="number"
@@ -387,34 +413,18 @@ export function MachinePanel({
                 value={cardboardType}
                 onChange={(e) => {
                   setCardboardType(e.target.value);
-                  // Reset machine when cardboard type changes
+                  // Reset machine and start new cycle when cardboard type changes
                   onReset();
+                  startPrufung();
                 }}
                 className="w-full bg-white/80 border border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs rounded"
               >
-                <option value="6">6</option>
+                <option value="5T">5T</option>
+                <option value="6T">6T</option>
                 <option value="6/ALU">6/ALU</option>
                 <option value="10T">10T</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="mt-3 grid grid-cols-2 gap-3">
-            <div>
-              <Label className="text-xs font-semibold text-white mb-1 block">
-                Ilość kapsułek
-              </Label>
-              <select
-                value={capsuleCount}
-                onChange={(e) => setCapsuleCount(Number(e.target.value))}
-                className="w-full bg-white/80 border border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs rounded"
-              >
-                <option value={500}>500 kapsułek</option>
-                <option value={1000}>1000 kapsułek</option>
-                <option value={1500}>1500 kapsułek</option>
-                <option value={2000}>2000 kapsułek</option>
-                <option value={2500}>2500 kapsułek</option>
-                <option value={3000}>3000 kapsułek</option>
+                <option value="20T">20T</option>
+                <option value="30T">30T</option>
               </select>
             </div>
           </div>

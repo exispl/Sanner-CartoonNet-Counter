@@ -178,6 +178,15 @@
     animation: blink-cyan 1.5s ease-in-out infinite;
   }
 
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
   @keyframes bounce-subtle {
     0%, 20%, 50%, 80%, 100% {
       transform: translateY(0);

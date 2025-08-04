@@ -18,7 +18,7 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted }: Cardboa
       <div 
         className={`relative border-2 rounded-lg transition-all duration-300 transform scale-[1.75] ${
           isCompleted
-            ? 'border-cyan-400 shadow-lg shadow-cyan-400/50 bg-gradient-to-b from-cyan-200 to-cyan-400 animate-pulse'
+            ? 'border-blue-400 shadow-lg shadow-blue-400/50 bg-gradient-to-b from-blue-200 to-blue-400'
             : isActive 
             ? 'border-machine-blue shadow-lg shadow-machine-blue/30 bg-gradient-to-b from-orange-200 to-orange-300' 
             : 'border-orange-400 bg-gradient-to-b from-orange-100 to-orange-200'
@@ -27,7 +27,7 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted }: Cardboa
           width: '60px', 
           height: `${boxHeight}px`,
           background: isCompleted
-            ? 'linear-gradient(to bottom, #67e8f9, #22d3ee, #0891b2)'
+            ? 'linear-gradient(to bottom, #93c5fd, #3b82f6, #1d4ed8)'
             : isActive 
             ? 'linear-gradient(to bottom, #fed7aa, #fb923c, #ea580c)' 
             : 'linear-gradient(to bottom, #ffedd5, #fed7aa, #fdba74)'
@@ -87,12 +87,14 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
   
   useEffect(() => {
     if (currentProgress >= 100) {
-      // Move to next box in cross pattern
-      const currentPatternIndex = crossPattern.indexOf(activeBoxIndex);
-      const nextPatternIndex = (currentPatternIndex + 1) % 4;
-      setActiveBoxIndex(crossPattern[nextPatternIndex]);
+      // Move to next box in cross pattern with delay
+      setTimeout(() => {
+        const currentPatternIndex = crossPattern.indexOf(activeBoxIndex);
+        const nextPatternIndex = (currentPatternIndex + 1) % 4;
+        setActiveBoxIndex(crossPattern[nextPatternIndex]);
+      }, 1500); // 1.5 second delay between boxes
     }
-  }, [currentProgress]);
+  }, [currentProgress, activeBoxIndex, crossPattern]);
 
   return (
     <div className="bg-white/10 rounded-xl p-4 border-2 border-white/20">
@@ -127,13 +129,15 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
                 }
               }}
             >
-              <CardboardBox
-                isActive={index === activeBoxIndex}
-                fillLevel={index === activeBoxIndex ? currentProgress : 0}
-                size={boxSize}
-                index={index}
-                isCompleted={isCompleted}
-              />
+              <div className={isCompleted ? 'animate-pulse-slow' : ''}>
+                <CardboardBox
+                  isActive={index === activeBoxIndex}
+                  fillLevel={index === activeBoxIndex ? currentProgress : 0}
+                  size={boxSize}
+                  index={index}
+                  isCompleted={isCompleted}
+                />
+              </div>
             </div>
           );
         })}
