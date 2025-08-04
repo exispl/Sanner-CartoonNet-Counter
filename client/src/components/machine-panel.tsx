@@ -32,7 +32,7 @@ export function MachinePanel({
   const [localLimit, setLocalLimit] = useState(state.limit);
   const [localCycleTime, setLocalCycleTime] = useState(state.cycleTime);
   const [localName, setLocalName] = useState(state.name);
-  const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 16 : 51);
+  const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 62 : 61);
   const [cardboardType, setCardboardType] = useState('6/ALU');
   const [capsuleCount, setCapsuleCount] = useState(1500);
 
@@ -117,7 +117,7 @@ export function MachinePanel({
           value={localName}
           onChange={(e) => setLocalName(e.target.value)}
           onBlur={handleSettingsUpdate}
-          className="w-full text-lg font-semibold text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg px-3 py-2 placeholder-white/70"
+          className="w-full text-sm font-semibold text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg px-2 py-1 placeholder-white/70"
           placeholder="Nazwa maszyny..."
         />
       </div>
@@ -126,11 +126,11 @@ export function MachinePanel({
         {/* Progress Visualization */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-sm font-semibold text-white flex items-center">
-              <Gauge className="w-4 h-4 mr-2" />
+            <span className="text-xs font-semibold text-white flex items-center">
+              <Gauge className="w-3 h-3 mr-1" />
               {t('progress')}
             </span>
-            <span className="text-xl font-mono font-bold text-white bg-white/20 rounded-xl px-4 py-2">
+            <span className="text-lg font-mono font-bold text-white bg-white/20 rounded-xl px-3 py-1">
               {state.itemsInBox} / {state.limit}
             </span>
           </div>
@@ -142,8 +142,8 @@ export function MachinePanel({
               />
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-lg font-bold text-blue-900 drop-shadow-sm">
-                {percentage}% 🎯
+              <span className="text-sm font-bold text-blue-900 drop-shadow-sm">
+                {percentage}%
               </span>
             </div>
           </div>
@@ -152,7 +152,7 @@ export function MachinePanel({
         {/* Vertical Fill Bar and Machine Visualization */}
         <div className="flex items-center space-x-6 mb-6">
           <div className="flex flex-col items-center">
-            <div className="text-xs font-medium text-industrial-500 mb-2">{t('fill-level')}</div>
+            <div className="text-xs font-medium text-industrial-500 mb-2">Poziomy Prüfung</div>
             <div className="relative w-8 h-32 industrial-200 rounded-full overflow-hidden border-2 border-industrial-300">
               <div
                 className="absolute bottom-0 w-full bg-gradient-to-t from-machine-green via-machine-amber to-machine-green transition-all duration-500 ease-out"
@@ -198,7 +198,7 @@ export function MachinePanel({
         <div className="mb-4">
           <CardboardBoxVisualization
             currentProgress={percentage}
-            boxSize={'6T' as '5T' | '6T' | '10T'}
+            boxSize={machineNumber === 59 ? '10T' : (machineNumber === 61 ? '6' : '6') as '5T' | '6T' | '10T'}
             completedBoxes={Math.max(0, state.currentBox - 1)}
           />
         </div>
