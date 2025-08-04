@@ -6,18 +6,18 @@ interface MachineSelectorProps {
   machineId: number;
 }
 
-// Machine status colors - light gray variants
+// Machine status colors - restored original colors
 const getMachineStatus = (number: number) => {
   const statuses = {
-    16: { status: 'production', color: 'bg-gray-300' },
-    51: { status: 'setup', color: 'bg-gray-400' },
-    23: { status: 'maintenance', color: 'bg-gray-500' },
-    78: { status: 'technical', color: 'bg-gray-600' },
-    60: { status: 'production', color: 'bg-gray-300' },
-    50: { status: 'setup', color: 'bg-gray-400' },
-    77: { status: 'maintenance', color: 'bg-gray-500' },
+    16: { status: 'PRODUKTION', color: 'bg-green-500' },
+    51: { status: 'SETUP', color: 'bg-cyan-400' },
+    23: { status: 'WARTUNG', color: 'bg-red-500' },
+    78: { status: 'TECHNISCH', color: 'bg-yellow-400' },
+    60: { status: 'PRODUKTION', color: 'bg-green-500' },
+    50: { status: 'SETUP', color: 'bg-cyan-400' },
+    77: { status: 'WARTUNG', color: 'bg-red-500' },
   };
-  return statuses[number as keyof typeof statuses] || { status: 'inactive', color: 'bg-gray-400' };
+  return statuses[number as keyof typeof statuses] || { status: 'INAKTIV', color: 'bg-gray-400' };
 };
 
 const machineNumbers = [16, 23, 50, 51, 60, 77, 78];
@@ -42,7 +42,7 @@ export function MachineSelector({ currentNumber, onMachineChange, machineId }: M
               <div className="flex items-center gap-3 py-1">
                 <div className={`w-4 h-4 rounded ${status.color} border border-gray-600`}></div>
                 <span className="font-medium text-gray-800 dark:text-white">
-                  #{number}
+                  {number} - {status.status}
                 </span>
               </div>
             </SelectItem>

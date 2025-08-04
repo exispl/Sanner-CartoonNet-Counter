@@ -102,32 +102,12 @@
   body {
     font-family: 'Montserrat', sans-serif;
     @apply antialiased;
-    background: 
-      linear-gradient(rgba(210, 235, 255, 0.9), rgba(210, 235, 255, 0.9)),
-      url('https://sannergmbh.beep.pl/spruce_drops_dew_1364473_2560x1440.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background: #e5e7eb;
     color: hsl(var(--foreground));
-    opacity: 0.33;
-    transition: opacity 0.3s ease-in-out;
-  }
-
-  body:hover {
-    opacity: 1;
-  }
-
-  body:focus-within {
-    opacity: 1;
   }
 
   .dark body {
-    background: 
-      linear-gradient(rgba(30, 30, 30, 0.9), rgba(30, 30, 30, 0.9)),
-      url('https://sannergmbh.beep.pl/spruce_drops_dew_1364473_2560x1440.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
+    background: #374151;
     color: hsl(var(--foreground));
   }
 
