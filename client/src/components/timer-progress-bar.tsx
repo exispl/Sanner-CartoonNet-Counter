@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Clock, RotateCcw } from 'lucide-react';
+import { Timer, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface TimerProgressBarProps {
@@ -77,7 +77,7 @@ export function TimerProgressBar({ isActive }: TimerProgressBarProps) {
     <div className="bg-white/10 rounded-xl p-4 border-2 border-white/20">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
-          <Clock className="w-4 h-4 text-white" />
+          <Timer className="w-4 h-4 text-white" />
           <span className="text-white font-medium text-sm">Czas sesji</span>
         </div>
         <div className="flex gap-1">

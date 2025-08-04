@@ -28,12 +28,12 @@ export function MachineSelector({ currentNumber, onMachineChange, machineId }: M
 
   return (
     <Select value={currentNumber.toString()} onValueChange={(value) => onMachineChange(parseInt(value))}>
-      <SelectTrigger className="w-full bg-white/20 hover:bg-white/30 dark:bg-gray-800/20 border-2 border-white/30 rounded-lg h-10 transition-all backdrop-blur-sm">
+      <SelectTrigger className="w-full bg-white/45 hover:bg-white/55 border-2 border-white/50 rounded-lg h-10 transition-all backdrop-blur-sm">
         <SelectValue>
           <div className="flex items-center gap-2">
             <div className={`w-3 h-3 rounded ${currentStatus.color} border border-white/50`}></div>
-            <span className="font-medium text-white text-sm">
-              #{currentNumber}
+            <span className="font-bold text-gray-800 text-sm">
+              MA820016
             </span>
           </div>
         </SelectValue>
@@ -46,7 +46,7 @@ export function MachineSelector({ currentNumber, onMachineChange, machineId }: M
               <div className="flex items-center gap-3 py-1">
                 <div className={`w-3 h-3 rounded ${status.color} border border-gray-300`}></div>
                 <span className="font-medium text-gray-800 dark:text-white">
-                  #{number} - {status.status}
+                  MA820016 - {status.status.toUpperCase()}
                 </span>
               </div>
             </SelectItem>

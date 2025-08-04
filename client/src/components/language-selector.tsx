@@ -30,7 +30,6 @@ export function LanguageSelector({ currentLang, onLanguageChange }: LanguageSele
           data-testid={`lang-${code}`}
         >
           <span className="text-lg">{flag}</span>
-          <span>{label}</span>
         </button>
       ))}
     </div>

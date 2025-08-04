@@ -216,8 +216,8 @@ export default function Dashboard() {
           t={t}
         />
 
-        {/* Statistics Cards */}
-        <div className="mb-8">
+        {/* Statistics Cards - Hidden by default */}
+        <div className="mb-8 hidden">
           <EmployeeBonusSystem 
             currentUser={currentUser}
             totalBoxes={totalBoxes}
