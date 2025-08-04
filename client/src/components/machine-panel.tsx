@@ -35,12 +35,47 @@ export function MachinePanel({
   const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 62 : 61);
   const [cardboardType, setCardboardType] = useState('6/ALU');
   const [capsuleCount, setCapsuleCount] = useState(1500);
-  const [prufungTime, setPrufungTime] = useState<'1H' | '2H'>('1H');
+  const [prufungTime, setPrufungTime] = useState<'1H' | '2H' | '3H'>('1H');
+  const [auftragNumber, setAuftragNumber] = useState('10-1X-XX-XX [H5]');
+  const [prufungStartTime, setPrufungStartTime] = useState<Date | null>(null);
+  const [prufungExpired, setPrufungExpired] = useState(false);
+  const [showMachineIcon, setShowMachineIcon] = useState(false);
 
   const percentage = Math.min(100, Math.floor((state.itemsInBox / state.limit) * 100));
 
   const handleSettingsUpdate = () => {
     onUpdateSettings(localLimit, localCycleTime, localName);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSettingsUpdate();
+    }
+  };
+
+  const startPrufung = () => {
+    setPrufungStartTime(new Date());
+    setPrufungExpired(false);
+  };
+
+  const resetPrufung = () => {
+    setPrufungStartTime(null);
+    setPrufungExpired(false);
+  };
+
+  // Calculate Prüfung progress
+  const getPrufungProgress = () => {
+    if (!prufungStartTime) return 0;
+    const now = new Date();
+    const elapsed = now.getTime() - prufungStartTime.getTime();
+    const totalTime = prufungTime === '1H' ? 3600000 : prufungTime === '2H' ? 7200000 : 10800000; // 1H, 2H, 3H in ms
+    const progress = Math.min(100, (elapsed / totalTime) * 100);
+    
+    if (progress >= 100 && !prufungExpired) {
+      setPrufungExpired(true);
+    }
+    
+    return progress;
   };
 
   const toggleControls = () => {
@@ -113,14 +148,29 @@ export function MachinePanel({
           </div>
         </div>
         
-        <input
-          type="text"
-          value={localName}
-          onChange={(e) => setLocalName(e.target.value)}
-          onBlur={handleSettingsUpdate}
-          className="w-full text-sm font-semibold text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg px-2 py-1 placeholder-white/70"
-          placeholder="Nazwa maszyny..."
-        />
+        <div className="flex space-x-2">
+          <div className="flex-1">
+            <input
+              type="text"
+              value={localName}
+              onChange={(e) => setLocalName(e.target.value)}
+              onBlur={handleSettingsUpdate}
+              onKeyPress={handleKeyPress}
+              className="w-full text-lg font-bold text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg px-3 py-2 placeholder-white/70"
+              placeholder="Nazwa maszyny..."
+            />
+          </div>
+          <div className="flex-1">
+            <input
+              type="text"
+              value={auftragNumber}
+              onChange={(e) => setAuftragNumber(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="w-full text-sm font-medium text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg px-2 py-1 placeholder-white/70"
+              placeholder="Nr Auftrag: 10-1X-XX-XX [H5]"
+            />
+          </div>
+        </div>
       </div>
 
       <div className="p-4 bg-white/10">
@@ -154,64 +204,60 @@ export function MachinePanel({
         <div className="flex items-center space-x-6 mb-6">
           <div className="flex flex-col items-center">
             <div className="text-xs font-medium text-industrial-500 mb-2">Prüfung</div>
-            <div className="space-y-2">
-              {/* Time selector */}
-              <div className="flex space-x-1">
-                <button
-                  onClick={() => setPrufungTime('1H')}
-                  className={`px-2 py-1 text-xs rounded ${
-                    prufungTime === '1H' 
-                      ? 'bg-machine-blue text-white' 
-                      : 'bg-white/60 text-industrial-600 hover:bg-white/80'
-                  }`}
-                >
-                  1H
-                </button>
-                <button
-                  onClick={() => setPrufungTime('2H')}
-                  className={`px-2 py-1 text-xs rounded ${
-                    prufungTime === '2H' 
-                      ? 'bg-machine-blue text-white' 
-                      : 'bg-white/60 text-industrial-600 hover:bg-white/80'
-                  }`}
-                >
-                  2H
-                </button>
-              </div>
+            <div className="w-[80%] mx-auto space-y-2">
               {/* Progress bar */}
-              <div className="bg-white/20 rounded-full h-4 overflow-hidden border border-white/30">
-                <div 
-                  className="h-full bg-gradient-to-r from-machine-green to-machine-blue transition-all duration-500"
-                  style={{ width: `${Math.min(100, (Date.now() % 60000) / 600)}%` }}
-                />
+              <div 
+                className={`rounded-full h-4 overflow-hidden border border-white/30 cursor-pointer ${
+                  prufungExpired ? 'bg-red-500' : 'bg-white/20'
+                }`}
+                onClick={prufungExpired ? resetPrufung : startPrufung}
+              >
+                {prufungExpired ? (
+                  <div className="h-full bg-red-500 flex items-center justify-center">
+                    <span className="text-xs font-bold text-white">Prüfung</span>
+                  </div>
+                ) : (
+                  <div 
+                    className="h-full bg-gradient-to-r from-cyan-400 to-red-500 transition-all duration-1000"
+                    style={{ width: `${getPrufungProgress()}%` }}
+                  />
+                )}
+              </div>
+              {/* Time selector */}
+              <div className="flex justify-center space-x-1">
+                {['1H', '2H', '3H'].map((time) => (
+                  <button
+                    key={time}
+                    onClick={() => {
+                      setPrufungTime(time as '1H' | '2H' | '3H');
+                      if (prufungStartTime) startPrufung(); // Restart if already running
+                    }}
+                    className={`px-2 py-1 text-xs rounded ${
+                      prufungTime === time 
+                        ? 'bg-machine-blue text-white' 
+                        : 'bg-white/60 text-industrial-600 hover:bg-white/80'
+                    }`}
+                  >
+                    {time}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Machine Visualization */}
+          {/* Machine Visualization - Minimized */}
           <div className="flex-1 flex justify-center">
             <div className="relative">
-              <div
-                className="w-24 h-40 bg-gradient-to-b from-industrial-400 to-industrial-600 rounded-lg border-2 border-industrial-700 shadow-lg cursor-pointer transform transition-transform hover:scale-105"
-                onClick={toggleControls}
+              <button
+                onClick={() => setShowMachineIcon(!showMachineIcon)}
+                className={`w-12 h-12 rounded-lg border-2 shadow-lg cursor-pointer transform transition-all hover:scale-105 ${
+                  state.running
+                    ? 'bg-machine-green border-machine-green animate-pulse'
+                    : 'bg-industrial-400 border-industrial-600'
+                }`}
               >
-                <div className="absolute top-2 left-2 right-2 h-1 bg-machine-green rounded opacity-75" />
-                <div className="absolute bottom-2 left-2 right-2 h-1 bg-machine-amber rounded opacity-75" />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-24 industrial-200 rounded border border-industrial-400 flex items-center justify-center">
-                    <div
-                      className={`w-8 h-8 rounded-full ${
-                        state.running
-                          ? 'bg-machine-green animate-bounce-subtle'
-                          : 'bg-industrial-400'
-                      }`}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="text-xs text-center mt-2 text-industrial-500">
-                {t('click-to-configure')}
-              </div>
+                <Factory className="w-6 h-6 text-white mx-auto" />
+              </button>
             </div>
           </div>
         </div>
@@ -297,20 +343,81 @@ export function MachinePanel({
           </div>
         )}
 
-        {/* Machine Controls */}
-        <div className="mb-4">
-          <MachineControls
-            cardboardType={cardboardType}
-            capsuleCount={capsuleCount}
-            onCardboardTypeChange={setCardboardType}
-            onCapsuleCountChange={setCapsuleCount}
-            t={t}
-          />
-        </div>
+        {/* Machine Settings - Always visible under the machine */}
+        <div className="mt-4 p-3 bg-white/20 rounded-lg border border-white/30">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div>
+              <Label className="text-xs font-semibold text-white mb-1 block">
+                Ilość kapsli
+              </Label>
+              <Input
+                type="number"
+                value={localLimit}
+                onChange={(e) => setLocalLimit(Number(e.target.value))}
+                onBlur={handleSettingsUpdate}
+                onKeyPress={handleKeyPress}
+                className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs"
+                min="1"
+                max="10000"
+              />
+            </div>
 
-        {/* Timer Progress Bar */}
-        <div className="mb-4">
-          <TimerProgressBar isActive={state.running} />
+            <div>
+              <Label className="text-xs font-semibold text-white mb-1 block">
+                Czas cyklu (min)
+              </Label>
+              <Input
+                type="number"
+                value={localCycleTime}
+                onChange={(e) => setLocalCycleTime(Number(e.target.value))}
+                onBlur={handleSettingsUpdate}
+                onKeyPress={handleKeyPress}
+                className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs"
+                min="1"
+                max="60"
+                step="0.1"
+              />
+            </div>
+
+            <div>
+              <Label className="text-xs font-semibold text-white mb-1 block">
+                Typ kartonu
+              </Label>
+              <select
+                value={cardboardType}
+                onChange={(e) => {
+                  setCardboardType(e.target.value);
+                  // Reset machine when cardboard type changes
+                  onReset();
+                }}
+                className="w-full bg-white/80 border border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs rounded"
+              >
+                <option value="6">6</option>
+                <option value="6/ALU">6/ALU</option>
+                <option value="10T">10T</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <div>
+              <Label className="text-xs font-semibold text-white mb-1 block">
+                Ilość kapsułek
+              </Label>
+              <select
+                value={capsuleCount}
+                onChange={(e) => setCapsuleCount(Number(e.target.value))}
+                className="w-full bg-white/80 border border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs rounded"
+              >
+                <option value={500}>500 kapsułek</option>
+                <option value={1000}>1000 kapsułek</option>
+                <option value={1500}>1500 kapsułek</option>
+                <option value={2000}>2000 kapsułek</option>
+                <option value={2500}>2500 kapsułek</option>
+                <option value={3000}>3000 kapsułek</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
     </div>

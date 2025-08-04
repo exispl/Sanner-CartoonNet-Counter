@@ -5,9 +5,10 @@ interface CardboardBoxProps {
   fillLevel: number;
   size: '5T' | '6T' | '10T';
   index: number;
+  isCompleted?: boolean;
 }
 
-function CardboardBox({ isActive, fillLevel, size, index }: CardboardBoxProps) {
+function CardboardBox({ isActive, fillLevel, size, index, isCompleted }: CardboardBoxProps) {
   const boxHeight = size === '10T' ? 120 : size === '6T' ? 100 : 80;
   const fillHeight = (fillLevel / 100) * (boxHeight - 20);
   
@@ -15,15 +16,19 @@ function CardboardBox({ isActive, fillLevel, size, index }: CardboardBoxProps) {
     <div className="relative flex flex-col items-center">
       {/* Box */}
       <div 
-        className={`relative border-2 rounded-lg transition-all duration-300 ${
-          isActive 
+        className={`relative border-2 rounded-lg transition-all duration-300 transform scale-[1.75] ${
+          isCompleted
+            ? 'border-cyan-400 shadow-lg shadow-cyan-400/50 bg-gradient-to-b from-cyan-200 to-cyan-400 animate-pulse'
+            : isActive 
             ? 'border-machine-blue shadow-lg shadow-machine-blue/30 bg-gradient-to-b from-orange-200 to-orange-300' 
             : 'border-orange-400 bg-gradient-to-b from-orange-100 to-orange-200'
         }`}
         style={{ 
           width: '60px', 
           height: `${boxHeight}px`,
-          background: isActive 
+          background: isCompleted
+            ? 'linear-gradient(to bottom, #67e8f9, #22d3ee, #0891b2)'
+            : isActive 
             ? 'linear-gradient(to bottom, #fed7aa, #fb923c, #ea580c)' 
             : 'linear-gradient(to bottom, #ffedd5, #fed7aa, #fdba74)'
         }}
@@ -95,8 +100,8 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
         <div 
           className="text-sm text-white/80 cursor-pointer hover:text-white transition-colors"
           onClick={() => {
-            const newCount = Math.floor(Math.random() * 99) + 101; // 101-199
-            // This would update the parent component's counter
+            // Show statistics modal - placeholder for now
+            alert(`Statystyki produkcji:\n1H: ${Math.floor(Math.random() * 50) + 20}\n2H: ${Math.floor(Math.random() * 100) + 40}\n4H: ${Math.floor(Math.random() * 200) + 80}\n8H: ${Math.floor(Math.random() * 400) + 160}`);
           }}
         >
           Licznik: {completedBoxes}
@@ -104,16 +109,34 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
       </div>
       
       {/* 2x2 grid of boxes */}
-      <div className="grid grid-cols-2 gap-2 justify-items-center">
-        {[0, 1, 2, 3].map((index) => (
-          <CardboardBox
-            key={index}
-            isActive={index === activeBoxIndex}
-            fillLevel={index === activeBoxIndex ? currentProgress : 0}
-            size={boxSize}
-            index={index}
-          />
-        ))}
+      <div className="grid grid-cols-2 gap-4 justify-items-center">
+        {[0, 1, 2, 3].map((index) => {
+          const isCompleted = index < completedBoxes;
+          return (
+            <div
+              key={index}
+              className="cursor-pointer transition-transform duration-200 hover:scale-110"
+              onClick={(event) => {
+                // Reset animation on click
+                const target = event.currentTarget as HTMLElement;
+                if (target && isCompleted) {
+                  target.style.transform = 'scale(0.8)';
+                  setTimeout(() => {
+                    target.style.transform = '';
+                  }, 200);
+                }
+              }}
+            >
+              <CardboardBox
+                isActive={index === activeBoxIndex}
+                fillLevel={index === activeBoxIndex ? currentProgress : 0}
+                size={boxSize}
+                index={index}
+                isCompleted={isCompleted}
+              />
+            </div>
+          );
+        })}
       </div>
       
 
