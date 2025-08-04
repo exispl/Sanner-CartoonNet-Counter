@@ -5,6 +5,7 @@ export interface MachineState {
   progress: number;
   currentBox: number;
   itemsInBox: number;
+  itemsProduced: number;
   name: string;
   limit: number;
   cycleTime: number;
@@ -16,6 +17,7 @@ export function useMachineState(machineId: number, initialName: string, initialL
     progress: 0,
     currentBox: 1,
     itemsInBox: 0,
+    itemsProduced: 0,
     name: initialName,
     limit: initialLimit,
     cycleTime: initialCycleTime
@@ -53,7 +55,8 @@ export function useMachineState(machineId: number, initialName: string, initialL
           ...prev,
           progress: prev.progress + 1,
           itemsInBox: newItemsInBox,
-          currentBox: newCurrentBox
+          currentBox: newCurrentBox,
+          itemsProduced: prev.itemsProduced + 1
         };
       });
     }, intervalTime);
@@ -73,6 +76,7 @@ export function useMachineState(machineId: number, initialName: string, initialL
       ...prev,
       progress: 0,
       currentBox: 1,
+      itemsProduced: 0,
       itemsInBox: 0
     }));
   };

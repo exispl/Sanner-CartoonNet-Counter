@@ -64,6 +64,9 @@ export default function Dashboard() {
   };
 
   const startAllMachines = () => {
+    if (!startTime) {
+      setStartTime(new Date());
+    }
     if (!machine1.state.running) machine1.start();
     if (!machine2.state.running) machine2.start();
     showToast(t('start-all'), 'success');
@@ -82,34 +85,7 @@ export default function Dashboard() {
     showToast(t('reset-all'), 'info');
   };
 
-  const exportSettings = () => {
-    const settings = {
-      machines: {
-        1: {
-          name: machine1.state.name,
-          limit: machine1.state.limit,
-          cycleTime: machine1.state.cycleTime
-        },
-        2: {
-          name: machine2.state.name,
-          limit: machine2.state.limit,
-          cycleTime: machine2.state.cycleTime
-        }
-      },
-      language: currentLang
-    };
 
-    const dataStr = JSON.stringify(settings, null, 2);
-    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(dataBlob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'kartonowy-napelniacz-settings.json';
-    link.click();
-    URL.revokeObjectURL(url);
-
-    showToast(t('export'), 'success');
-  };
 
   // Load saved language preference
   useEffect(() => {
@@ -201,7 +177,7 @@ export default function Dashboard() {
             className="bg-white/20 hover:bg-white/30 text-industrial-800 dark:text-white border-2 border-white/30 rounded-xl px-6 py-2 text-sm font-medium backdrop-blur-sm transition-all"
             data-testid="session-reset-button"
           >
-            🔄 {t('session-reset')}
+            {t('session-reset')}
           </Button>
         </div>
       </div>
@@ -266,49 +242,41 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Global Controls - Enhanced with bigger buttons and emojis */}
-        <div className="mt-8 bg-gradient-to-r from-machine-blue to-machine-green rounded-2xl shadow-2xl border-4 border-machine-blue p-8">
-          <h3 className="text-2xl font-bold text-white mb-6 text-center">
-            🎮 {t('global-controls')} 🎮
+        {/* Global Controls - Clean without emojis */}
+        <div className="mt-8 bg-gradient-to-r from-machine-blue to-machine-green rounded-2xl shadow-2xl border-4 border-machine-blue p-6">
+          <h3 className="text-lg font-bold text-white mb-4 text-center">
+            {t('global-controls')}
           </h3>
-          <div className="space-y-4">
-            {/* First row - Start/Pause controls */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-3">
+            {/* Machine Controls - Clean without emojis */}
+            <div className="flex flex-wrap gap-4 justify-center">
               <Button
                 onClick={startAllMachines}
-                className="bg-machine-green hover:bg-machine-amber text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
+                className="bg-green-600/90 hover:bg-green-600 text-white border-2 border-green-400 shadow-lg px-6 py-3 text-sm font-bold rounded-lg backdrop-blur-sm transition-all transform hover:scale-105"
+                data-testid="start-all-machines"
               >
-                <span className="text-3xl mr-3">🚀</span>
                 {t('start-all')}
-                <span className="text-3xl ml-3">🚀</span>
               </Button>
               <Button
                 onClick={pauseAllMachines}
-                className="bg-machine-amber hover:bg-machine-red text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
+                className="bg-yellow-600/90 hover:bg-yellow-600 text-white border-2 border-yellow-400 shadow-lg px-6 py-3 text-sm font-bold rounded-lg backdrop-blur-sm transition-all transform hover:scale-105"
+                data-testid="pause-all-machines"
               >
-                <span className="text-3xl mr-3">⏸️</span>
                 {t('pause-all')}
-                <span className="text-3xl ml-3">⏸️</span>
               </Button>
-            </div>
-            
-            {/* Second row - Reset/Export controls */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Button
                 onClick={resetAllMachines}
-                className="bg-machine-red hover:bg-red-700 text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
+                className="bg-red-600/90 hover:bg-red-600 text-white border-2 border-red-400 shadow-lg px-6 py-3 text-sm font-bold rounded-lg backdrop-blur-sm transition-all transform hover:scale-105"
+                data-testid="reset-all-machines"
               >
-                <span className="text-3xl mr-3">🔄</span>
                 {t('reset-all')}
-                <span className="text-3xl ml-3">🔄</span>
               </Button>
               <Button
-                onClick={exportSettings}
-                className="bg-industrial-600 hover:bg-industrial-700 text-white text-xl py-6 px-8 rounded-xl shadow-lg transform transition-all hover:scale-105 hover:shadow-2xl"
+                onClick={resetSession}
+                className="bg-blue-600/90 hover:bg-blue-600 text-white border-2 border-blue-400 shadow-lg px-6 py-3 text-sm font-bold rounded-lg backdrop-blur-sm transition-all transform hover:scale-105"
+                data-testid="reset-session"
               >
-                <span className="text-3xl mr-3">💾</span>
-                {t('export')}
-                <span className="text-3xl ml-3">💾</span>
+                {t('session-reset')}
               </Button>
             </div>
           </div>

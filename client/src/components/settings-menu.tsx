@@ -104,6 +104,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                         src={flagSrc} 
                         alt={label}
                         className="w-6 h-4 mx-auto object-cover rounded-sm"
+                        style={{ display: 'block' }}
                       />
                     </button>
                   ))}
