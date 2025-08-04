@@ -35,6 +35,7 @@ export function MachinePanel({
   const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 62 : 61);
   const [cardboardType, setCardboardType] = useState('6/ALU');
   const [capsuleCount, setCapsuleCount] = useState(1500);
+  const [prufungTime, setPrufungTime] = useState<'1H' | '2H'>('1H');
 
   const percentage = Math.min(100, Math.floor((state.itemsInBox / state.limit) * 100));
 
@@ -152,16 +153,37 @@ export function MachinePanel({
         {/* Vertical Fill Bar and Machine Visualization */}
         <div className="flex items-center space-x-6 mb-6">
           <div className="flex flex-col items-center">
-            <div className="text-xs font-medium text-industrial-500 mb-2">Poziomy Prüfung</div>
-            <div className="relative w-8 h-32 industrial-200 rounded-full overflow-hidden border-2 border-industrial-300">
-              <div
-                className="absolute bottom-0 w-full bg-gradient-to-t from-machine-green via-machine-amber to-machine-green transition-all duration-500 ease-out"
-                style={{ height: `${percentage}%` }}
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-xs font-bold text-white mix-blend-difference transform -rotate-90">
-                  {percentage}%
-                </span>
+            <div className="text-xs font-medium text-industrial-500 mb-2">Prüfung</div>
+            <div className="space-y-2">
+              {/* Time selector */}
+              <div className="flex space-x-1">
+                <button
+                  onClick={() => setPrufungTime('1H')}
+                  className={`px-2 py-1 text-xs rounded ${
+                    prufungTime === '1H' 
+                      ? 'bg-machine-blue text-white' 
+                      : 'bg-white/60 text-industrial-600 hover:bg-white/80'
+                  }`}
+                >
+                  1H
+                </button>
+                <button
+                  onClick={() => setPrufungTime('2H')}
+                  className={`px-2 py-1 text-xs rounded ${
+                    prufungTime === '2H' 
+                      ? 'bg-machine-blue text-white' 
+                      : 'bg-white/60 text-industrial-600 hover:bg-white/80'
+                  }`}
+                >
+                  2H
+                </button>
+              </div>
+              {/* Progress bar */}
+              <div className="bg-white/20 rounded-full h-4 overflow-hidden border border-white/30">
+                <div 
+                  className="h-full bg-gradient-to-r from-machine-green to-machine-blue transition-all duration-500"
+                  style={{ width: `${Math.min(100, (Date.now() % 60000) / 600)}%` }}
+                />
               </div>
             </div>
           </div>
