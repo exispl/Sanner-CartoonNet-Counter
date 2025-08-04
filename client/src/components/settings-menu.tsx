@@ -6,6 +6,12 @@ import { Label } from '@/components/ui/label';
 import { translations, Language } from '@/lib/translations';
 import { useAppSettings } from '@/hooks/use-app-settings';
 
+// Import flag images  
+import plFlag from '@/assets/flags/pl.svg';
+import usFlag from '@/assets/flags/us.svg';
+import deFlag from '@/assets/flags/de.svg';
+import trFlag from '@/assets/flags/tr.svg';
+
 interface SettingsMenuProps {
   currentLang: Language;
   onLanguageChange: (lang: Language) => void;
@@ -78,11 +84,11 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                 </div>
                 <div className="grid grid-cols-4 gap-1">
                   {[
-                    { code: 'pl' as Language, flag: '🇵🇱', label: 'Polski' },
-                    { code: 'en' as Language, flag: '🇺🇸', label: 'English' },
-                    { code: 'de' as Language, flag: '🇩🇪', label: 'Deutsch' },
-                    { code: 'tr' as Language, flag: '🇹🇷', label: 'Türkçe' }
-                  ].map(({ code, flag, label }) => (
+                    { code: 'pl' as Language, flagSrc: plFlag, label: 'Polski' },
+                    { code: 'en' as Language, flagSrc: usFlag, label: 'English' },
+                    { code: 'de' as Language, flagSrc: deFlag, label: 'Deutsch' },
+                    { code: 'tr' as Language, flagSrc: trFlag, label: 'Türkçe' }
+                  ].map(({ code, flagSrc, label }) => (
                     <button
                       key={code}
                       onClick={() => handleLanguageSelect(code)}
@@ -94,7 +100,11 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                       }`}
                       data-testid={`language-${code}`}
                     >
-                      <div className="text-lg">{flag}</div>
+                      <img 
+                        src={flagSrc} 
+                        alt={label}
+                        className="w-6 h-4 mx-auto object-cover rounded-sm"
+                      />
                     </button>
                   ))}
                 </div>
