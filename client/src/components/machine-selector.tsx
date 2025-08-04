@@ -6,17 +6,16 @@ interface MachineSelectorProps {
   machineId: number;
 }
 
-// Machine status colors based on the uploaded images
+// Machine status colors - light gray variants
 const getMachineStatus = (number: number) => {
-  // Sample statuses based on common industrial machine states
   const statuses = {
-    16: { status: 'production', color: 'bg-green-500' },
-    51: { status: 'setup', color: 'bg-cyan-400' },
-    23: { status: 'maintenance', color: 'bg-red-500' },
-    78: { status: 'technical', color: 'bg-yellow-400' },
-    60: { status: 'production', color: 'bg-green-500' },
-    50: { status: 'setup', color: 'bg-cyan-400' },
-    77: { status: 'maintenance', color: 'bg-red-500' },
+    16: { status: 'production', color: 'bg-gray-300' },
+    51: { status: 'setup', color: 'bg-gray-400' },
+    23: { status: 'maintenance', color: 'bg-gray-500' },
+    78: { status: 'technical', color: 'bg-gray-600' },
+    60: { status: 'production', color: 'bg-gray-300' },
+    50: { status: 'setup', color: 'bg-gray-400' },
+    77: { status: 'maintenance', color: 'bg-gray-500' },
   };
   return statuses[number as keyof typeof statuses] || { status: 'inactive', color: 'bg-gray-400' };
 };
@@ -28,13 +27,10 @@ export function MachineSelector({ currentNumber, onMachineChange, machineId }: M
 
   return (
     <Select value={currentNumber.toString()} onValueChange={(value) => onMachineChange(parseInt(value))}>
-      <SelectTrigger className="w-full bg-white/45 hover:bg-white/55 border-2 border-white/50 rounded-lg h-10 transition-all backdrop-blur-sm">
+      <SelectTrigger className="w-full bg-transparent border-none rounded-lg h-8 transition-all p-1">
         <SelectValue>
-          <div className="flex items-center gap-2">
-            <div className={`w-3 h-3 rounded ${currentStatus.color} border border-white/50`}></div>
-            <span className="font-bold text-gray-800 text-sm">
-              MA820016
-            </span>
+          <div className="flex items-center justify-center">
+            <div className={`w-4 h-4 rounded ${currentStatus.color} border border-gray-600`}></div>
           </div>
         </SelectValue>
       </SelectTrigger>
@@ -44,9 +40,9 @@ export function MachineSelector({ currentNumber, onMachineChange, machineId }: M
           return (
             <SelectItem key={number} value={number.toString()} className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
               <div className="flex items-center gap-3 py-1">
-                <div className={`w-3 h-3 rounded ${status.color} border border-gray-300`}></div>
+                <div className={`w-4 h-4 rounded ${status.color} border border-gray-600`}></div>
                 <span className="font-medium text-gray-800 dark:text-white">
-                  MA820016 - {status.status.toUpperCase()}
+                  #{number}
                 </span>
               </div>
             </SelectItem>
