@@ -167,66 +167,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                   </div>
                 </div>
 
-                {/* Notifications & Sound Settings */}
-                <div className="space-y-3">
-                  <div className="flex items-center space-x-2">
-                    <Bell className="w-5 h-5 text-machine-amber" />
-                    <Label className="text-lg font-semibold text-industrial-800 dark:text-white">Powiadomienia & Dźwięki</Label>
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        {settings.notificationsEnabled ? <Bell className="w-4 h-4" /> : <BellOff className="w-4 h-4" />}
-                        <span className="text-sm">Powiadomienia</span>
-                      </div>
-                      <button
-                        onClick={() => updateSettings({ notificationsEnabled: !settings.notificationsEnabled })}
-                        className={`w-12 h-6 rounded-full relative transition-colors ${
-                          settings.notificationsEnabled ? 'bg-machine-green' : 'bg-industrial-300 dark:bg-industrial-600'
-                        }`}
-                        data-testid="toggle-notifications"
-                      >
-                        <div className={`w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-sm transition-transform ${
-                          settings.notificationsEnabled ? 'right-0.5' : 'left-0.5'
-                        }`}></div>
-                      </button>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        <Volume2 className="w-4 h-4" />
-                        <span className="text-sm">Efekty dźwiękowe</span>
-                      </div>
-                      <button
-                        onClick={() => updateSettings({ soundEffectsEnabled: !settings.soundEffectsEnabled })}
-                        className={`w-12 h-6 rounded-full relative transition-colors ${
-                          settings.soundEffectsEnabled ? 'bg-machine-green' : 'bg-industrial-300 dark:bg-industrial-600'
-                        }`}
-                        data-testid="toggle-sounds"
-                      >
-                        <div className={`w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-sm transition-transform ${
-                          settings.soundEffectsEnabled ? 'right-0.5' : 'left-0.5'
-                        }`}></div>
-                      </button>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-2">
-                        {settings.animationsEnabled ? <Zap className="w-4 h-4" /> : <ZapOff className="w-4 h-4" />}
-                        <span className="text-sm">Animacje</span>
-                      </div>
-                      <button
-                        onClick={() => updateSettings({ animationsEnabled: !settings.animationsEnabled })}
-                        className={`w-12 h-6 rounded-full relative transition-colors ${
-                          settings.animationsEnabled ? 'bg-machine-green' : 'bg-industrial-300 dark:bg-industrial-600'
-                        }`}
-                        data-testid="toggle-animations"
-                      >
-                        <div className={`w-5 h-5 bg-white rounded-full absolute top-0.5 shadow-sm transition-transform ${
-                          settings.animationsEnabled ? 'right-0.5' : 'left-0.5'
-                        }`}></div>
-                      </button>
-                    </div>
-                  </div>
-                </div>
+
 
                 {/* Data Settings */}
                 <div className="space-y-3">

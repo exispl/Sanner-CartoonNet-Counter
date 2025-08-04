@@ -6,14 +6,14 @@ interface LanguageSelectorProps {
 }
 
 const languageOptions = [
-  { code: 'pl' as Language, flag: '🇵🇱', label: 'PL' },
-  { code: 'en' as Language, flag: '🇺🇸', label: 'EN' },
-  { code: 'de' as Language, flag: '🇩🇪', label: 'DE' },
-  { code: 'tr' as Language, flag: '🇹🇷', label: 'TR' },
-  { code: 'ar' as Language, flag: '🇸🇦', label: 'AR' },
-  { code: 'fr' as Language, flag: '🇫🇷', label: 'FR' },
-  { code: 'it' as Language, flag: '🇮🇹', label: 'IT' },
-  { code: 'hr' as Language, flag: '🇭🇷', label: 'HR' }
+  { code: 'pl' as Language, flag: '🇵🇱', label: 'Polski' },
+  { code: 'en' as Language, flag: '🇺🇸', label: 'English' },
+  { code: 'de' as Language, flag: '🇩🇪', label: 'Deutsch' },
+  { code: 'tr' as Language, flag: '🇹🇷', label: 'Türkçe' },
+  { code: 'ar' as Language, flag: '🇸🇦', label: 'العربية' },
+  { code: 'fr' as Language, flag: '🇫🇷', label: 'Français' },
+  { code: 'it' as Language, flag: '🇮🇹', label: 'Italiano' },
+  { code: 'hr' as Language, flag: '🇭🇷', label: 'Hrvatski' }
 ];
 
 export function LanguageSelector({ currentLang, onLanguageChange }: LanguageSelectorProps) {
@@ -23,14 +23,15 @@ export function LanguageSelector({ currentLang, onLanguageChange }: LanguageSele
         <button
           key={code}
           onClick={() => onLanguageChange(code)}
-          className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all text-sm font-medium ${
+          title={label}
+          className={`text-2xl hover:scale-110 transition-transform duration-200 p-1 rounded ${
             currentLang === code
-              ? 'bg-white text-industrial-800 shadow-lg scale-105'
-              : 'text-white hover:bg-white/20 hover:scale-105'
+              ? 'scale-110 drop-shadow-lg bg-white/20'
+              : 'opacity-70 hover:opacity-100'
           }`}
           data-testid={`lang-${code}`}
         >
-          <span className="text-lg">{flag}</span>
+          {flag}
         </button>
       ))}
     </div>
