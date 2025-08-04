@@ -18,7 +18,18 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
 
   const t = (key: string) => translations[currentLang][key as keyof typeof translations[typeof currentLang]] || key;
 
-  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+    // Auto-scroll to bottom when opening menu
+    if (!isOpen) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
+  };
 
   const handleLanguageSelect = (lang: Language) => {
     onLanguageChange(lang);
@@ -37,7 +48,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
 
       {/* Expanded Menu */}
       {isOpen && (
-        <div className="absolute top-0 right-0 w-96 bg-white dark:bg-industrial-800 rounded-2xl shadow-2xl border-4 border-machine-blue/20 z-50 overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 bg-white/95 dark:bg-industrial-800/95 rounded-2xl shadow-2xl border-4 border-machine-blue/40 z-50 overflow-hidden backdrop-blur-sm">
           {/* Header */}
           <div className="bg-gradient-to-r from-machine-blue to-machine-green p-4">
             <div className="flex items-center justify-between">
@@ -84,7 +95,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
           </div>
 
           {/* Content */}
-          <div className="p-6 max-h-96 overflow-y-auto">
+          <div className="p-6 max-h-[500px] overflow-y-auto scrollbar-thin scrollbar-thumb-machine-blue/30 scrollbar-track-transparent">
             {activeTab === 'settings' && (
               <div className="space-y-6">
                 {/* Language Settings */}

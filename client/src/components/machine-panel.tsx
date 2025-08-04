@@ -44,6 +44,15 @@ export function MachinePanel({
 
   const toggleControls = () => {
     setShowControls(!showControls);
+    // Auto-scroll to bottom when opening settings
+    if (!showControls) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth'
+        });
+      }, 100);
+    }
   };
 
   return (
@@ -196,7 +205,7 @@ export function MachinePanel({
 
         {/* Control Panel - Moved higher */}
         {showControls && (
-          <div className="bg-white/10 rounded-xl p-4 border-2 border-white/20">
+          <div className="bg-white/15 rounded-xl p-4 border-2 border-white/30 shadow-lg">
             <h3 className="text-lg font-semibold text-white mb-4">{t('machine-settings')}</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <div>
