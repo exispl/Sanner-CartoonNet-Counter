@@ -35,7 +35,7 @@ export function MachinePanel({
   const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 62 : 61);
   const [cardboardType, setCardboardType] = useState('6 ALU');
   const [capsuleCount, setCapsuleCount] = useState(1500);
-  const [prufungTime, setPrufungTime] = useState<'1H' | '2H' | '3H'>('1H');
+  const [prufungTime, setPrufungTime] = useState<'1Min' | '1H' | '2H' | '3H'>('1Min');
   const [auftragNumber, setAuftragNumber] = useState('10-1X-XX-XX [H5]');
   const [prufungStartTime, setPrufungStartTime] = useState<Date | null>(null);
   const [prufungExpired, setPrufungExpired] = useState(false);
@@ -75,7 +75,7 @@ export function MachinePanel({
     if (!prufungStartTime) return 0;
     const now = new Date();
     const elapsed = now.getTime() - prufungStartTime.getTime();
-    const totalTime = prufungTime === '1H' ? 3600000 : prufungTime === '2H' ? 7200000 : 10800000; // 1H, 2H, 3H in ms
+    const totalTime = prufungTime === '1Min' ? 60000 : prufungTime === '1H' ? 3600000 : prufungTime === '2H' ? 7200000 : 10800000; // 1Min, 1H, 2H, 3H in ms
     const progress = Math.min(100, (elapsed / totalTime) * 100);
     
     if (progress >= 100 && !prufungExpired) {
@@ -251,14 +251,14 @@ export function MachinePanel({
               </div>
               {/* Time selector */}
               <div className="flex justify-center space-x-1">
-                {['1H', '2H', '3H'].map((time) => (
+                {['1Min', '1H', '2H', '3H'].map((time) => (
                   <button
                     key={time}
                     onClick={() => {
-                      setPrufungTime(time as '1H' | '2H' | '3H');
+                      setPrufungTime(time as '1Min' | '1H' | '2H' | '3H');
                       if (prufungStartTime) startPrufung(); // Restart if already running
                     }}
-                    className={`px-2 py-1 text-xs rounded ${
+                    className={`px-1 py-1 text-xs rounded ${
                       prufungTime === time 
                         ? 'bg-machine-blue text-white' 
                         : 'bg-white/60 text-industrial-600 hover:bg-white/80'
@@ -413,9 +413,8 @@ export function MachinePanel({
                 value={cardboardType}
                 onChange={(e) => {
                   setCardboardType(e.target.value);
-                  // Reset machine and start new cycle when cardboard type changes
+                  // Reset machine when cardboard type changes (but not Prüfung)
                   onReset();
-                  startPrufung();
                 }}
                 className="w-full bg-white/80 border border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs rounded"
               >
