@@ -3,6 +3,7 @@ import { Play, Pause, RotateCcw, Settings, Factory, Gauge, Box } from 'lucide-re
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MachineState } from '@/hooks/use-machine-state';
 import { MachineSelector } from './machine-selector';
 import { CardboardBoxVisualization } from './cardboard-box-visualization';
@@ -40,6 +41,13 @@ export function MachinePanel({
   const [prufungStartTime, setPrufungStartTime] = useState<Date | null>(null);
   const [prufungExpired, setPrufungExpired] = useState(false);
   const [showMachineIcon, setShowMachineIcon] = useState(false);
+  const [nrAuftrag, setNrAuftrag] = useState('210044');
+  const [dasgColor, setDasgColor] = useState('white');
+  const [showHalleMap, setShowHalleMap] = useState(false);
+  const [bestellungText, setBestellungText] = useState('');
+  const [bestellungHistory, setBestellungHistory] = useState<string[]>([]);
+  const [showResetDialog, setShowResetDialog] = useState(false);
+  const [resetPassword, setResetPassword] = useState('');
 
   const percentage = Math.min(100, Math.floor((state.itemsInBox / state.limit) * 100));
 
@@ -247,21 +255,24 @@ export function MachinePanel({
             <div className="w-[80%] mx-auto space-y-2">
               {/* Progress bar */}
               <div 
-                className="rounded-full h-8 overflow-hidden border border-white/30 cursor-pointer bg-green-400"
+                className="rounded-full h-8 overflow-hidden cursor-pointer bg-green-400 relative"
                 style={{ width: '450px' }}
                 onClick={prufungExpired ? resetPrufung : startPrufung}
               >
                 {prufungExpired ? (
-                  <div className="h-full bg-red-500 flex items-center justify-center">
-                    <span className="text-sm font-bold text-white">Prüfung Zakończone</span>
-                  </div>
-                ) : (
-                  <div 
-                    className="h-full bg-red-500 transition-all duration-1000 flex items-center justify-center"
-                    style={{ width: `${getPrufungProgress()}%` }}
-                  >
+                  <div className="h-full bg-red-600 border-2 border-orange-500 animate-pulse flex items-center justify-center">
                     <span className="text-sm font-bold text-white">Prüfung</span>
                   </div>
+                ) : (
+                  <>
+                    <div 
+                      className="h-full bg-red-500 transition-all duration-1000"
+                      style={{ width: `${getPrufungProgress()}%` }}
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-sm font-bold text-white">Prüfung</span>
+                    </div>
+                  </>
                 )}
               </div>
               {/* Time selector */}
@@ -370,64 +381,247 @@ export function MachinePanel({
           </div>
         )}
 
-        {/* Machine Settings - Always visible under the machine */}
-        <div className="mt-4 p-3 bg-white/20 rounded-lg border border-white/30">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-            <div>
-              <Label className="text-xs font-semibold text-white mb-1 block">
-                Ilość kapsli
-              </Label>
-              <Input
-                type="number"
-                value={localLimit}
-                onChange={(e) => setLocalLimit(Number(e.target.value))}
-                onBlur={handleSettingsUpdate}
-                onKeyPress={handleKeyPress}
-                className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-10 text-sm"
-                min="1"
-                max="10000"
-              />
+        {/* Auftrag Section with integrated settings */}
+        <div className="mt-4 p-4 bg-white/20 rounded-lg border border-white/30">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            {/* Left column - Auftrag fields */}
+            <div className="space-y-3">
+              <div>
+                <Label className="text-xs font-semibold text-white mb-1 block">
+                  MA Auswahl
+                </Label>
+                <Select value={`MA${machineNumber}`} onValueChange={(value) => setMachineNumber(parseInt(value.replace('MA', '')))}>
+                  <SelectTrigger className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-10 text-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="MA61">MA61</SelectItem>
+                    <SelectItem value="MA62">MA62</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div>
+                <Label className="text-xs font-semibold text-white mb-1 block">
+                  Nr Auftrag
+                </Label>
+                <Input
+                  type="text"
+                  value={nrAuftrag}
+                  onChange={(e) => setNrAuftrag(e.target.value)}
+                  className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-10 text-sm"
+                  placeholder="210044"
+                />
+              </div>
+              <div>
+                <button
+                  onClick={() => setShowHalleMap(!showHalleMap)}
+                  className="w-full bg-white/80 border border-industrial-300 text-industrial-800 hover:bg-white/90 h-10 text-sm rounded-md px-3 py-2 flex items-center justify-center"
+                >
+                  Halle 5 {showHalleMap ? '🗺️' : '📍'}
+                </button>
+                {showHalleMap && (
+                  <div className="mt-2 p-3 bg-white/90 rounded-lg border">
+                    <div className="w-20 h-20 mx-auto bg-gradient-to-br from-blue-200 to-blue-400 rounded-full flex items-center justify-center">
+                      <span className="text-xs font-bold text-blue-800">H5</span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <div>
-              <Label className="text-xs font-semibold text-white mb-1 block">
-                Szacowany czas 1 kartonu (sekundy)
-              </Label>
-              <Input
-                type="number"
-                value={localCycleTime}
-                onChange={(e) => setLocalCycleTime(Number(e.target.value))}
-                onBlur={handleSettingsUpdate}
-                onKeyPress={handleKeyPress}
-                className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-10 text-sm"
-                min="1"
-                max="3000"
-                step="1"
-                placeholder="1537"
-              />
-            </div>
-
-            <div>
-              <Label className="text-xs font-semibold text-white mb-1 block">
-                Typ kartonu
-              </Label>
-              <select
-                value={cardboardType}
-                onChange={(e) => {
-                  setCardboardType(e.target.value);
-                  // Reset machine when cardboard type changes (but not Prüfung)
-                  onReset();
-                }}
-                className="w-full bg-white/80 border border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs rounded"
-              >
-                <option value="5 ALU">5 ALU</option>
-                <option value="6 ALU">6 ALU</option>
-                <option value="5 PE">5 PE</option>
-                <option value="6 PE">6 PE</option>
-                <option value="10T">10T</option>
-              </select>
+            {/* Right column - Settings */}
+            <div className="space-y-3">
+              <div>
+                <Label className="text-xs font-semibold text-white mb-1 block">
+                  Szacowany czas 1 (Min.)
+                </Label>
+                <Input
+                  type="number"
+                  value={Math.round(localCycleTime / 60)}
+                  onChange={(e) => setLocalCycleTime(Number(e.target.value) * 60)}
+                  onBlur={handleSettingsUpdate}
+                  onKeyPress={handleKeyPress}
+                  className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-10 text-sm"
+                  min="1"
+                  max="50"
+                  step="1"
+                />
+              </div>
+              <div>
+                <Label className="text-xs font-semibold text-white mb-1 block">
+                  Ilość kapsli
+                </Label>
+                <div className="space-y-2">
+                  <input
+                    type="range"
+                    min="900"
+                    max="10000"
+                    step="100"
+                    value={localLimit}
+                    onChange={(e) => setLocalLimit(Number(e.target.value))}
+                    onMouseUp={handleSettingsUpdate}
+                    className="w-full accent-machine-blue"
+                    list="capsule-marks"
+                  />
+                  <datalist id="capsule-marks">
+                    <option value="900">900</option>
+                    <option value="1000">1000</option>
+                    <option value="1200">1200</option>  
+                    <option value="1500">1500</option>
+                    <option value="3000">3000</option>
+                    <option value="10000">10000</option>
+                  </datalist>
+                  <div className="text-xs text-white/70 text-center">{localLimit} kapsli</div>
+                </div>
+              </div>
+              <div>
+                <Label className="text-xs font-semibold text-white mb-1 block">
+                  Model
+                </Label>
+                <Select value={dasgColor} onValueChange={setDasgColor}>
+                  <SelectTrigger className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-10 text-sm">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="white" className="text-gray-800 bg-white">White</SelectItem>
+                    <SelectItem value="blue" className="text-blue-600 bg-blue-100">Blue</SelectItem>
+                    <SelectItem value="red" className="text-red-600 bg-red-100">Red</SelectItem>
+                    <SelectItem value="green" className="text-green-600 bg-green-100">Green</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
+
+          {/* Typ kartonu */}
+          <div className="mt-4">
+            <Label className="text-xs font-semibold text-white mb-1 block">
+              Typ kartonu
+            </Label>
+            <select
+              value={cardboardType}
+              onChange={(e) => {
+                setCardboardType(e.target.value);
+                onReset();
+              }}
+              className="w-full bg-white/80 border border-industrial-300 text-industrial-800 focus:border-machine-blue h-10 text-sm rounded"
+            >
+              <option value="5 ALU">5 ALU</option>
+              <option value="6 ALU">6 ALU</option>
+              <option value="5 PE">5 PE</option>
+              <option value="6 PE">6 PE</option>
+              <option value="10T">10T</option>
+            </select>
+          </div>
+        </div>
+
+        {/* Bestellung Section */}
+        <div className="mt-4 p-3 bg-white/20 rounded-lg border border-white/30">
+          <h3 className="text-sm font-semibold text-white mb-2">Bestellung:</h3>
+          <div className="flex gap-2">
+            <Input
+              type="text"
+              value={bestellungText}
+              onChange={(e) => setBestellungText(e.target.value)}
+              placeholder="H5 | material"
+              className="flex-1 bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-10 text-sm placeholder:text-gray-400"
+            />
+            <Button
+              onClick={() => {
+                if (bestellungText.trim()) {
+                  setBestellungHistory(prev => [bestellungText, ...prev.slice(0, 4)]);
+                  setBestellungText('');
+                }
+              }}
+              className="bg-machine-blue hover:bg-blue-600 text-white"
+            >
+              Bestellen
+            </Button>
+          </div>
+          {bestellungHistory.length > 0 && (
+            <div className="mt-2">
+              <select className="w-full bg-white/80 border border-industrial-300 text-industrial-800 h-8 text-xs rounded">
+                <option>Letzte Bestellungen:</option>
+                {bestellungHistory.map((item, index) => (
+                  <option key={index} value={item}>{item}</option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+
+        {/* Company Stats */}
+        <div className="mt-4 p-3 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-lg border border-purple-300/30">
+          <h3 className="text-sm font-semibold text-purple-200 mb-2">Ciekawostki</h3>
+          <div className="text-xs text-purple-100">
+            Zyski firmy: {(Math.random() * 50000 + 25000).toLocaleString('de-DE')} EUR
+          </div>
+        </div>
+
+        {/* Pizza Ordering */}
+        <div className="mt-4 p-3 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-lg border border-orange-300/30">
+          <h3 className="text-sm font-semibold text-orange-200 mb-2">Heute Pizza Bestellung</h3>
+          <div className="text-xs text-orange-100 mb-2">Cena: 6 EUR - Kommt 17 / 18</div>
+          <div className="flex gap-2 mb-2">
+            <Input
+              type="text"
+              placeholder="Ihr Name"
+              className="flex-1 bg-white/80 border-orange-300 text-orange-800 focus:border-orange-400 h-8 text-xs"
+            />
+            <label className="flex items-center text-xs text-orange-100">
+              <input type="checkbox" className="mr-1" />
+              Bezahlt
+            </label>
+          </div>
+        </div>
+
+        {/* Reset Session with Password */}
+        <div className="mt-4">
+          <Button
+            onClick={() => setShowResetDialog(true)}
+            className="w-full bg-red-500 hover:bg-red-600 text-white"
+          >
+            Reset sesji
+          </Button>
+          
+          {showResetDialog && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+              <div className="bg-white p-6 rounded-lg border shadow-lg">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Potwierdź reset sesji</h3>
+                <Input
+                  type="password"
+                  value={resetPassword}
+                  onChange={(e) => setResetPassword(e.target.value)}
+                  placeholder="Wprowadź hasło"
+                  className="mb-4"
+                />
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => {
+                      if (resetPassword === 'admin') {
+                        onReset();
+                        setShowResetDialog(false);
+                        setResetPassword('');
+                      }
+                    }}
+                    className="bg-green-500 hover:bg-green-600 text-white"
+                  >
+                    Akceptuj
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setShowResetDialog(false);
+                      setResetPassword('');
+                    }}
+                    variant="outline"
+                    className="border-red-500 text-red-500 hover:bg-red-50"
+                  >
+                    ✕
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
