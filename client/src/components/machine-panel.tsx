@@ -33,7 +33,7 @@ export function MachinePanel({
   const [localCycleTime, setLocalCycleTime] = useState(state.cycleTime);
   const [localName, setLocalName] = useState(state.name);
   const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 62 : 61);
-  const [cardboardType, setCardboardType] = useState('6/ALU');
+  const [cardboardType, setCardboardType] = useState('6 ALU');
   const [capsuleCount, setCapsuleCount] = useState(1500);
   const [prufungTime, setPrufungTime] = useState<'1H' | '2H' | '3H'>('1H');
   const [auftragNumber, setAuftragNumber] = useState('10-1X-XX-XX [H5]');
@@ -419,12 +419,11 @@ export function MachinePanel({
                 }}
                 className="w-full bg-white/80 border border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs rounded"
               >
-                <option value="5T">5T</option>
-                <option value="6T">6T</option>
-                <option value="6/ALU">6/ALU</option>
+                <option value="5 ALU">5 ALU</option>
+                <option value="6 ALU">6 ALU</option>
+                <option value="5 PE">5 PE</option>
+                <option value="6 PE">6 PE</option>
                 <option value="10T">10T</option>
-                <option value="20T">20T</option>
-                <option value="30T">30T</option>
               </select>
             </div>
           </div>
