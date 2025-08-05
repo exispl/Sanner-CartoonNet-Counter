@@ -4,7 +4,7 @@ import { useEfficiencyOscillator } from '@/hooks/use-efficiency-oscillator';
 import { LanguageSelector } from '@/components/language-selector';
 import { MachineStats } from '@/components/machine-stats';
 import { MachinePanel } from '@/components/machine-panel';
-import { NotificationToast, ToastType } from '@/components/notification-toast';
+import { NotificationToast } from '@/components/notification-toast';
 import { EarningsCounter } from '@/components/earnings-counter';
 import { UserLoginSelector } from '@/components/user-login-selector';
 import { EmployeeBonusSystem } from '@/components/employee-bonus-system';
@@ -23,7 +23,7 @@ export default function Dashboard() {
   const [toast, setToast] = useState<{
     visible: boolean;
     message: string;
-    type: ToastType;
+    type: 'info' | 'success' | 'warning' | 'error';
     submessage?: string;
   }>({
     visible: false,
@@ -37,7 +37,7 @@ export default function Dashboard() {
 
   const t = (key: string) => translations[currentLang][key as keyof typeof translations[typeof currentLang]] || key;
 
-  const showToast = (message: string, type: ToastType = 'info', submessage?: string) => {
+  const showToast = (message: string, type: 'info' | 'success' | 'warning' | 'error' = 'info', submessage?: string) => {
     if (settings.notificationsEnabled) {
       setToast({ visible: true, message, type, submessage });
     }
@@ -128,7 +128,7 @@ export default function Dashboard() {
   // Show welcome message
   useEffect(() => {
     const timer = setTimeout(() => {
-      showToast('Kartonowy Napełniacz v3.0 gotowy do pracy!', 'success');
+      showToast('Kartonowy Napełniacz v3.0 gotowy do pracy! System powiadomień został ulepszony - powiadomienia znikają po 2 sekundach, chyba że klikniesz "Czytaj więcej" aby je zatrzymać i przeczytać całą treść.', 'success');
     }, 500);
     return () => clearTimeout(timer);
   }, []);
@@ -285,13 +285,14 @@ export default function Dashboard() {
         </div>
       </main>
 
-      <NotificationToast
-        message={toast.message}
-        type={toast.type}
-        submessage={toast.submessage}
-        visible={toast.visible}
-        onHide={hideToast}
-      />
+      {toast.visible && (
+        <NotificationToast
+          message={toast.message}
+          type={toast.type}
+          onClose={hideToast}
+          duration={2000}
+        />
+      )}
     </div>
   );
 }

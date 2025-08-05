@@ -122,8 +122,19 @@ export function MachinePanel({
               <div className={`w-3 h-3 rounded-full ${
                 state.running ? 'bg-green-400' : state.itemsInBox > 0 ? 'bg-cyan-400' : 'bg-gray-400'
               }`} />
+              <input
+                type="text"
+                value={`MA${machineNumber}`}
+                onChange={(e) => {
+                  const value = e.target.value.replace('MA', '');
+                  if (!isNaN(Number(value))) {
+                    setMachineNumber(Number(value));
+                  }
+                }}
+                className="bg-transparent border-none text-white font-medium text-sm w-20 focus:outline-none focus:bg-white/10 rounded px-1"
+              />
               <span>
-                MA{machineNumber} - {
+                - {
                   state.running 
                     ? 'PRODUKTION' 
                     : state.itemsInBox > 0 
