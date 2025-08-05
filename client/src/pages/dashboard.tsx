@@ -150,10 +150,13 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <UserLoginSelector 
-                currentUser={currentUser} 
-                onUserChange={setCurrentUser} 
-              />
+              <div className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2">
+                <span className="text-white/80 text-sm">Zalogowany:</span>
+                <UserLoginSelector 
+                  currentUser={currentUser} 
+                  onUserChange={setCurrentUser} 
+                />
+              </div>
               <SettingsMenu 
                 currentLang={currentLang} 
                 onLanguageChange={handleLanguageChange} 

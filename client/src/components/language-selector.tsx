@@ -5,6 +5,10 @@ import plFlag from '@/assets/flags/pl.svg';
 import usFlag from '@/assets/flags/us.svg';
 import deFlag from '@/assets/flags/de.svg';
 import trFlag from '@/assets/flags/tr.svg';
+import arFlag from '@/assets/flags/ar.svg';
+import frFlag from '@/assets/flags/fr.svg';
+import itFlag from '@/assets/flags/it.svg';
+import hrFlag from '@/assets/flags/hr.svg';
 
 interface LanguageSelectorProps {
   currentLang: Language;
@@ -16,10 +20,10 @@ const languageOptions = [
   { code: 'en' as Language, flagSrc: usFlag, label: 'English' },
   { code: 'de' as Language, flagSrc: deFlag, label: 'Deutsch' },
   { code: 'tr' as Language, flagSrc: trFlag, label: 'Türkçe' },
-  { code: 'ar' as Language, flag: '🇸🇦', label: 'العربية' },
-  { code: 'fr' as Language, flag: '🇫🇷', label: 'Français' },
-  { code: 'it' as Language, flag: '🇮🇹', label: 'Italiano' },
-  { code: 'hr' as Language, flag: '🇭🇷', label: 'Hrvatski' }
+  { code: 'ar' as Language, flagSrc: arFlag, label: 'العربية' },
+  { code: 'fr' as Language, flagSrc: frFlag, label: 'Français' },
+  { code: 'it' as Language, flagSrc: itFlag, label: 'Italiano' },
+  { code: 'hr' as Language, flagSrc: hrFlag, label: 'Hrvatski' }
 ];
 
 export function LanguageSelector({ currentLang, onLanguageChange }: LanguageSelectorProps) {
@@ -37,15 +41,11 @@ export function LanguageSelector({ currentLang, onLanguageChange }: LanguageSele
           }`}
           data-testid={`lang-${option.code}`}
         >
-          {option.flagSrc ? (
-            <img 
-              src={option.flagSrc} 
-              alt={option.label}
-              className="w-8 h-6 object-cover rounded-sm"
-            />
-          ) : (
-            <span className="text-2xl">{option.flag}</span>
-          )}
+          <img 
+            src={option.flagSrc} 
+            alt={option.label}
+            className="w-8 h-6 object-cover rounded-sm"
+          />
         </button>
       ))}
     </div>

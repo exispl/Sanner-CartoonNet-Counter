@@ -119,6 +119,43 @@
   }
 }
 
+/* Factory animation enhancements */
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.8; transform: scale(1.05); }
+}
+
+@keyframes blink-green {
+  0%, 50% { background-color: rgba(34, 197, 94, 0.8); }
+  51%, 100% { background-color: rgba(34, 197, 94, 1); }
+}
+
+@keyframes blink-red-white {
+  0%, 50% { background-color: #dc2626; }
+  51%, 100% { background-color: #ffffff; }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 3s infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s infinite;
+}
+
+.animate-blink-green {
+  animation: blink-green 0.5s infinite;
+}
+
+.animate-blink-red-white {
+  animation: blink-red-white 1s infinite;
+}
+
 @layer utilities {
   .industrial-50 { background-color: hsl(var(--industrial-50)); }
   .industrial-100 { background-color: hsl(var(--industrial-100)); }

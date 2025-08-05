@@ -73,12 +73,12 @@ export function useMachineState(machineId: number, initialName: string, initialL
 
   const reset = () => {
     pause();
+    // Automatically finish current box and start new one
     setState(prev => ({
       ...prev,
-      progress: 0,
-      currentBox: 1,
-      itemsProduced: 0,
-      itemsInBox: 0
+      currentBox: prev.currentBox + 1,
+      itemsInBox: 1, // Start new box with 1 item
+      progress: 0
     }));
   };
 

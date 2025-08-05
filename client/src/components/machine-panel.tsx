@@ -142,9 +142,7 @@ export function MachinePanel({
                     : 'WARTEN'
                 }
               </span>
-              {state.running && (
-                <span>({state.itemsInBox} szt.)</span>
-              )}
+
             </div>
           </div>
           <div className="flex items-center space-x-2">
@@ -282,7 +280,7 @@ export function MachinePanel({
                 onClick={prufungExpired ? resetPrufung : startPrufung}
               >
                 {prufungExpired ? (
-                  <div className="h-full bg-red-600 border-2 border-orange-500 animate-pulse flex items-center justify-center">
+                  <div className="h-full bg-red-600 border-2 border-orange-500 flex items-center justify-center animate-blink-red-white">
                     <span className="text-sm font-bold text-white">Prüfung</span>
                   </div>
                 ) : (
