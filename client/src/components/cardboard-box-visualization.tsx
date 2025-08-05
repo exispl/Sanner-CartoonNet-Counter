@@ -54,8 +54,8 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted }: Cardboa
           </div>
         )}
         
-        {/* SANNER label */}
-        <div className="absolute top-1 left-1 right-1 text-center text-xs font-bold text-orange-800 opacity-60">
+        {/* SANNER label - smaller and lower */}
+        <div className="absolute top-3 left-1 right-1 text-center text-[10px] font-bold text-orange-600 opacity-70">
           SANNER
         </div>
         
@@ -92,7 +92,7 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
         const currentPatternIndex = crossPattern.indexOf(activeBoxIndex);
         const nextPatternIndex = (currentPatternIndex + 1) % 4;
         setActiveBoxIndex(crossPattern[nextPatternIndex]);
-      }, 1500); // 1.5 second delay between boxes
+      }, 2500); // 2.5 second delay between boxes - slower transition
     }
   }, [currentProgress, activeBoxIndex, crossPattern]);
 
@@ -119,9 +119,9 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
             const isNext = index === activeBoxIndex && !isCompleted;
             return (
               <div key={index} className="relative flex flex-col items-center">
-                {/* Arrow pointing to next box */}
+                {/* Arrow pointing to next box - slower animation */}
                 {isNext && (
-                  <div className="absolute -top-6 text-white/80 animate-bounce">
+                  <div className="absolute -top-6 text-white/80 animate-pulse">
                     <div className="text-lg">↓</div>
                   </div>
                 )}
@@ -150,8 +150,7 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
                   </div>
                 </div>
                 
-                {/* Sanner label below each box */}
-                <div className="text-xs text-white/60 mt-1">Sanner</div>
+
               </div>
             );
           })}
