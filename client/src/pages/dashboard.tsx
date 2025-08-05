@@ -154,12 +154,6 @@ export default function Dashboard() {
                 currentUser={currentUser} 
                 onUserChange={setCurrentUser} 
               />
-              <div className="bg-white/20 rounded-xl p-2">
-                <LanguageSelector 
-                  currentLang={currentLang} 
-                  onLanguageChange={handleLanguageChange} 
-                />
-              </div>
               <SettingsMenu 
                 currentLang={currentLang} 
                 onLanguageChange={handleLanguageChange} 

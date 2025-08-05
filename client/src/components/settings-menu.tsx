@@ -87,25 +87,33 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                     { code: 'pl' as Language, flagSrc: plFlag, label: 'Polski' },
                     { code: 'en' as Language, flagSrc: usFlag, label: 'English' },
                     { code: 'de' as Language, flagSrc: deFlag, label: 'Deutsch' },
-                    { code: 'tr' as Language, flagSrc: trFlag, label: 'Türkçe' }
-                  ].map(({ code, flagSrc, label }) => (
+                    { code: 'tr' as Language, flagSrc: trFlag, label: 'Türkçe' },
+                    { code: 'ar' as Language, flag: '🇸🇦', label: 'العربية' },
+                    { code: 'fr' as Language, flag: '🇫🇷', label: 'Français' },
+                    { code: 'it' as Language, flag: '🇮🇹', label: 'Italiano' },
+                    { code: 'hr' as Language, flag: '🇭🇷', label: 'Hrvatski' }
+                  ].map((option) => (
                     <button
-                      key={code}
-                      onClick={() => handleLanguageSelect(code)}
-                      title={label}
+                      key={option.code}
+                      onClick={() => handleLanguageSelect(option.code)}
+                      title={option.label}
                       className={`p-2 rounded border transition-all text-center ${
-                        currentLang === code
+                        currentLang === option.code
                           ? 'border-machine-blue bg-machine-blue/10'
                           : 'border-industrial-200 hover:border-machine-blue/50'
                       }`}
-                      data-testid={`language-${code}`}
+                      data-testid={`language-${option.code}`}
                     >
-                      <img 
-                        src={flagSrc} 
-                        alt={label}
-                        className="w-6 h-4 mx-auto object-cover rounded-sm"
-                        style={{ display: 'block' }}
-                      />
+                      {option.flagSrc ? (
+                        <img 
+                          src={option.flagSrc} 
+                          alt={option.label}
+                          className="w-6 h-4 mx-auto object-cover rounded-sm"
+                          style={{ display: 'block' }}
+                        />
+                      ) : (
+                        <span className="text-sm block text-center">{option.flag}</span>
+                      )}
                     </button>
                   ))}
                 </div>
