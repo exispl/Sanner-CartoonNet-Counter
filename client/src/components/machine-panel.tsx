@@ -111,19 +111,30 @@ export function MachinePanel({
       <div className="border-b border-white/20 p-4">
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center space-x-3">
-            <div
-              className={`w-5 h-5 rounded-full ${
-                state.running
-                  ? 'bg-white animate-pulse-soft shadow-lg'
-                  : 'bg-white/50'
-              }`}
-            />
-            <Factory className="w-6 h-6 text-white" />
-            <MachineSelector 
-              currentNumber={machineNumber}
-              onMachineChange={setMachineNumber}
-              machineId={machineId}
-            />
+            {/* Machine Status with colored rectangle */}
+            <div className={`flex items-center space-x-2 px-3 py-1 rounded text-white text-sm font-medium ${
+              state.running 
+                ? 'bg-green-600' 
+                : state.itemsInBox > 0 
+                ? 'bg-cyan-600' 
+                : 'bg-gray-600'
+            }`}>
+              <div className={`w-3 h-3 rounded-full ${
+                state.running ? 'bg-green-400' : state.itemsInBox > 0 ? 'bg-cyan-400' : 'bg-gray-400'
+              }`} />
+              <span>
+                MA{machineNumber} - {
+                  state.running 
+                    ? 'PRODUKTION' 
+                    : state.itemsInBox > 0 
+                    ? 'SETUP' 
+                    : 'WARTEN'
+                }
+              </span>
+              {state.running && (
+                <span>({state.itemsInBox} szt.)</span>
+              )}
+            </div>
           </div>
           <div className="flex items-center space-x-2">
             <Button
