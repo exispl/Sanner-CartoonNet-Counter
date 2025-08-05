@@ -6,9 +6,10 @@ interface CardboardBoxProps {
   size: '5T' | '6T' | '10T';
   index: number;
   isCompleted?: boolean;
+  theme: 'zielona' | 'niebieska' | 'żółta';
 }
 
-function CardboardBox({ isActive, fillLevel, size, index, isCompleted }: CardboardBoxProps) {
+function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: CardboardBoxProps) {
   const boxHeight = size === '10T' ? 120 : size === '6T' ? 100 : 80;
   const fillHeight = (fillLevel / 100) * (boxHeight - 20);
   
@@ -27,10 +28,22 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted }: Cardboa
           width: '60px', 
           height: `${boxHeight}px`,
           background: isCompleted
-            ? 'linear-gradient(to bottom, #93c5fd, #3b82f6, #1d4ed8)'
+            ? theme === 'zielona' 
+              ? 'linear-gradient(to bottom, #86efac, #22c55e, #15803d)'
+              : theme === 'niebieska'
+              ? 'linear-gradient(to bottom, #93c5fd, #3b82f6, #1d4ed8)'
+              : 'linear-gradient(to bottom, #fef08a, #eab308, #a16207)'
             : isActive 
-            ? 'linear-gradient(to bottom, #fed7aa, #fb923c, #ea580c)' 
-            : 'linear-gradient(to bottom, #ffedd5, #fed7aa, #fdba74)'
+            ? theme === 'zielona' 
+              ? 'linear-gradient(to bottom, #dcfce7, #86efac, #22c55e)'
+              : theme === 'niebieska'
+              ? 'linear-gradient(to bottom, #dbeafe, #93c5fd, #3b82f6)'
+              : 'linear-gradient(to bottom, #fefce8, #fef08a, #eab308)'
+            : theme === 'zielona' 
+              ? 'linear-gradient(to bottom, #f0fdf4, #dcfce7, #bbf7d0)'
+              : theme === 'niebieska'
+              ? 'linear-gradient(to bottom, #eff6ff, #dbeafe, #bfdbfe)'
+              : 'linear-gradient(to bottom, #fffbeb, #fefce8, #fef3c7)'
         }}
       >
         {/* Box texture lines */}
@@ -77,9 +90,10 @@ interface CardboardBoxVisualizationProps {
   currentProgress: number;
   boxSize: '5T' | '6T' | '10T';
   completedBoxes: number;
+  theme?: 'zielona' | 'niebieska' | 'żółta';
 }
 
-export function CardboardBoxVisualization({ currentProgress, boxSize, completedBoxes }: CardboardBoxVisualizationProps) {
+export function CardboardBoxVisualization({ currentProgress, boxSize, completedBoxes, theme = 'zielona' }: CardboardBoxVisualizationProps) {
   const [activeBoxIndex, setActiveBoxIndex] = useState(0);
   
   // Pattern: 0 -> 3 -> 1 -> 2 (cross pattern: top-left -> bottom-right -> top-right -> bottom-left)
@@ -112,9 +126,11 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
       
       {/* 2x2 grid of boxes with increased spacing and arrows */}
       <div className="relative">
-        {/* 2x2 grid with arrows showing next box */}
-        <div className="grid grid-cols-2 gap-8 justify-items-center">
-          {[0, 1, 2, 3].map((index) => {
+        {/* Górne kartony */}
+        <div className="mb-6">
+          <div className="text-xs text-white/60 mb-2 text-center">Górne</div>
+          <div className="grid grid-cols-2 gap-8 justify-items-center">
+          {[0, 1].map((index) => {
             const isCompleted = index < completedBoxes;
             const isNext = index === activeBoxIndex && !isCompleted;
             return (
@@ -146,6 +162,7 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
                       size={boxSize}
                       index={index}
                       isCompleted={isCompleted}
+                      theme={theme}
                     />
                   </div>
                 </div>
@@ -154,6 +171,55 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
               </div>
             );
           })}
+          </div>
+        </div>
+        
+        {/* Dolne kartony */}
+        <div>
+          <div className="text-xs text-white/60 mb-2 text-center">Dolne</div>
+          <div className="grid grid-cols-2 gap-8 justify-items-center">
+          {[2, 3].map((index) => {
+            const isCompleted = index < completedBoxes;
+            const isNext = index === activeBoxIndex && !isCompleted;
+            return (
+              <div key={index} className="relative flex flex-col items-center">
+                {/* Arrow pointing to next box - slower animation */}
+                {isNext && (
+                  <div className="absolute -top-6 text-white/80 animate-pulse">
+                    <div className="text-lg">↓</div>
+                  </div>
+                )}
+                
+                <div
+                  className="cursor-pointer transition-transform duration-200 hover:scale-110"
+                  onClick={(event) => {
+                    const target = event.currentTarget as HTMLElement;
+                    if (target && isCompleted) {
+                      // Reset animation and color
+                      target.style.transform = 'scale(0.8)';
+                      setTimeout(() => {
+                        target.style.transform = '';
+                      }, 200);
+                    }
+                  }}
+                >
+                  <div className={isCompleted ? 'animate-pulse-slow' : ''}>
+                    <CardboardBox
+                      isActive={index === activeBoxIndex}
+                      fillLevel={index === activeBoxIndex ? currentProgress : 0}
+                      size={boxSize}
+                      index={index}
+                      isCompleted={isCompleted}
+                      theme={theme}
+                    />
+                  </div>
+                </div>
+                
+
+              </div>
+            );
+          })}
+          </div>
         </div>
       </div>
     </div>

@@ -48,6 +48,7 @@ export function MachinePanel({
   const [bestellungHistory, setBestellungHistory] = useState<string[]>([]);
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [resetPassword, setResetPassword] = useState('');
+  const [cardboardTheme, setCardboardTheme] = useState<'zielona' | 'niebieska' | 'żółta'>('zielona');
 
   const percentage = Math.min(100, Math.floor((state.itemsInBox / state.limit) * 100));
 
@@ -326,6 +327,7 @@ export function MachinePanel({
             currentProgress={percentage}
             boxSize={machineNumber === 59 ? '10T' : (machineNumber === 61 ? '6' : '6') as '5T' | '6T' | '10T'}
             completedBoxes={Math.max(0, state.currentBox - 1)}
+            theme={cardboardTheme}
           />
         </div>
 
@@ -349,6 +351,35 @@ export function MachinePanel({
                   max={10000}
                   className="font-mono bg-white/20 border-white/30 text-white placeholder:text-white/60"
                 />
+              </div>
+              <div>
+                <Label className="text-sm font-medium text-white">Motyw kartonów</Label>
+                <Select value={cardboardTheme} onValueChange={(value: 'zielona' | 'niebieska' | 'żółta') => setCardboardTheme(value)}>
+                  <SelectTrigger className="bg-white/20 border-white/30 text-white">
+                    <SelectValue placeholder="Wybierz motyw" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="zielona">🟢 Zielona</SelectItem>
+                    <SelectItem value="niebieska">🔵 Niebieska</SelectItem>
+                    <SelectItem value="żółta">🟡 Żółta</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div>
+                <Label className="text-sm font-medium text-white">Motyw kartonów</Label>
+                <Select value={cardboardTheme} onValueChange={(value: 'zielona' | 'niebieska' | 'żółta') => setCardboardTheme(value)}>
+                  <SelectTrigger className="bg-white/20 border-white/30 text-white">
+                    <SelectValue placeholder="Wybierz motyw" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="zielona">🟢 Zielona</SelectItem>
+                    <SelectItem value="niebieska">🔵 Niebieska</SelectItem>
+                    <SelectItem value="żółta">🟡 Żółta</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div>
                 <Label htmlFor={`cycle-${machineId}`} className="text-sm font-medium text-white">

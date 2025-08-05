@@ -53,7 +53,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
 
       {/* Expanded Menu */}
       {isOpen && (
-        <div className="absolute top-0 right-0 w-80 bg-white/95 dark:bg-industrial-800/95 rounded-2xl shadow-2xl border-4 border-machine-blue/40 z-50 overflow-hidden backdrop-blur-sm">
+        <div className="absolute top-0 right-0 w-80 bg-white/95 dark:bg-gray-900/95 rounded-2xl shadow-2xl border-4 border-machine-blue/40 z-50 overflow-hidden backdrop-blur-sm">
           {/* Header */}
           <div className="bg-gradient-to-r from-machine-blue to-machine-green p-4">
             <div className="flex items-center justify-between">
@@ -80,7 +80,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <Globe className="w-4 h-4 text-machine-blue" />
-                  <Label className="text-sm font-semibold text-industrial-800">Język</Label>
+                  <Label className="text-sm font-semibold text-gray-800 dark:text-gray-200">Język</Label>
                 </div>
                 <div className="grid grid-cols-4 gap-1">
                   {[
@@ -100,7 +100,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                       className={`p-2 rounded border transition-all text-center ${
                         currentLang === option.code
                           ? 'border-machine-blue bg-machine-blue/10'
-                          : 'border-industrial-200 hover:border-machine-blue/50'
+                          : 'border-gray-300 dark:border-gray-600 hover:border-machine-blue/50 text-gray-800 dark:text-gray-200'
                       }`}
                       data-testid={`language-${option.code}`}
                     >
@@ -123,7 +123,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <Palette className="w-4 h-4 text-machine-green" />
-                  <Label className="text-sm font-semibold text-industrial-800 dark:text-white">Motyw</Label>
+                  <Label className="text-sm font-semibold text-gray-800 dark:text-gray-200">Motyw</Label>
                 </div>
                 <div className="grid grid-cols-2 gap-2">
                   <button
@@ -131,7 +131,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                     className={`p-2 rounded border transition-all text-center text-xs ${
                       !settings.isDarkMode
                         ? 'border-machine-blue bg-machine-blue/10 text-machine-blue'
-                        : 'border-industrial-200 hover:border-machine-blue/50'
+                        : 'border-gray-300 dark:border-gray-600 hover:border-machine-blue/50 text-gray-800 dark:text-gray-200'
                     }`}
                     data-testid="theme-light"
                   >
@@ -143,7 +143,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                     className={`p-2 rounded border transition-all text-center text-xs ${
                       settings.isDarkMode
                         ? 'border-machine-blue bg-machine-blue/10 text-machine-blue'
-                        : 'border-industrial-200 hover:border-machine-blue/50'
+                        : 'border-gray-300 dark:border-gray-600 hover:border-machine-blue/50 text-gray-800 dark:text-gray-200'
                     }`}
                     data-testid="theme-dark"
                   >
