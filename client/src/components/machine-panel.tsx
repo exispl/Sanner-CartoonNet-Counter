@@ -36,7 +36,7 @@ export function MachinePanel({
   const [cardboardType, setCardboardType] = useState('6 ALU');
   const [capsuleCount, setCapsuleCount] = useState(1500);
   const [prufungTime, setPrufungTime] = useState<'1Min' | '1H' | '2H' | '3H'>('1Min');
-  const [auftragNumber, setAuftragNumber] = useState('10-1X-XX-XX [H5]');
+  const [auftragNumber, setAuftragNumber] = useState('MA61');
   const [prufungStartTime, setPrufungStartTime] = useState<Date | null>(null);
   const [prufungExpired, setPrufungExpired] = useState(false);
   const [showMachineIcon, setShowMachineIcon] = useState(false);
@@ -167,33 +167,47 @@ export function MachinePanel({
               placeholder="Nazwa maszyny..."
             />
           </div>
-          <div className="flex space-x-2">
+          <div className="flex flex-wrap gap-2">
             <div className="flex flex-col">
               <span className="text-xs text-gray-400 mb-1">Nr Auftrag</span>
-              <input
-                type="text"
+              <select
                 value={auftragNumber}
                 onChange={(e) => setAuftragNumber(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-32"
-                placeholder="MA820062"
-              />
+                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-24"
+              >
+                <option value="MA61">MA61</option>
+                <option value="MA62">MA62</option>
+              </select>
             </div>
             <div className="flex flex-col">
               <span className="text-xs text-gray-400 mb-1">Halle</span>
               <input
                 type="text"
                 defaultValue="5"
-                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-16"
+                className="text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1 py-1 w-8 text-center"
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">DASG-1 (color)</span>
+              <span className="text-xs text-gray-400 mb-1">Material</span>
               <input
                 type="text"
-                placeholder="DASG-1"
-                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-24"
+                defaultValue="210044"
+                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
               />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 mb-1">DASG-1</span>
+              <select
+                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-24"
+              >
+                <option value="white">white</option>
+                <option value="black">black</option>
+                <option value="blue">blue</option>
+                <option value="red">red</option>
+                <option value="green">green</option>
+                <option value="yellow">yellow</option>
+                <option value="gray">gray</option>
+              </select>
             </div>
           </div>
         </div>

@@ -39,7 +39,8 @@ export function useMachineState(machineId: number, initialName: string, initialL
 
     setState(prev => ({ ...prev, running: true }));
     
-    const intervalTime = (state.cycleTime * 60000) / state.limit;
+    // 3000 units = 1537 seconds, calculate proportional time per unit
+    const intervalTime = (1537 * 1000) / 3000; // ~512ms per unit
     
     intervalRef.current = setInterval(() => {
       setState(prev => {
@@ -92,7 +93,8 @@ export function useMachineState(machineId: number, initialName: string, initialL
   useEffect(() => {
     if (state.running && intervalRef.current) {
       clearInterval(intervalRef.current);
-      const intervalTime = (state.cycleTime * 60000) / state.limit;
+      // 3000 units = 1537 seconds, calculate proportional time per unit
+      const intervalTime = (1537 * 1000) / 3000; // ~512ms per unit
       intervalRef.current = setInterval(() => {
         setState(prev => {
           let newItemsInBox = prev.itemsInBox + 1;
