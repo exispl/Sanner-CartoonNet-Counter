@@ -20,7 +20,7 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted }: Cardboa
           isCompleted
             ? 'border-blue-400 shadow-lg shadow-blue-400/50 bg-gradient-to-b from-blue-200 to-blue-400'
             : isActive 
-            ? 'border-machine-blue shadow-lg shadow-machine-blue/30 bg-gradient-to-b from-orange-200 to-orange-300' 
+            ? 'border-green-400 shadow-lg shadow-green-400/50 bg-gradient-to-b from-green-200 to-green-400 animate-pulse' 
             : 'border-orange-400 bg-gradient-to-b from-orange-100 to-orange-200'
         }`}
         style={{ 
@@ -110,40 +110,81 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
         </div>
       </div>
       
-      {/* 2x2 grid of boxes */}
-      <div className="grid grid-cols-2 gap-4 justify-items-center">
-        {[0, 1, 2, 3].map((index) => {
-          const isCompleted = index < completedBoxes;
-          return (
-            <div
-              key={index}
-              className="cursor-pointer transition-transform duration-200 hover:scale-110"
-              onClick={(event) => {
-                // Reset animation on click
-                const target = event.currentTarget as HTMLElement;
-                if (target && isCompleted) {
-                  target.style.transform = 'scale(0.8)';
-                  setTimeout(() => {
-                    target.style.transform = '';
-                  }, 200);
-                }
-              }}
-            >
-              <div className={isCompleted ? 'animate-pulse-slow' : ''}>
-                <CardboardBox
-                  isActive={index === activeBoxIndex}
-                  fillLevel={index === activeBoxIndex ? currentProgress : 0}
-                  size={boxSize}
-                  index={index}
-                  isCompleted={isCompleted}
-                />
+      {/* 2x2 grid of boxes with increased spacing and arrows */}
+      <div className="relative">
+        {/* Top row boxes */}
+        <div className="grid grid-cols-2 gap-12 justify-items-center mb-8">
+          {[0, 1].map((index) => {
+            const isCompleted = index < completedBoxes;
+            return (
+              <div key={index} className="flex flex-col items-center">
+                <div className="text-xs text-white/60 mb-1">Sanner</div>
+                <div
+                  className="cursor-pointer transition-transform duration-200 hover:scale-110"
+                  onClick={(event) => {
+                    const target = event.currentTarget as HTMLElement;
+                    if (target && isCompleted) {
+                      target.style.transform = 'scale(0.8)';
+                      setTimeout(() => {
+                        target.style.transform = '';
+                      }, 200);
+                    }
+                  }}
+                >
+                  <div className={isCompleted ? 'animate-pulse-slow' : ''}>
+                    <CardboardBox
+                      isActive={index === activeBoxIndex}
+                      fillLevel={index === activeBoxIndex ? currentProgress : 0}
+                      size={boxSize}
+                      index={index}
+                      isCompleted={isCompleted}
+                    />
+                  </div>
+                </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
-      
+            );
+          })}
+        </div>
 
+        {/* Rotation arrows */}
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white/50">
+          <div className="text-lg">↻</div>
+        </div>
+
+        {/* Bottom row boxes */}
+        <div className="grid grid-cols-2 gap-12 justify-items-center">
+          {[2, 3].map((index) => {
+            const isCompleted = index < completedBoxes;
+            return (
+              <div key={index} className="flex flex-col items-center">
+                <div
+                  className="cursor-pointer transition-transform duration-200 hover:scale-110"
+                  onClick={(event) => {
+                    const target = event.currentTarget as HTMLElement;
+                    if (target && isCompleted) {
+                      target.style.transform = 'scale(0.8)';
+                      setTimeout(() => {
+                        target.style.transform = '';
+                      }, 200);
+                    }
+                  }}
+                >
+                  <div className={isCompleted ? 'animate-pulse-slow' : ''}>
+                    <CardboardBox
+                      isActive={index === activeBoxIndex}
+                      fillLevel={index === activeBoxIndex ? currentProgress : 0}
+                      size={boxSize}
+                      index={index}
+                      isCompleted={isCompleted}
+                    />
+                  </div>
+                </div>
+                <div className="text-xs text-white/60 mt-1">Sanner</div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

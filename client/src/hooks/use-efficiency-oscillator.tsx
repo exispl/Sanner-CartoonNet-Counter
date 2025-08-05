@@ -4,31 +4,18 @@ export function useEfficiencyOscillator() {
   const [efficiency, setEfficiency] = useState(99.45);
   
   useEffect(() => {
-    // Generate random efficiency between 99.22% and 99.80%
-    const generateRandomEfficiency = () => {
-      const min = 99.22;
-      const max = 99.80;
-      const randomValue = min + Math.random() * (max - min);
-      return Math.round(randomValue * 100) / 100; // Round to 2 decimal places
-    };
-    
-    // Set initial value
-    setEfficiency(generateRandomEfficiency());
-    
-    // Update every hour (3600000 ms)
+    // Very stable efficiency with minimal changes
     const interval = setInterval(() => {
-      setEfficiency(generateRandomEfficiency());
-    }, 3600000);
+      setEfficiency(prev => {
+        // Very small random variations ±0.05%
+        const variation = prev + (Math.random() - 0.5) * 0.1;
+        // Keep it between 99.3% and 99.6%
+        const bounded = Math.max(99.3, Math.min(99.6, variation));
+        return Math.round(bounded * 100) / 100;
+      });
+    }, 30000); // Update every 30 seconds
     
-    // For demo purposes, also update every 10 seconds
-    const demoInterval = setInterval(() => {
-      setEfficiency(generateRandomEfficiency());
-    }, 10000);
-    
-    return () => {
-      clearInterval(interval);
-      clearInterval(demoInterval);
-    };
+    return () => clearInterval(interval);
   }, []);
   
   return efficiency;

@@ -30,7 +30,7 @@ export function MachinePanel({
 }: MachinePanelProps) {
   const [showControls, setShowControls] = useState(false);
   const [localLimit, setLocalLimit] = useState(state.limit);
-  const [localCycleTime, setLocalCycleTime] = useState(state.cycleTime);
+  const [localCycleTime, setLocalCycleTime] = useState(1537); // Default 1537 seconds
   const [localName, setLocalName] = useState(state.name);
   const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 62 : 61);
   const [cardboardType, setCardboardType] = useState('6 ALU');
@@ -247,20 +247,21 @@ export function MachinePanel({
             <div className="w-[80%] mx-auto space-y-2">
               {/* Progress bar */}
               <div 
-                className={`rounded-full h-4 overflow-hidden border border-white/30 cursor-pointer ${
-                  prufungExpired ? 'bg-red-500' : 'bg-white/20'
-                }`}
+                className="rounded-full h-8 overflow-hidden border border-white/30 cursor-pointer bg-green-400"
+                style={{ width: '450px' }}
                 onClick={prufungExpired ? resetPrufung : startPrufung}
               >
                 {prufungExpired ? (
                   <div className="h-full bg-red-500 flex items-center justify-center">
-                    <span className="text-xs font-bold text-white">Prüfung</span>
+                    <span className="text-sm font-bold text-white">Prüfung Zakończone</span>
                   </div>
                 ) : (
                   <div 
-                    className="h-full bg-gradient-to-r from-cyan-400 to-red-500 transition-all duration-1000"
+                    className="h-full bg-red-500 transition-all duration-1000 flex items-center justify-center"
                     style={{ width: `${getPrufungProgress()}%` }}
-                  />
+                  >
+                    <span className="text-sm font-bold text-white">Prüfung</span>
+                  </div>
                 )}
               </div>
               {/* Time selector */}
@@ -285,21 +286,7 @@ export function MachinePanel({
             </div>
           </div>
 
-          {/* Machine Visualization - Minimized */}
-          <div className="flex-1 flex justify-center">
-            <div className="relative">
-              <button
-                onClick={() => setShowMachineIcon(!showMachineIcon)}
-                className={`w-12 h-12 rounded-lg border-2 shadow-lg cursor-pointer transform transition-all hover:scale-105 ${
-                  state.running
-                    ? 'bg-machine-green border-machine-green animate-pulse'
-                    : 'bg-industrial-400 border-industrial-600'
-                }`}
-              >
-                <Factory className="w-6 h-6 text-white mx-auto" />
-              </button>
-            </div>
-          </div>
+
         </div>
 
         {/* Current Box Visualization */}
@@ -396,7 +383,7 @@ export function MachinePanel({
                 onChange={(e) => setLocalLimit(Number(e.target.value))}
                 onBlur={handleSettingsUpdate}
                 onKeyPress={handleKeyPress}
-                className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs"
+                className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-10 text-sm"
                 min="1"
                 max="10000"
               />
@@ -404,7 +391,7 @@ export function MachinePanel({
 
             <div>
               <Label className="text-xs font-semibold text-white mb-1 block">
-                Szacowany czas 1 kartonu (minuty)
+                Szacowany czas 1 kartonu (sekundy)
               </Label>
               <Input
                 type="number"
@@ -412,10 +399,11 @@ export function MachinePanel({
                 onChange={(e) => setLocalCycleTime(Number(e.target.value))}
                 onBlur={handleSettingsUpdate}
                 onKeyPress={handleKeyPress}
-                className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-8 text-xs"
+                className="bg-white/80 border-industrial-300 text-industrial-800 focus:border-machine-blue h-10 text-sm"
                 min="1"
-                max="60"
-                step="0.1"
+                max="3000"
+                step="1"
+                placeholder="1537"
               />
             </div>
 
