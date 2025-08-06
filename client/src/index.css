@@ -359,3 +359,32 @@
     color: hsl(var(--money-light));
   }
 }
+
+/* Capsule counter animations */
+@keyframes capsuleFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes capsulePulse {
+  0%, 100% {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.animate-capsule-fade {
+  animation: capsuleFadeIn 300ms ease-out;
+}
+
+.animate-capsule-pulse {
+  animation: capsulePulse 2s infinite;
+}

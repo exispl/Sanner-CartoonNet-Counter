@@ -116,11 +116,19 @@ export function useMachineState(machineId: number, initialName: string, initialL
     }
   }, [state.limit, state.cycleTime, state.running]);
 
+  const updateItemsInBox = (newValue: number) => {
+    setState(prev => ({
+      ...prev,
+      itemsInBox: Math.max(0, Math.min(prev.limit, newValue))
+    }));
+  };
+
   return {
-    state,
+    ...state,
     start,
     pause,
     reset,
-    updateSettings
+    updateSettings,
+    updateItemsInBox
   };
 }

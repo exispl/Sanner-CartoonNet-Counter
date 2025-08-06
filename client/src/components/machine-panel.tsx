@@ -17,6 +17,7 @@ interface MachinePanelProps {
   onPause: () => void;
   onReset: () => void;
   onUpdateSettings: (limit: number, cycleTime: number, name?: string) => void;
+  onUpdateItemsInBox?: (newValue: number) => void;
   t: (key: string) => string;
 }
 
@@ -27,6 +28,7 @@ export function MachinePanel({
   onPause,
   onReset,
   onUpdateSettings,
+  onUpdateItemsInBox,
   t
 }: MachinePanelProps) {
   const [showControls, setShowControls] = useState(false);
@@ -37,7 +39,7 @@ export function MachinePanel({
   const [cardboardType, setCardboardType] = useState('6 ALU');
   const [capsuleCount, setCapsuleCount] = useState(1500);
   const [prufungTime, setPrufungTime] = useState<'1Min' | '1H' | '2H' | '3H'>('1Min');
-  const [auftragNumber, setAuftragNumber] = useState('MA61');
+  const [auftragNumber, setAuftragNumber] = useState('1012540');
   const [prufungStartTime, setPrufungStartTime] = useState<Date | null>(null);
   const [prufungExpired, setPrufungExpired] = useState(false);
   const [showMachineIcon, setShowMachineIcon] = useState(false);
@@ -199,14 +201,13 @@ export function MachinePanel({
           <div className="flex flex-wrap gap-2">
             <div className="flex flex-col">
               <span className="text-xs text-gray-400 mb-1">Nr Auftrag</span>
-              <select
+              <input
+                type="text"
                 value={auftragNumber}
                 onChange={(e) => setAuftragNumber(e.target.value)}
-                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-24"
-              >
-                <option value="MA61">MA61</option>
-                <option value="MA62">MA62</option>
-              </select>
+                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-28"
+                placeholder="1012540"
+              />
             </div>
             <div className="flex flex-col">
               <span className="text-xs text-gray-400 mb-1">Halle</span>
@@ -225,7 +226,7 @@ export function MachinePanel({
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">DASG-1</span>
+              <span className="text-xs text-gray-400 mb-1">Model</span>
               <select
                 className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-24"
               >
@@ -243,41 +244,61 @@ export function MachinePanel({
       </div>
 
       <div className="p-4 bg-white/10">
-        {/* Progress Visualization */}
-        <div className="mb-4">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs font-semibold text-white flex items-center">
-              <Gauge className="w-3 h-3 mr-1" />
-              {t('progress')}
-            </span>
-            <span className="text-lg font-mono font-bold text-white bg-white/20 rounded-xl px-3 py-1">
-              {state.itemsInBox} / {state.limit}
-            </span>
-          </div>
-          <div className="relative">
-            <div className="w-full h-8 bg-white/20 rounded-2xl overflow-hidden border-2 border-white/30">
-              <div
-                className="h-full bg-gradient-to-r from-white via-money-light to-white transition-all duration-500 ease-out animate-fill-up"
-                style={{ width: `${percentage}%` }}
+        {/* Editable counter display with larger colorful box */}
+        <div className="mb-4 flex justify-center">
+          <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-xl px-6 py-3 border-2 border-white/30 shadow-lg">
+            <div className="flex items-center space-x-3">
+              <input
+                type="number"
+                value={state.itemsInBox}
+                onChange={(e) => {
+                  const newValue = Math.max(0, Math.min(state.limit, Number(e.target.value)));
+                  onUpdateItemsInBox?.(newValue);
+                }}
+                className="w-20 text-3xl font-mono font-bold text-white bg-transparent border-none outline-none text-center transition-opacity duration-300 hover:bg-white/10 rounded focus:ring-2 focus:ring-white/50"
+                style={{ background: 'transparent', animation: 'pulse 2s infinite' }}
               />
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-sm font-bold text-blue-900 drop-shadow-sm">
-                {percentage}%
-              </span>
+              <span className="text-3xl font-mono font-bold text-white">/</span>
+              <input
+                type="number"
+                value={state.limit}
+                onChange={(e) => {
+                  const newLimit = Math.max(1, Number(e.target.value));
+                  onUpdateSettings(newLimit, 1537, state.name);
+                }}
+                className="w-24 text-3xl font-mono font-bold text-white bg-transparent border-none outline-none text-center hover:bg-white/10 rounded focus:ring-2 focus:ring-white/50"
+                style={{ background: 'transparent' }}
+              />
             </div>
           </div>
         </div>
 
-        {/* Vertical Fill Bar and Machine Visualization */}
-        <div className="flex items-center space-x-6 mb-6">
+        {/* Progress and Prüfung - Centered */}
+        <div className="flex flex-col items-center space-y-4 mb-6">
+          {/* Progress Bar centered */}
+          <div className="w-full max-w-md">
+            <div className="relative">
+              <div className="w-full h-8 bg-white/20 rounded-2xl overflow-hidden border-2 border-white/30">
+                <div
+                  className="h-full bg-gradient-to-r from-white via-money-light to-white transition-all duration-500 ease-out animate-fill-up"
+                  style={{ width: `${percentage}%` }}
+                />
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-sm font-bold text-blue-900 drop-shadow-sm">
+                  {percentage}%
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          {/* Prüfung centered */}
           <div className="flex flex-col items-center">
-            <div className="text-xs font-medium text-industrial-500 mb-2">Prüfung</div>
-            <div className="w-[80%] mx-auto space-y-2">
-              {/* Progress bar */}
+            <div className="text-xs font-medium text-white mb-2">Prüfung</div>
+            <div className="w-full max-w-lg space-y-2">
+              {/* Prüfung bar */}
               <div 
-                className="rounded-full h-8 overflow-hidden cursor-pointer bg-green-400 relative"
-                style={{ width: '450px' }}
+                className="rounded-full h-10 overflow-hidden cursor-pointer bg-green-400 relative w-full"
                 onClick={prufungExpired ? resetPrufung : startPrufung}
               >
                 {prufungExpired ? (

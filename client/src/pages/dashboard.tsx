@@ -47,8 +47,8 @@ export default function Dashboard() {
     setToast(prev => ({ ...prev, visible: false }));
   };
 
-  const activeMachines = [machine1.state.running, machine2.state.running].filter(Boolean).length;
-  const totalBoxes = machine1.state.currentBox + machine2.state.currentBox - 2;
+  const activeMachines = [machine1.running, machine2.running].filter(Boolean).length;
+  const totalBoxes = machine1.currentBox + machine2.currentBox - 2;
 
   const handleLanguageChange = (lang: Language) => {
     setCurrentLang(lang);
@@ -67,8 +67,8 @@ export default function Dashboard() {
     if (!startTime) {
       setStartTime(new Date());
     }
-    if (!machine1.state.running) machine1.start();
-    if (!machine2.state.running) machine2.start();
+    if (!machine1.running) machine1.start();
+    if (!machine2.running) machine2.start();
     showToast(t('start-all'), 'success');
   };
 
@@ -202,7 +202,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <MachinePanel
             machineId={1}
-            state={machine1.state}
+            state={machine1}
             onStart={() => {
               machine1.start();
               showToast(`${t('machine')} #1 ${t('start').toLowerCase()}`, 'success');
@@ -216,12 +216,13 @@ export default function Dashboard() {
               showToast(`${t('machine')} #1 ${t('reset').toLowerCase()}`, 'info');
             }}
             onUpdateSettings={machine1.updateSettings}
+            onUpdateItemsInBox={machine1.updateItemsInBox}
             t={t}
           />
 
           <MachinePanel
             machineId={2}
-            state={machine2.state}
+            state={machine2}
             onStart={() => {
               machine2.start();
               showToast(`${t('machine')} #2 ${t('start').toLowerCase()}`, 'success');
@@ -235,6 +236,7 @@ export default function Dashboard() {
               showToast(`${t('machine')} #2 ${t('reset').toLowerCase()}`, 'info');
             }}
             onUpdateSettings={machine2.updateSettings}
+            onUpdateItemsInBox={machine2.updateItemsInBox}
             t={t}
           />
         </div>
