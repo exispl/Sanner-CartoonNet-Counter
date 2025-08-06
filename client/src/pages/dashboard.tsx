@@ -9,6 +9,7 @@ import { EarningsCounter } from '@/components/earnings-counter';
 import { UserLoginSelector } from '@/components/user-login-selector';
 import { EmployeeBonusSystem } from '@/components/employee-bonus-system';
 import { SettingsMenu } from '@/components/settings-menu';
+import { ProductionDashboard } from '@/components/production-dashboard';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
 import { useAppSettings } from '@/hooks/use-app-settings';
@@ -188,6 +189,11 @@ export default function Dashboard() {
           efficiency={oscillatingEfficiency}
           t={t}
         />
+
+        {/* Production Dashboard with Real Data */}
+        <div className="mb-8">
+          <ProductionDashboard t={t} />
+        </div>
 
         {/* Statistics Cards - Hidden by default */}
         <div className="mb-8 hidden">
