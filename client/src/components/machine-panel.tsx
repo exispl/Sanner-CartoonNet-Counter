@@ -205,44 +205,28 @@ export function MachinePanel({
               placeholder="Nazwa maszyny..."
             />
           </div>
-          <div className="flex flex-wrap gap-2 mb-2">
-            <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Maszyna</span>
-              <input
-                type="text"
-                value={`MA${machineNumber}`}
-                onChange={(e) => {
-                  const newNumber = e.target.value.replace('MA', '');
-                  if (!isNaN(Number(newNumber))) {
-                    setMachineNumber(Number(newNumber));
-                    // Auto-update capsule count based on machine
-                    if (newNumber === '59') setCapsuleCount(6000);
-                    else if (newNumber === '62') setCapsuleCount(2000);
-                    else if (newNumber === '61') setCapsuleCount(3000);
-                  }
-                }}
-                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Czas</span>
-              <div className="text-sm font-medium text-white bg-white/20 border border-white/30 rounded px-2 py-1 w-20 text-center">
-                {machineNumber === 61 ? '24 min' : machineNumber === 62 ? '21 min' : machineNumber === 59 ? '19 min' : '30 min'}
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Ilość kapsli</span>
-              <select
-                value={capsuleCount}
-                onChange={(e) => setCapsuleCount(Number(e.target.value))}
-                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
-              >
-                <option value={1500}>1500</option>
-                <option value={2000}>2000</option>
-                <option value={3000}>3000</option>
-                <option value={6000}>6000</option>
-              </select>
-            </div>
+          <div className="flex flex-col">
+            <span className="text-xs text-gray-400 mb-1">Wybierz maszynę</span>
+            <select
+              value={machineNumber}
+              onChange={(e) => {
+                const newNumber = Number(e.target.value);
+                setMachineNumber(newNumber);
+                // Auto-update all parameters based on machine
+                if (newNumber === 59) {
+                  setCapsuleCount(6000);
+                } else if (newNumber === 62) {
+                  setCapsuleCount(2000);
+                } else if (newNumber === 61) {
+                  setCapsuleCount(3000);
+                }
+              }}
+              className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
+            >
+              <option value={59}>MA59</option>
+              <option value={61}>MA61</option>
+              <option value={62}>MA62</option>
+            </select>
           </div>
         </div>
         
@@ -292,21 +276,29 @@ export function MachinePanel({
               <option value="lila">DASG-6-147374</option>
             </select>
           </div>
-          <div className="flex flex-col">
-            <span className="text-xs text-gray-400 mb-1">Halle</span>
-            <input
-              type="text"
-              defaultValue="5"
-              className="text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1 py-1 w-8 text-center"
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className="text-xs text-gray-400 mb-1">Material</span>
-            <input
-              type="text"
-              defaultValue="210044"
-              className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
-            />
+          <div className="flex space-x-2">
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 mb-1">Halle</span>
+              <input
+                type="text"
+                defaultValue="5"
+                className="text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1 py-1 w-8 text-center"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 mb-1">Material</span>
+              <input
+                type="text"
+                defaultValue="210044"
+                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 mb-1">Czas / Kapsle</span>
+              <div className="text-sm font-medium text-white bg-white/20 border border-white/30 rounded px-2 py-1 w-24 text-center">
+                {machineNumber === 61 ? '24min / 3k' : machineNumber === 62 ? '21min / 2k' : machineNumber === 59 ? '19min / 6k' : '30min / 2k'}
+              </div>
+            </div>
           </div>
         </div>
       </div>

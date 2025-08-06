@@ -119,9 +119,9 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: 
           SANNER
         </div>
         
-        {/* Size indicator - ensure 6T is properly displayed */}
+        {/* Size indicator - show just the number */}
         <div className="absolute bottom-1 right-1 text-xs font-bold text-orange-800">
-          {size === '6T' ? '6T' : size}
+          {size === '6T' ? '6' : size === '5T' ? '5' : size === '10T' ? '10' : size}
         </div>
       </div>
       
