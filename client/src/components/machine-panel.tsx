@@ -38,8 +38,14 @@ export function MachinePanel({
   const [localName, setLocalName] = useState(state.name);
   const [machineNumber, setMachineNumber] = useState(machineId === 1 ? 62 : 61);
   const [cardboardType, setCardboardType] = useState('6 ALU');
-  const [capsuleCount, setCapsuleCount] = useState(1500);
-  const [prufungTime, setPrufungTime] = useState<'1Min' | '1H' | '2H' | '3H'>('1Min');
+  const [capsuleCount, setCapsuleCount] = useState(() => {
+    // Set default capsule count based on machine number
+    if (machineNumber === 59) return 6000; // MA59: 2x3000
+    if (machineNumber === 62) return 2000; // MA62: 2000
+    if (machineNumber === 61) return 3000; // MA61: 3000
+    return 1500;
+  });
+  const [prufungMinutes, setPrufungMinutes] = useState(5); // 5-45 minutes range
   const [auftragNumber, setAuftragNumber] = useState('1012540');
   const [prufungStartTime, setPrufungStartTime] = useState<Date | null>(null);
   const [prufungExpired, setPrufungExpired] = useState(false);
@@ -53,7 +59,7 @@ export function MachinePanel({
   const [resetPassword, setResetPassword] = useState('');
   const [cardboardTheme, setCardboardTheme] = useState<'zielona' | 'niebieska' | 'żółta'>('zielona');
 
-  const percentage = Math.min(100, Math.floor((state.itemsInBox / state.limit) * 100));
+  const percentage = Math.min(100, Math.floor((state.itemsInBox / capsuleCount) * 100));
 
   const handleSettingsUpdate = () => {
     onUpdateSettings(localLimit, localCycleTime, localName);
@@ -87,7 +93,7 @@ export function MachinePanel({
     if (!prufungStartTime) return 0;
     const now = new Date();
     const elapsed = now.getTime() - prufungStartTime.getTime();
-    const totalTime = prufungTime === '1Min' ? 60000 : prufungTime === '1H' ? 3600000 : prufungTime === '2H' ? 7200000 : 10800000; // 1Min, 1H, 2H, 3H in ms
+    const totalTime = prufungMinutes * 60 * 1000; // Convert minutes to milliseconds
     const progress = Math.min(100, (elapsed / totalTime) * 100);
     
     if (progress >= 100 && !prufungExpired) {
@@ -241,19 +247,29 @@ export function MachinePanel({
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Material</span>
+              <span className="text-xs text-gray-400 mb-1">Maszyna</span>
               <input
                 type="text"
-                defaultValue="210044"
+                value={`MA${machineNumber}`}
+                onChange={(e) => {
+                  const newNumber = e.target.value.replace('MA', '');
+                  if (!isNaN(Number(newNumber))) {
+                    setMachineNumber(Number(newNumber));
+                    // Auto-update capsule count based on machine
+                    if (newNumber === '59') setCapsuleCount(6000);
+                    else if (newNumber === '62') setCapsuleCount(2000);
+                    else if (newNumber === '61') setCapsuleCount(3000);
+                  }
+                }}
                 className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Model</span>
+              <span className="text-xs text-gray-400 mb-1">Format-Model-Nr Art.</span>
               <select
                 value={dasgColor}
                 onChange={(e) => setDasgColor(e.target.value)}
-                className="text-sm font-medium border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-24"
+                className="text-sm font-medium border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-32"
                 style={{
                   backgroundColor: dasgColor === 'DASG-1' ? 'white' : 
                     dasgColor === 'blue' ? '#3b82f6' :
@@ -264,12 +280,12 @@ export function MachinePanel({
                   color: dasgColor === 'DASG-1' ? 'black' : 'white'
                 }}
               >
-                <option value="DASG-1">DASG-1</option>
-                <option value="blue">Model 2</option>
-                <option value="green">Model 3</option>
-                <option value="orange">Model 4</option>
-                <option value="red">Model 5</option>
-                <option value="lila">Model 6</option>
+                <option value="DASG-1">DASG-1-147369</option>
+                <option value="blue">DASG-2-147370</option>
+                <option value="green">DASG-3-147371</option>
+                <option value="orange">DASG-4-147372</option>
+                <option value="red">DASG-5-147373</option>
+                <option value="lila">DASG-6-147374</option>
               </select>
             </div>
           </div>
@@ -285,7 +301,7 @@ export function MachinePanel({
                 type="number"
                 value={state.itemsInBox}
                 onChange={(e) => {
-                  const newValue = Math.max(0, Math.min(state.limit, Number(e.target.value)));
+                  const newValue = Math.max(0, Math.min(capsuleCount, Number(e.target.value)));
                   onUpdateItemsInBox?.(newValue);
                 }}
                 className="w-20 text-3xl font-mono font-bold text-white bg-transparent border-none outline-none text-center transition-opacity duration-300 hover:bg-white/10 rounded focus:ring-2 focus:ring-white/50"
@@ -294,9 +310,10 @@ export function MachinePanel({
               <span className="text-3xl font-mono font-bold text-white">/</span>
               <input
                 type="number"
-                value={state.limit}
+                value={capsuleCount}
                 onChange={(e) => {
                   const newLimit = Math.max(1, Number(e.target.value));
+                  setCapsuleCount(newLimit);
                   onUpdateSettings(newLimit, 1537, state.name);
                 }}
                 className="w-24 text-3xl font-mono font-bold text-white bg-transparent border-none outline-none text-center hover:bg-white/10 rounded focus:ring-2 focus:ring-white/50"
@@ -328,7 +345,7 @@ export function MachinePanel({
           {/* Prüfung centered */}
           <div className="flex flex-col items-center">
             <div className="text-xs font-medium text-white mb-2">Prüfung</div>
-            <div className="w-full max-w-lg space-y-2">
+            <div className="w-full max-w-lg space-y-3">
               {/* Prüfung bar - made wider and taller */}
               <div 
                 className="rounded-full h-12 overflow-hidden cursor-pointer bg-green-400 relative w-full border-2 border-white/40"
@@ -351,24 +368,49 @@ export function MachinePanel({
                   </>
                 )}
               </div>
-              {/* Time selector */}
-              <div className="flex justify-center space-x-1">
-                {['1Min', '1H', '2H', '3H'].map((time) => (
-                  <button
-                    key={time}
-                    onClick={() => {
-                      setPrufungTime(time as '1Min' | '1H' | '2H' | '3H');
-                      if (prufungStartTime) startPrufung(); // Restart if already running
+              
+              {/* Time slider */}
+              <div className="flex flex-col items-center space-y-2">
+                <div className="text-xs text-white/80">Szacowany czas: {prufungMinutes} min</div>
+                <div className="w-full max-w-64 px-3">
+                  <input
+                    type="range"
+                    min="5"
+                    max="45"
+                    step="5"
+                    value={prufungMinutes}
+                    onChange={(e) => setPrufungMinutes(Number(e.target.value))}
+                    className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
+                    style={{
+                      background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((prufungMinutes - 5) / 40) * 100}%, rgba(255,255,255,0.2) ${((prufungMinutes - 5) / 40) * 100}%, rgba(255,255,255,0.2) 100%)`
                     }}
-                    className={`px-2 py-1 text-xs rounded border-2 transition-all ${
-                      prufungTime === time 
-                        ? 'bg-machine-blue text-white border-blue-300 border-4' 
-                        : 'bg-white/60 text-industrial-600 hover:bg-white/80 border-white/30'
-                    }`}
-                  >
-                    {time}
-                  </button>
-                ))}
+                  />
+                  <div className="flex justify-between text-xs text-white/60 mt-1">
+                    <span>5min</span>
+                    <span>25min</span>
+                    <span>45min</span>
+                  </div>
+                </div>
+                
+                {/* Quick time buttons */}
+                <div className="flex justify-center space-x-1">
+                  {[5, 15, 30, 45].map((minutes) => (
+                    <button
+                      key={minutes}
+                      onClick={() => {
+                        setPrufungMinutes(minutes);
+                        if (prufungStartTime) startPrufung(); // Restart if already running
+                      }}
+                      className={`px-2 py-1 text-xs rounded border-2 transition-all ${
+                        prufungMinutes === minutes 
+                          ? 'bg-machine-blue text-white border-blue-300 border-4' 
+                          : 'bg-white/60 text-industrial-600 hover:bg-white/80 border-white/30'
+                      }`}
+                    >
+                      {minutes}min
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -381,7 +423,7 @@ export function MachinePanel({
           <BeutelSystem 
             currentBox={state.currentBox}
             itemsInBox={state.itemsInBox}
-            limit={state.limit}
+            limit={capsuleCount}
           />
         )}
 
@@ -389,7 +431,7 @@ export function MachinePanel({
         <div className="mb-4">
           <CardboardBoxVisualization
             currentProgress={percentage}
-            boxSize={machineNumber === 59 ? '10T' : (machineNumber === 61 ? '6' : '6') as '5T' | '6T' | '10T'}
+            boxSize={machineNumber === 59 ? '10T' : (machineNumber === 61 ? '6T' : '6T') as '5T' | '6T' | '10T'}
             completedBoxes={Math.max(0, state.currentBox - 1)}
             theme={cardboardTheme}
           />
