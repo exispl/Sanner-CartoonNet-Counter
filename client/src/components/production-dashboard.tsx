@@ -100,23 +100,23 @@ export function ProductionDashboard({ t }: ProductionDashboardProps) {
             {showDetails ? 'Ukryj szczegóły' : 'Pokaż szczegóły'}
           </Button>
         </CardHeader>
-        <CardContent className="bg-white dark:bg-gray-700">
+        <CardContent className="bg-gray-50 dark:bg-gray-800">
           <div className="space-y-3">
             {stats.recentRecords.map((record, index) => (
               <div 
                 key={index}
-                className="flex items-center justify-between p-3 bg-white dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-lg shadow-sm"
+                className="flex items-center justify-between p-4 bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-600 rounded-lg shadow-md hover:shadow-lg transition-shadow"
               >
                 <div className="flex items-center space-x-3">
                   <div className="flex flex-col">
-                    <span className="font-medium text-gray-900 dark:text-gray-100">VE-{record.veNumber}</span>
-                    <span className="text-sm text-gray-600 dark:text-gray-300">
+                    <span className="font-bold text-gray-900 dark:text-white text-base">VE-{record.veNumber}</span>
+                    <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
                       Karton #{record.kartonNr}
                     </span>
                   </div>
                   <Badge 
                     variant={record.status === 'Frei' ? 'default' : 'secondary'}
-                    className="bg-green-100 text-green-800"
+                    className="bg-green-200 text-green-900 font-semibold border-green-300"
                   >
                     {record.status}
                   </Badge>
@@ -124,12 +124,12 @@ export function ProductionDashboard({ t }: ProductionDashboardProps) {
                 
                 <div className="flex items-center space-x-4">
                   <div className="text-right">
-                    <div className="font-medium text-gray-900 dark:text-gray-100">{record.gutmenge.toLocaleString()}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">sztuk</div>
+                    <div className="font-bold text-gray-900 dark:text-white text-lg">{record.gutmenge.toLocaleString()}</div>
+                    <div className="text-sm font-medium text-gray-700 dark:text-gray-200">sztuk</div>
                   </div>
                   <div className="text-right">
-                    <div className="font-medium text-gray-900 dark:text-gray-100">{record.anwender}</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">
+                    <div className="font-bold text-gray-900 dark:text-white text-base">{record.anwender}</div>
+                    <div className="text-sm font-medium text-gray-700 dark:text-gray-200">
                       {formatDateTime(record.buchungsdatum)}
                     </div>
                   </div>
@@ -139,45 +139,45 @@ export function ProductionDashboard({ t }: ProductionDashboardProps) {
           </div>
 
           {showDetails && (
-            <div className="mt-6 space-y-4">
-              <h4 className="font-semibold text-lg flex items-center gap-2">
-                <BarChart3 className="h-5 w-5" />
+            <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg space-y-4">
+              <h4 className="font-bold text-xl text-gray-900 dark:text-white flex items-center gap-2">
+                <BarChart3 className="h-6 w-6" />
                 Szczegółowe Statystyki
               </h4>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">Czas Produkcji</CardTitle>
+                <Card className="border-2 border-gray-300 dark:border-gray-600">
+                  <CardHeader className="bg-blue-50 dark:bg-blue-900">
+                    <CardTitle className="text-lg font-bold text-gray-900 dark:text-white">Czas Produkcji</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
-                      <div className="flex justify-between">
-                        <span>Łączny czas produkcji:</span>
-                        <span className="font-medium">{stats.totalProductionTime.toFixed(1)} min</span>
+                  <CardContent className="bg-white dark:bg-gray-700">
+                    <div className="space-y-3">
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium text-gray-800 dark:text-gray-200">Łączny czas produkcji:</span>
+                        <span className="font-bold text-gray-900 dark:text-white text-lg">{stats.totalProductionTime.toFixed(1)} min</span>
                       </div>
-                      <div className="flex justify-between">
-                        <span>Czas przestojów:</span>
-                        <span className="font-medium">{stats.totalDowntime.toFixed(1)} min</span>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium text-gray-800 dark:text-gray-200">Czas przestojów:</span>
+                        <span className="font-bold text-gray-900 dark:text-white text-lg">{stats.totalDowntime.toFixed(1)} min</span>
                       </div>
-                      <div className="flex justify-between border-t pt-2">
-                        <span>Efektywność:</span>
-                        <span className="font-bold text-green-600">{stats.efficiency.toFixed(1)}%</span>
+                      <div className="flex justify-between items-center border-t-2 border-gray-200 dark:border-gray-600 pt-3">
+                        <span className="font-bold text-gray-800 dark:text-gray-200">Efektywność:</span>
+                        <span className="font-bold text-green-700 dark:text-green-400 text-xl">{stats.efficiency.toFixed(1)}%</span>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-base">Aktywni Operatorzy</CardTitle>
+                <Card className="border-2 border-gray-300 dark:border-gray-600">
+                  <CardHeader className="bg-purple-50 dark:bg-purple-900">
+                    <CardTitle className="text-lg font-bold text-gray-900 dark:text-white">Aktywni Operatorzy</CardTitle>
                   </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2">
+                  <CardContent className="bg-white dark:bg-gray-700">
+                    <div className="space-y-3">
                       {stats.activeOperators.map((operator, index) => (
-                        <div key={index} className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                          <span className="text-sm">{operator}</span>
+                        <div key={index} className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-600 rounded">
+                          <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                          <span className="font-medium text-gray-900 dark:text-white">{operator}</span>
                         </div>
                       ))}
                     </div>
@@ -186,40 +186,40 @@ export function ProductionDashboard({ t }: ProductionDashboardProps) {
               </div>
 
               {/* Detailed Records Table */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Wszystkie Rekordy</CardTitle>
+              <Card className="border-2 border-gray-300 dark:border-gray-600">
+                <CardHeader className="bg-green-50 dark:bg-green-900">
+                  <CardTitle className="text-lg font-bold text-gray-900 dark:text-white">Wszystkie Rekordy</CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="bg-white dark:bg-gray-700">
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                       <thead>
-                        <tr className="border-b">
-                          <th className="text-left p-2">VE-Nr</th>
-                          <th className="text-left p-2">Karton</th>
-                          <th className="text-left p-2">Data</th>
-                          <th className="text-left p-2">Operator</th>
-                          <th className="text-right p-2">Ilość</th>
-                          <th className="text-right p-2">Defekty</th>
-                          <th className="text-right p-2">Czas [min]</th>
+                        <tr className="border-b-2 border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800">
+                          <th className="text-left p-3 font-bold text-gray-900 dark:text-white">VE-Nr</th>
+                          <th className="text-left p-3 font-bold text-gray-900 dark:text-white">Karton</th>
+                          <th className="text-left p-3 font-bold text-gray-900 dark:text-white">Data</th>
+                          <th className="text-left p-3 font-bold text-gray-900 dark:text-white">Operator</th>
+                          <th className="text-right p-3 font-bold text-gray-900 dark:text-white">Ilość</th>
+                          <th className="text-right p-3 font-bold text-gray-900 dark:text-white">Defekty</th>
+                          <th className="text-right p-3 font-bold text-gray-900 dark:text-white">Czas [min]</th>
                         </tr>
                       </thead>
                       <tbody>
                         {records.map((record, index) => (
-                          <tr key={index} className="border-b hover:bg-gray-50 dark:hover:bg-gray-800">
-                            <td className="p-2 font-mono text-xs">{record.veNumber}</td>
-                            <td className="p-2">{record.kartonNr}</td>
-                            <td className="p-2 text-xs">{formatDateTime(record.buchungsdatum)}</td>
-                            <td className="p-2">{record.anwender}</td>
-                            <td className="p-2 text-right font-medium">{record.gutmenge.toLocaleString()}</td>
-                            <td className="p-2 text-right">
+                          <tr key={index} className="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                            <td className="p-3 font-mono text-sm font-bold text-gray-900 dark:text-white">{record.veNumber}</td>
+                            <td className="p-3 font-medium text-gray-900 dark:text-white">{record.kartonNr}</td>
+                            <td className="p-3 text-sm font-medium text-gray-800 dark:text-gray-200">{formatDateTime(record.buchungsdatum)}</td>
+                            <td className="p-3 font-medium text-gray-900 dark:text-white">{record.anwender}</td>
+                            <td className="p-3 text-right font-bold text-gray-900 dark:text-white text-base">{record.gutmenge.toLocaleString()}</td>
+                            <td className="p-3 text-right">
                               {record.ausschuss > 0 ? (
-                                <span className="text-red-600 font-medium">{record.ausschuss}</span>
+                                <span className="text-red-700 dark:text-red-400 font-bold">{record.ausschuss}</span>
                               ) : (
-                                <span className="text-green-600">0</span>
+                                <span className="text-green-700 dark:text-green-400 font-bold">0</span>
                               )}
                             </td>
-                            <td className="p-2 text-right">{record.prodZeit.toFixed(1)}</td>
+                            <td className="p-3 text-right font-bold text-gray-900 dark:text-white">{record.prodZeit.toFixed(1)}</td>
                           </tr>
                         ))}
                       </tbody>
