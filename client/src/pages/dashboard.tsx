@@ -12,6 +12,8 @@ import { SettingsMenu } from '@/components/settings-menu';
 import { ProductionDashboard } from '@/components/production-dashboard';
 import { CompanyProfits } from '@/components/company-profits';
 import { LotteryWheel } from '@/components/lottery-wheel';
+import { UserBalance } from '@/components/user-balance';
+import { PizzaOrderSystem } from '@/components/pizza-order-system';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
 import { useAppSettings } from '@/hooks/use-app-settings';
@@ -197,10 +199,12 @@ export default function Dashboard() {
           <ProductionDashboard t={t} />
         </div>
 
-        {/* Company Profits and Lottery */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        {/* Company Profits, Lottery, User Balance and Pizza Orders */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <CompanyProfits />
           <LotteryWheel />
+          <UserBalance username={currentUser} />
+          <PizzaOrderSystem currentUser={currentUser} />
         </div>
 
         {/* Statistics Cards - Hidden by default */}

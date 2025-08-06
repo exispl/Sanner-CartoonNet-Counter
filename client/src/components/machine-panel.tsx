@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { MachineState } from '@/hooks/use-machine-state';
 import { MachineSelector } from './machine-selector';
-import { CardboardBoxVisualization } from './cardboard-box-visualization';
+import { CardboardBoxVisualization } from './cardboard-box-visualization-new';
 import { MachineControls } from './machine-controls';
 import { TimerProgressBar } from './timer-progress-bar';
 import { BeutelSystem } from './beutel-system';
@@ -58,6 +58,7 @@ export function MachinePanel({
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [resetPassword, setResetPassword] = useState('');
   const [cardboardTheme, setCardboardTheme] = useState<'zielona' | 'niebieska' | 'żółta'>('zielona');
+  const [boxCapacity, setBoxCapacity] = useState(6);
 
   const percentage = Math.min(100, Math.floor((state.itemsInBox / capsuleCount) * 100));
 
@@ -193,18 +194,24 @@ export function MachinePanel({
           </div>
         </div>
         
-        <div className="flex space-x-2">
-          <div className="flex-1">
-            <input
-              type="text"
-              value={localName}
-              onChange={(e) => setLocalName(e.target.value)}
-              onBlur={handleSettingsUpdate}
-              onKeyPress={handleKeyPress}
-              className="w-full text-lg font-bold text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg px-3 py-2 placeholder-white/70"
-              placeholder="Nazwa maszyny..."
-            />
+        <div className="space-y-2">
+          <div className="flex space-x-2">
+            <div className="flex-1">
+              <input
+                type="text"
+                value={localName}
+                onChange={(e) => setLocalName(e.target.value)}
+                onBlur={handleSettingsUpdate}
+                onKeyPress={handleKeyPress}
+                className="w-full text-lg font-bold text-white bg-white/20 border-2 border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded-lg px-3 py-2 placeholder-white/70"
+                placeholder="Nazwa maszyny..."
+              />
+            </div>
+            <div className="text-sm font-medium text-white bg-white/20 border border-white/30 rounded px-2 py-1 w-24 text-center">
+              {auftragNumber.slice(-4)}
+            </div>
           </div>
+          
           <div className="flex flex-col">
             <span className="text-xs text-gray-400 mb-1">Wybierz maszynę</span>
             <select
@@ -221,7 +228,7 @@ export function MachinePanel({
                   setCapsuleCount(3000);
                 }
               }}
-              className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
+              className="w-full text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1"
             >
               <option value={59}>MA59</option>
               <option value={61}>MA61</option>
@@ -240,20 +247,20 @@ export function MachinePanel({
                   const prefix = e.target.value;
                   setAuftragNumber(prefix + '540');
                 }}
-                className="text-base font-semibold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-3 py-2 w-20"
+                className="text-lg font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-3 py-2 w-24"
                 style={{ fontFamily: 'monospace' }}
               >
                 <option value="1012">1012</option>
                 <option value="1011">1011</option>
               </select>
-              <div className="text-base font-semibold text-white bg-blue-600 border border-white/30 rounded px-3 py-2 w-20 text-center"
+              <div className="text-lg font-bold text-white bg-blue-600 border border-white/30 rounded px-3 py-2 w-24 text-center"
                    style={{ fontFamily: 'monospace' }}>
                 2540
               </div>
             </div>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs text-gray-400 mb-1">Format-Model-Nr Art.</span>
+            <span className="text-xs text-gray-400 mb-1">Typ kartonu / worka</span>
             <select
               value={dasgColor}
               onChange={(e) => setDasgColor(e.target.value)}
@@ -276,7 +283,17 @@ export function MachinePanel({
               <option value="lila">DASG-6-147374</option>
             </select>
           </div>
-          <div className="flex space-x-2">
+          <div className="flex space-x-2 items-end">
+            <div className="flex-1">
+              <span className="text-xs text-gray-400 mb-1">Kapsle w kartonie</span>
+              <input
+                type="number"
+                value={boxCapacity}
+                onChange={(e) => setBoxCapacity(Number(e.target.value))}
+                className="w-full text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-3 py-2"
+                style={{ width: 'calc(100% + 25px)' }}
+              />
+            </div>
             <div className="flex flex-col">
               <span className="text-xs text-gray-400 mb-1">Halle</span>
               <input
@@ -338,6 +355,9 @@ export function MachinePanel({
         <div className="flex flex-col items-center space-y-4 mb-6">
           {/* Progress Bar centered */}
           <div className="w-full max-w-md">
+            <div className="text-center mb-2">
+              <span className="text-xs text-gray-300 font-medium">Średnio napełnienie worka</span>
+            </div>
             <div className="relative">
               <div className="w-full h-8 bg-white/20 rounded-2xl overflow-hidden border-2 border-white/30">
                 <div
@@ -382,7 +402,7 @@ export function MachinePanel({
               {/* Quick time buttons */}
               <div className="flex justify-center space-x-1">
                 {[
-                  { label: 'Test', minutes: 1 },
+                  { label: '1M', minutes: 1 },
                   { label: '1H', minutes: 60 },
                   { label: '2H', minutes: 120 },
                   { label: '3H', minutes: 180 }
