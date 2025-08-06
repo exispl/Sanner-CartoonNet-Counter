@@ -9,6 +9,7 @@ import { MachineSelector } from './machine-selector';
 import { CardboardBoxVisualization } from './cardboard-box-visualization';
 import { MachineControls } from './machine-controls';
 import { TimerProgressBar } from './timer-progress-bar';
+import { BeutelSystem } from './beutel-system';
 
 interface MachinePanelProps {
   machineId: number;
@@ -200,14 +201,36 @@ export function MachinePanel({
           </div>
           <div className="flex flex-wrap gap-2">
             <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Nr Auftrag</span>
-              <input
-                type="text"
-                value={auftragNumber}
-                onChange={(e) => setAuftragNumber(e.target.value)}
-                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-28"
-                placeholder="1012540"
-              />
+              <span className="text-base font-semibold text-gray-300 mb-1">Nr Auftrag</span>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={auftragNumber}
+                  onChange={(e) => setAuftragNumber(e.target.value)}
+                  className="text-base font-semibold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-3 py-2 w-36"
+                  style={{
+                    fontSize: '17px',
+                    textShadow: '0 0 2px rgba(255,255,255,0.3)',
+                    fontFamily: 'monospace',
+                  }}
+                  placeholder="1012540"
+                />
+                {auftragNumber.length >= 4 && (
+                  <div 
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
+                    style={{
+                      fontSize: '19px',
+                      fontWeight: 'bold',
+                      textShadow: '0 0 4px rgba(255,255,255,0.5)',
+                      color: 'white',
+                      marginRight: '-60px',
+                      zIndex: 10
+                    }}
+                  >
+                    {auftragNumber.slice(-4)}
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex flex-col">
               <span className="text-xs text-gray-400 mb-1">Halle</span>
@@ -228,15 +251,25 @@ export function MachinePanel({
             <div className="flex flex-col">
               <span className="text-xs text-gray-400 mb-1">Model</span>
               <select
-                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-24"
+                value={dasgColor}
+                onChange={(e) => setDasgColor(e.target.value)}
+                className="text-sm font-medium border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-24"
+                style={{
+                  backgroundColor: dasgColor === 'DASG-1' ? 'white' : 
+                    dasgColor === 'blue' ? '#3b82f6' :
+                    dasgColor === 'green' ? '#10b981' :
+                    dasgColor === 'orange' ? '#f97316' :
+                    dasgColor === 'red' ? '#ef4444' :
+                    dasgColor === 'lila' ? '#a855f7' : '#6b7280',
+                  color: dasgColor === 'DASG-1' ? 'black' : 'white'
+                }}
               >
-                <option value="white">white</option>
-                <option value="black">black</option>
-                <option value="blue">blue</option>
-                <option value="red">red</option>
-                <option value="green">green</option>
-                <option value="yellow">yellow</option>
-                <option value="gray">gray</option>
+                <option value="DASG-1">DASG-1</option>
+                <option value="blue">Model 2</option>
+                <option value="green">Model 3</option>
+                <option value="orange">Model 4</option>
+                <option value="red">Model 5</option>
+                <option value="lila">Model 6</option>
               </select>
             </div>
           </div>
@@ -296,14 +329,15 @@ export function MachinePanel({
           <div className="flex flex-col items-center">
             <div className="text-xs font-medium text-white mb-2">Prüfung</div>
             <div className="w-full max-w-lg space-y-2">
-              {/* Prüfung bar */}
+              {/* Prüfung bar - made wider and taller */}
               <div 
-                className="rounded-full h-10 overflow-hidden cursor-pointer bg-green-400 relative w-full"
+                className="rounded-full h-12 overflow-hidden cursor-pointer bg-green-400 relative w-full border-2 border-white/40"
                 onClick={prufungExpired ? resetPrufung : startPrufung}
+                style={{ width: '120%', maxWidth: '300px' }}
               >
                 {prufungExpired ? (
                   <div className="h-full bg-red-600 border-2 border-orange-500 flex items-center justify-center animate-blink-red-white">
-                    <span className="text-sm font-bold text-white">Prüfung</span>
+                    <span className="text-base font-bold text-white">Prüfung</span>
                   </div>
                 ) : (
                   <>
@@ -312,7 +346,7 @@ export function MachinePanel({
                       style={{ width: `${getPrufungProgress()}%` }}
                     />
                     <div className="absolute inset-0 flex items-center justify-center">
-                      <span className="text-sm font-bold text-white">Prüfung</span>
+                      <span className="text-base font-bold text-white">Prüfung</span>
                     </div>
                   </>
                 )}
@@ -326,10 +360,10 @@ export function MachinePanel({
                       setPrufungTime(time as '1Min' | '1H' | '2H' | '3H');
                       if (prufungStartTime) startPrufung(); // Restart if already running
                     }}
-                    className={`px-1 py-1 text-xs rounded ${
+                    className={`px-2 py-1 text-xs rounded border-2 transition-all ${
                       prufungTime === time 
-                        ? 'bg-machine-blue text-white' 
-                        : 'bg-white/60 text-industrial-600 hover:bg-white/80'
+                        ? 'bg-machine-blue text-white border-blue-300 border-4' 
+                        : 'bg-white/60 text-industrial-600 hover:bg-white/80 border-white/30'
                     }`}
                   >
                     {time}
@@ -341,6 +375,15 @@ export function MachinePanel({
 
 
         </div>
+
+        {/* MA59 Beutel System */}
+        {machineNumber === 59 && (
+          <BeutelSystem 
+            currentBox={state.currentBox}
+            itemsInBox={state.itemsInBox}
+            limit={state.limit}
+          />
+        )}
 
         {/* Current Box Visualization */}
         <div className="mb-4">

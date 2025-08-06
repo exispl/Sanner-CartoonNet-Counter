@@ -51,8 +51,55 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: 
         <div className="absolute top-4 left-2 right-2 h-px bg-orange-500/40"></div>
         <div className="absolute bottom-4 left-2 right-2 h-px bg-orange-500/40"></div>
         
-        {/* Fill level indicator */}
-        {isActive && fillLevel > 0 && (
+        {/* MA59 Beutel visualization - 2 silver bags */}
+        {size === '10T' && (
+          <div className="absolute bottom-2 left-2 right-2 top-8 flex flex-col space-y-1">
+            {/* Beutel 1 - Top half */}
+            <div 
+              className={`flex-1 rounded-sm border border-gray-400 transition-all duration-500 ${
+                isActive && fillLevel >= 50 
+                  ? 'bg-gradient-to-t from-gray-300 to-gray-400 shadow-md opacity-90' 
+                  : 'bg-gradient-to-t from-gray-100 to-gray-200 opacity-60'
+              }`}
+              style={{
+                backgroundImage: isActive && fillLevel >= 50 
+                  ? 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), transparent), radial-gradient(circle at 70% 70%, rgba(255,255,255,0.4), transparent)'
+                  : 'none'
+              }}
+            >
+              <div className="text-center text-[8px] text-gray-700 mt-1 font-semibold">
+                Beutel 1
+              </div>
+              <div className="text-center text-[7px] text-gray-600">
+                3000
+              </div>
+            </div>
+            
+            {/* Beutel 2 - Bottom half */}
+            <div 
+              className={`flex-1 rounded-sm border border-gray-400 transition-all duration-500 ${
+                isActive && fillLevel >= 100 
+                  ? 'bg-gradient-to-t from-gray-300 to-gray-400 shadow-md opacity-90' 
+                  : 'bg-gradient-to-t from-gray-100 to-gray-200 opacity-60'
+              }`}
+              style={{
+                backgroundImage: isActive && fillLevel >= 100 
+                  ? 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), transparent), radial-gradient(circle at 70% 70%, rgba(255,255,255,0.4), transparent)'
+                  : 'none'
+              }}
+            >
+              <div className="text-center text-[8px] text-gray-700 mt-1 font-semibold">
+                Beutel 2
+              </div>
+              <div className="text-center text-[7px] text-gray-600">
+                3000
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Regular fill level indicator for non-MA59 machines */}
+        {size !== '10T' && isActive && fillLevel > 0 && (
           <div 
             className="absolute bottom-2 left-2 right-2 bg-gradient-to-t from-cyan-400 to-cyan-300 rounded-sm transition-all duration-500 animate-blink-cyan"
             style={{ 

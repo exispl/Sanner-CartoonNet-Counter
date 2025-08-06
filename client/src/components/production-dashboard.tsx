@@ -100,17 +100,17 @@ export function ProductionDashboard({ t }: ProductionDashboardProps) {
             {showDetails ? 'Ukryj szczegóły' : 'Pokaż szczegóły'}
           </Button>
         </CardHeader>
-        <CardContent>
+        <CardContent className="bg-white dark:bg-gray-700">
           <div className="space-y-3">
             {stats.recentRecords.map((record, index) => (
               <div 
                 key={index}
-                className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg"
+                className="flex items-center justify-between p-3 bg-white dark:bg-gray-600 border border-gray-200 dark:border-gray-500 rounded-lg shadow-sm"
               >
                 <div className="flex items-center space-x-3">
                   <div className="flex flex-col">
-                    <span className="font-medium">VE-{record.veNumber}</span>
-                    <span className="text-sm text-gray-500">
+                    <span className="font-medium text-gray-900 dark:text-gray-100">VE-{record.veNumber}</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-300">
                       Karton #{record.kartonNr}
                     </span>
                   </div>
@@ -124,12 +124,12 @@ export function ProductionDashboard({ t }: ProductionDashboardProps) {
                 
                 <div className="flex items-center space-x-4">
                   <div className="text-right">
-                    <div className="font-medium">{record.gutmenge.toLocaleString()}</div>
-                    <div className="text-sm text-gray-500">sztuk</div>
+                    <div className="font-medium text-gray-900 dark:text-gray-100">{record.gutmenge.toLocaleString()}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">sztuk</div>
                   </div>
                   <div className="text-right">
-                    <div className="font-medium">{record.anwender}</div>
-                    <div className="text-sm text-gray-500">
+                    <div className="font-medium text-gray-900 dark:text-gray-100">{record.anwender}</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">
                       {formatDateTime(record.buchungsdatum)}
                     </div>
                   </div>
