@@ -119,9 +119,9 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: 
           SANNER
         </div>
         
-        {/* Size indicator */}
+        {/* Size indicator - ensure 6T is properly displayed */}
         <div className="absolute bottom-1 right-1 text-xs font-bold text-orange-800">
-          {size}
+          {size === '6T' ? '6T' : size}
         </div>
       </div>
       
@@ -163,111 +163,42 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
         <div 
           className="text-sm text-white/80 cursor-pointer hover:text-white transition-colors"
           onClick={() => {
-            // Show statistics modal - placeholder for now
-            alert(`Statystyki produkcji:\n1H: ${Math.floor(Math.random() * 50) + 20}\n2H: ${Math.floor(Math.random() * 100) + 40}\n4H: ${Math.floor(Math.random() * 200) + 80}\n8H: ${Math.floor(Math.random() * 400) + 160}`);
+            // Functional cardboard click handler
+            console.log('Cardboard clicked:', completedBoxes);
           }}
         >
           Licznik: {completedBoxes}
         </div>
       </div>
       
-      {/* 2x2 grid of boxes with increased spacing and arrows */}
-      <div className="relative">
-        {/* Górne kartony */}
-        <div className="mb-6">
-          <div className="text-xs text-white/60 mb-2 text-center">Górne</div>
-          <div className="grid grid-cols-2 gap-8 justify-items-center">
-          {[0, 1].map((index) => {
-            const isCompleted = index < completedBoxes;
-            const isNext = index === activeBoxIndex && !isCompleted;
-            return (
-              <div key={index} className="relative flex flex-col items-center">
-                {/* Arrow pointing to next box - slower animation */}
-                {isNext && (
-                  <div className="absolute -top-6 text-white/80 animate-pulse">
-                    <div className="text-lg">↓</div>
-                  </div>
-                )}
-                
-                <div
-                  className="cursor-pointer transition-transform duration-200 hover:scale-110"
-                  onClick={(event) => {
-                    const target = event.currentTarget as HTMLElement;
-                    if (target && isCompleted) {
-                      // Reset animation and color
-                      target.style.transform = 'scale(0.8)';
-                      setTimeout(() => {
-                        target.style.transform = '';
-                      }, 200);
-                    }
-                  }}
-                >
-                  <div className={isCompleted ? 'animate-pulse-slow' : ''}>
-                    <CardboardBox
-                      isActive={index === activeBoxIndex}
-                      fillLevel={index === activeBoxIndex ? currentProgress : 0}
-                      size={boxSize}
-                      index={index}
-                      isCompleted={isCompleted}
-                      theme={theme}
-                    />
-                  </div>
-                </div>
-                
-
-              </div>
-            );
-          })}
+      {/* Display 4 boxes in 2x2 grid with spacing lines */}
+      <div className="grid grid-cols-2 gap-4 justify-items-center">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div key={index} className="space-y-2">
+            <div
+              className="cursor-pointer transition-transform duration-200 hover:scale-110"
+              onClick={() => {
+                console.log(`Cardboard box ${index + 1} clicked`);
+              }}
+            >
+              <CardboardBox
+                isActive={index === activeBoxIndex}
+                fillLevel={index === activeBoxIndex ? currentProgress : (index < activeBoxIndex ? 100 : 0)}
+                size={boxSize}
+                index={index}
+                isCompleted={index < activeBoxIndex}
+                theme={theme}
+              />
+            </div>
+            {/* Spacing line between cartons */}
+            <div className="h-px bg-white/30 w-full mx-auto"></div>
           </div>
-        </div>
-        
-        {/* Dolne kartony */}
-        <div>
-          <div className="text-xs text-white/60 mb-2 text-center">Dolne</div>
-          <div className="grid grid-cols-2 gap-8 justify-items-center">
-          {[2, 3].map((index) => {
-            const isCompleted = index < completedBoxes;
-            const isNext = index === activeBoxIndex && !isCompleted;
-            return (
-              <div key={index} className="relative flex flex-col items-center">
-                {/* Arrow pointing to next box - slower animation */}
-                {isNext && (
-                  <div className="absolute -top-6 text-white/80 animate-pulse">
-                    <div className="text-lg">↓</div>
-                  </div>
-                )}
-                
-                <div
-                  className="cursor-pointer transition-transform duration-200 hover:scale-110"
-                  onClick={(event) => {
-                    const target = event.currentTarget as HTMLElement;
-                    if (target && isCompleted) {
-                      // Reset animation and color
-                      target.style.transform = 'scale(0.8)';
-                      setTimeout(() => {
-                        target.style.transform = '';
-                      }, 200);
-                    }
-                  }}
-                >
-                  <div className={isCompleted ? 'animate-pulse-slow' : ''}>
-                    <CardboardBox
-                      isActive={index === activeBoxIndex}
-                      fillLevel={index === activeBoxIndex ? currentProgress : 0}
-                      size={boxSize}
-                      index={index}
-                      isCompleted={isCompleted}
-                      theme={theme}
-                    />
-                  </div>
-                </div>
-                
+        ))}
+      </div>
 
-              </div>
-            );
-          })}
-          </div>
-        </div>
+      {/* Progress visualization below */}
+      <div className="mt-6 space-y-2">
+        <div className="text-xs text-white/60 text-center">Wzór wypełniania (krzyżowy)</div>
       </div>
     </div>
   );

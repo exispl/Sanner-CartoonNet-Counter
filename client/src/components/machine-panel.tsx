@@ -205,47 +205,7 @@ export function MachinePanel({
               placeholder="Nazwa maszyny..."
             />
           </div>
-          <div className="flex flex-wrap gap-2">
-            <div className="flex flex-col">
-              <span className="text-base font-semibold text-gray-300 mb-1">Nr Auftrag</span>
-              <div className="relative">
-                <input
-                  type="text"
-                  value={auftragNumber}
-                  onChange={(e) => setAuftragNumber(e.target.value)}
-                  className="text-base font-semibold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-3 py-2 w-36"
-                  style={{
-                    fontSize: '17px',
-                    textShadow: '0 0 2px rgba(255,255,255,0.3)',
-                    fontFamily: 'monospace',
-                  }}
-                  placeholder="1012540"
-                />
-                {auftragNumber.length >= 4 && (
-                  <div 
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none"
-                    style={{
-                      fontSize: '19px',
-                      fontWeight: 'bold',
-                      textShadow: '0 0 4px rgba(255,255,255,0.5)',
-                      color: 'white',
-                      marginRight: '-60px',
-                      zIndex: 10
-                    }}
-                  >
-                    {auftragNumber.slice(-4)}
-                  </div>
-                )}
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Halle</span>
-              <input
-                type="text"
-                defaultValue="5"
-                className="text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1 py-1 w-8 text-center"
-              />
-            </div>
+          <div className="flex flex-wrap gap-2 mb-2">
             <div className="flex flex-col">
               <span className="text-xs text-gray-400 mb-1">Maszyna</span>
               <input
@@ -265,29 +225,88 @@ export function MachinePanel({
               />
             </div>
             <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Format-Model-Nr Art.</span>
+              <span className="text-xs text-gray-400 mb-1">Czas</span>
+              <div className="text-sm font-medium text-white bg-white/20 border border-white/30 rounded px-2 py-1 w-20 text-center">
+                {machineNumber === 61 ? '24 min' : machineNumber === 62 ? '21 min' : machineNumber === 59 ? '19 min' : '30 min'}
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 mb-1">Ilość kapsli</span>
               <select
-                value={dasgColor}
-                onChange={(e) => setDasgColor(e.target.value)}
-                className="text-sm font-medium border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-32"
-                style={{
-                  backgroundColor: dasgColor === 'DASG-1' ? 'white' : 
-                    dasgColor === 'blue' ? '#3b82f6' :
-                    dasgColor === 'green' ? '#10b981' :
-                    dasgColor === 'orange' ? '#f97316' :
-                    dasgColor === 'red' ? '#ef4444' :
-                    dasgColor === 'lila' ? '#a855f7' : '#6b7280',
-                  color: dasgColor === 'DASG-1' ? 'black' : 'white'
-                }}
+                value={capsuleCount}
+                onChange={(e) => setCapsuleCount(Number(e.target.value))}
+                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
               >
-                <option value="DASG-1">DASG-1-147369</option>
-                <option value="blue">DASG-2-147370</option>
-                <option value="green">DASG-3-147371</option>
-                <option value="orange">DASG-4-147372</option>
-                <option value="red">DASG-5-147373</option>
-                <option value="lila">DASG-6-147374</option>
+                <option value={1500}>1500</option>
+                <option value={2000}>2000</option>
+                <option value={3000}>3000</option>
+                <option value={6000}>6000</option>
               </select>
             </div>
+          </div>
+        </div>
+        
+        <div className="flex flex-wrap gap-2 mt-2">
+          <div className="flex flex-col">
+            <span className="text-base font-semibold text-gray-300 mb-1">Nr Auftrag</span>
+            <div className="flex space-x-2">
+              <select
+                value={auftragNumber.startsWith('1012') ? '1012' : '1011'}
+                onChange={(e) => {
+                  const prefix = e.target.value;
+                  setAuftragNumber(prefix + '540');
+                }}
+                className="text-base font-semibold text-white bg-green-600 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-2 w-16"
+                style={{ fontFamily: 'monospace' }}
+              >
+                <option value="1012">1012</option>
+                <option value="1011">1011</option>
+              </select>
+              <div className="text-base font-semibold text-white bg-blue-600 border border-white/30 rounded px-3 py-2 w-20 text-center"
+                   style={{ fontFamily: 'monospace' }}>
+                2540
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs text-gray-400 mb-1">Format-Model-Nr Art.</span>
+            <select
+              value={dasgColor}
+              onChange={(e) => setDasgColor(e.target.value)}
+              className="text-sm font-medium border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-32"
+              style={{
+                backgroundColor: dasgColor === 'DASG-1' ? 'white' : 
+                  dasgColor === 'blue' ? '#3b82f6' :
+                  dasgColor === 'green' ? '#10b981' :
+                  dasgColor === 'orange' ? '#f97316' :
+                  dasgColor === 'red' ? '#ef4444' :
+                  dasgColor === 'lila' ? '#a855f7' : '#6b7280',
+                color: dasgColor === 'DASG-1' ? 'black' : 'white'
+              }}
+            >
+              <option value="DASG-1">DASG-1-147369</option>
+              <option value="blue">DASG-2-147370</option>
+              <option value="green">DASG-3-147371</option>
+              <option value="orange">DASG-4-147372</option>
+              <option value="red">DASG-5-147373</option>
+              <option value="lila">DASG-6-147374</option>
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs text-gray-400 mb-1">Halle</span>
+            <input
+              type="text"
+              defaultValue="5"
+              className="text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1 py-1 w-8 text-center"
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xs text-gray-400 mb-1">Material</span>
+            <input
+              type="text"
+              defaultValue="210044"
+              className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
+            />
           </div>
         </div>
       </div>
@@ -344,7 +363,6 @@ export function MachinePanel({
           
           {/* Prüfung centered */}
           <div className="flex flex-col items-center">
-            <div className="text-xs font-medium text-white mb-2">Prüfung</div>
             <div className="w-full max-w-lg space-y-3">
               {/* Prüfung bar - made wider and taller */}
               <div 
@@ -369,48 +387,29 @@ export function MachinePanel({
                 )}
               </div>
               
-              {/* Time slider */}
-              <div className="flex flex-col items-center space-y-2">
-                <div className="text-xs text-white/80">Szacowany czas: {prufungMinutes} min</div>
-                <div className="w-full max-w-64 px-3">
-                  <input
-                    type="range"
-                    min="5"
-                    max="45"
-                    step="5"
-                    value={prufungMinutes}
-                    onChange={(e) => setPrufungMinutes(Number(e.target.value))}
-                    className="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer slider"
-                    style={{
-                      background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((prufungMinutes - 5) / 40) * 100}%, rgba(255,255,255,0.2) ${((prufungMinutes - 5) / 40) * 100}%, rgba(255,255,255,0.2) 100%)`
+              {/* Quick time buttons */}
+              <div className="flex justify-center space-x-1">
+                {[
+                  { label: 'Test', minutes: 1 },
+                  { label: '1H', minutes: 60 },
+                  { label: '2H', minutes: 120 },
+                  { label: '3H', minutes: 180 }
+                ].map((time) => (
+                  <button
+                    key={time.label}
+                    onClick={() => {
+                      setPrufungMinutes(time.minutes);
+                      if (prufungStartTime) startPrufung(); // Restart if already running
                     }}
-                  />
-                  <div className="flex justify-between text-xs text-white/60 mt-1">
-                    <span>5min</span>
-                    <span>25min</span>
-                    <span>45min</span>
-                  </div>
-                </div>
-                
-                {/* Quick time buttons */}
-                <div className="flex justify-center space-x-1">
-                  {[5, 15, 30, 45].map((minutes) => (
-                    <button
-                      key={minutes}
-                      onClick={() => {
-                        setPrufungMinutes(minutes);
-                        if (prufungStartTime) startPrufung(); // Restart if already running
-                      }}
-                      className={`px-2 py-1 text-xs rounded border-2 transition-all ${
-                        prufungMinutes === minutes 
-                          ? 'bg-machine-blue text-white border-blue-300 border-4' 
-                          : 'bg-white/60 text-industrial-600 hover:bg-white/80 border-white/30'
-                      }`}
-                    >
-                      {minutes}min
-                    </button>
-                  ))}
-                </div>
+                    className={`px-2 py-1 text-xs rounded border-2 transition-all ${
+                      prufungMinutes === time.minutes 
+                        ? 'bg-machine-blue text-white border-blue-300 border-4' 
+                        : 'bg-white/60 text-industrial-600 hover:bg-white/80 border-white/30'
+                    }`}
+                  >
+                    {time.label}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -431,7 +430,7 @@ export function MachinePanel({
         <div className="mb-4">
           <CardboardBoxVisualization
             currentProgress={percentage}
-            boxSize={machineNumber === 59 ? '10T' : (machineNumber === 61 ? '6T' : '6T') as '5T' | '6T' | '10T'}
+            boxSize={machineNumber === 59 ? '10T' : '6T' as '5T' | '6T' | '10T'}
             completedBoxes={Math.max(0, state.currentBox - 1)}
             theme={cardboardTheme}
           />

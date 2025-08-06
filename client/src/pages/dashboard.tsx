@@ -10,6 +10,8 @@ import { UserLoginSelector } from '@/components/user-login-selector';
 import { EmployeeBonusSystem } from '@/components/employee-bonus-system';
 import { SettingsMenu } from '@/components/settings-menu';
 import { ProductionDashboard } from '@/components/production-dashboard';
+import { CompanyProfits } from '@/components/company-profits';
+import { LotteryWheel } from '@/components/lottery-wheel';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
 import { useAppSettings } from '@/hooks/use-app-settings';
@@ -193,6 +195,12 @@ export default function Dashboard() {
         {/* Production Dashboard with Real Data */}
         <div className="mb-8">
           <ProductionDashboard t={t} />
+        </div>
+
+        {/* Company Profits and Lottery */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <CompanyProfits />
+          <LotteryWheel />
         </div>
 
         {/* Statistics Cards - Hidden by default */}
