@@ -256,7 +256,7 @@ export function MachinePanel({
                   const prefix = e.target.value;
                   setAuftragNumber(prefix + '540');
                 }}
-                className="text-base font-semibold text-white bg-green-600 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-2 w-16"
+                className="text-base font-semibold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-3 py-2 w-20"
                 style={{ fontFamily: 'monospace' }}
               >
                 <option value="1012">1012</option>
@@ -273,7 +273,7 @@ export function MachinePanel({
             <select
               value={dasgColor}
               onChange={(e) => setDasgColor(e.target.value)}
-              className="text-sm font-medium border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-32"
+              className="text-sm font-medium border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-40"
               style={{
                 backgroundColor: dasgColor === 'DASG-1' ? 'white' : 
                   dasgColor === 'blue' ? '#3b82f6' :

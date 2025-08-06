@@ -171,10 +171,10 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
         </div>
       </div>
       
-      {/* Display 4 boxes in 2x2 grid with spacing lines */}
-      <div className="grid grid-cols-2 gap-4 justify-items-center">
+      {/* Display 4 boxes in 2x2 grid with better spacing */}
+      <div className="grid grid-cols-2 gap-6 justify-items-center">
         {Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="space-y-2">
+          <div key={index} className="space-y-3">
             <div
               className="cursor-pointer transition-transform duration-200 hover:scale-110"
               onClick={() => {
@@ -190,8 +190,8 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
                 theme={theme}
               />
             </div>
-            {/* Spacing line between cartons */}
-            <div className="h-px bg-white/30 w-full mx-auto"></div>
+            {/* Better spacing line between cartons */}
+            <div className="h-0.5 bg-gradient-to-r from-transparent via-white/40 to-transparent w-full mx-auto"></div>
           </div>
         ))}
       </div>
