@@ -18,6 +18,7 @@ import { UserRewardsSystem } from '@/components/user-rewards-system';
 import { DailyChallenges } from '@/components/daily-challenges';
 import { Leaderboard } from '@/components/leaderboard';
 import { GamificationCenter } from '@/components/gamification-center';
+import { AuftragDisplay } from '@/components/auftrag-display';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
 import { useAppSettings } from '@/hooks/use-app-settings';
@@ -201,6 +202,11 @@ export default function Dashboard() {
         {/* Production Dashboard with Real Data */}
         <div className="mb-8">
           <ProductionDashboard t={t} />
+        </div>
+
+        {/* Aufträge Display for MA61 */}
+        <div className="mb-8">
+          <AuftragDisplay machineId="MA61" />
         </div>
 
         {/* Company Profits, Lottery, User Balance and Pizza Orders */}

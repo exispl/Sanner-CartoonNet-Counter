@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { MachineState } from '@/hooks/use-machine-state';
 import { MachineSelector } from './machine-selector';
 import { CardboardBoxVisualization } from './cardboard-box-visualization-new';
+import { AuftragDisplay } from './auftrag-display';
 import { MachineControls } from './machine-controls';
 import { TimerProgressBar } from './timer-progress-bar';
 import { BeutelSystem } from './beutel-system';
@@ -436,6 +437,13 @@ export function MachinePanel({
             itemsInBox={state.itemsInBox}
             limit={capsuleCount}
           />
+        )}
+
+        {/* MA61 Auftrag Display */}
+        {machineNumber === 61 && (
+          <div className="mb-4">
+            <AuftragDisplay machineId="MA61" compact={true} />
+          </div>
         )}
 
         {/* Current Box Visualization */}
