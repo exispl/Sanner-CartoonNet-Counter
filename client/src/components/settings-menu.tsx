@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { translations, Language } from '@/lib/translations';
-import { useAppSettings } from '@/hooks/use-app-settings';
+import { useAppSettings, ColorScheme } from '@/hooks/use-app-settings';
 
 // Import flag images  
 import plFlag from '@/assets/flags/pl.svg';
@@ -150,6 +150,36 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                     <Moon className="w-4 h-4 mx-auto mb-1" />
                     <div>Ciemny</div>
                   </button>
+                </div>
+              </div>
+
+              {/* Color Scheme Settings */}
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Palette className="w-4 h-4 text-machine-amber" />
+                  <Label className="text-sm font-semibold text-gray-800 dark:text-gray-200">Schemat Kolorów Dashboard</Label>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { code: 'default' as ColorScheme, label: 'Domyślny', color: 'bg-gray-400' },
+                    { code: 'green' as ColorScheme, label: 'Zielony', color: 'bg-green-400' },
+                    { code: 'blue' as ColorScheme, label: 'Niebieski', color: 'bg-blue-400' },
+                    { code: 'yellow' as ColorScheme, label: 'Żółty', color: 'bg-yellow-400' }
+                  ].map((scheme) => (
+                    <button
+                      key={scheme.code}
+                      onClick={() => updateSettings({ colorScheme: scheme.code })}
+                      className={`p-2 rounded border transition-all text-center text-xs ${
+                        settings.colorScheme === scheme.code
+                          ? 'border-machine-blue bg-machine-blue/20 text-machine-blue font-semibold'
+                          : 'border-gray-300 dark:border-gray-500 hover:border-machine-blue/50 text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700'
+                      }`}
+                      data-testid={`color-scheme-${scheme.code}`}
+                    >
+                      <div className={`w-4 h-4 ${scheme.color} mx-auto mb-1 rounded`}></div>
+                      <div>{scheme.label}</div>
+                    </button>
+                  ))}
                 </div>
               </div>
 

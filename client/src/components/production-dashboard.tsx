@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useAppSettings, ColorScheme } from '@/hooks/use-app-settings';
 import { 
   getProductionStats, 
   getProductionRecords, 
@@ -25,9 +26,52 @@ interface ProductionDashboardProps {
   t: (key: string) => string;
 }
 
+const getColorSchemeClasses = (scheme: ColorScheme) => {
+  switch (scheme) {
+    case 'green':
+      return {
+        cardBg: 'bg-green-50',
+        recordBg: 'bg-green-100',
+        recordHover: 'hover:bg-green-200',
+        border: 'border-green-200',
+        text: 'text-green-900',
+        textSecondary: 'text-green-700'
+      };
+    case 'blue':
+      return {
+        cardBg: 'bg-blue-50',
+        recordBg: 'bg-blue-100',
+        recordHover: 'hover:bg-blue-200',
+        border: 'border-blue-200',
+        text: 'text-blue-900',
+        textSecondary: 'text-blue-700'
+      };
+    case 'yellow':
+      return {
+        cardBg: 'bg-yellow-50',
+        recordBg: 'bg-yellow-100',
+        recordHover: 'hover:bg-yellow-200',
+        border: 'border-yellow-200',
+        text: 'text-yellow-900',
+        textSecondary: 'text-yellow-700'
+      };
+    default:
+      return {
+        cardBg: 'bg-gray-50 dark:bg-gray-100',
+        recordBg: 'bg-white dark:bg-gray-50',
+        recordHover: 'hover:bg-gray-100 dark:hover:bg-gray-200',
+        border: 'border-gray-300 dark:border-gray-300',
+        text: 'text-gray-900 dark:text-gray-800',
+        textSecondary: 'text-gray-700 dark:text-gray-600'
+      };
+  }
+};
+
 export function ProductionDashboard({ t }: ProductionDashboardProps) {
   const [showDetails, setShowDetails] = useState(false);
   const [dataSource, setDataSource] = useState<'latest' | 'previous' | 'all'>('latest');
+  const { settings } = useAppSettings();
+  const colorClasses = getColorSchemeClasses(settings.colorScheme);
   
   const getRecords = () => {
     switch (dataSource) {
@@ -142,17 +186,17 @@ export function ProductionDashboard({ t }: ProductionDashboardProps) {
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="bg-gray-50 dark:bg-gray-100">
+        <CardContent className={colorClasses.cardBg}>
           <div className="space-y-3">
-            {stats.recentRecords.map((record, index) => (
+            {records.slice(0, 10).map((record, index) => (
               <div 
                 key={index}
-                className="flex items-center justify-between p-4 bg-white dark:bg-gray-50 border-2 border-gray-300 dark:border-gray-300 rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                className={`flex items-center justify-between p-4 ${colorClasses.recordBg} border-2 ${colorClasses.border} rounded-lg shadow-md hover:shadow-lg transition-all ${colorClasses.recordHover}`}
               >
                 <div className="flex items-center space-x-3">
                   <div className="flex flex-col">
-                    <span className="font-bold text-gray-900 dark:text-gray-800 text-base">VE-{record.veNumber}</span>
-                    <span className="text-sm font-medium text-gray-700 dark:text-gray-600">
+                    <span className={`font-bold ${colorClasses.text} text-base`}>VE-{record.veNumber}</span>
+                    <span className={`text-sm font-medium ${colorClasses.textSecondary}`}>
                       Karton #{record.kartonNr}
                     </span>
                   </div>
@@ -166,12 +210,12 @@ export function ProductionDashboard({ t }: ProductionDashboardProps) {
                 
                 <div className="flex items-center space-x-4">
                   <div className="text-right">
-                    <div className="font-bold text-gray-900 dark:text-gray-800 text-lg">{record.gutmenge.toLocaleString()}</div>
-                    <div className="text-sm font-medium text-gray-700 dark:text-gray-600">sztuk</div>
+                    <div className={`font-bold ${colorClasses.text} text-lg`}>{record.gutmenge.toLocaleString()}</div>
+                    <div className={`text-sm font-medium ${colorClasses.textSecondary}`}>sztuk</div>
                   </div>
                   <div className="text-right">
-                    <div className="font-bold text-gray-900 dark:text-gray-800 text-base">{record.anwender}</div>
-                    <div className="text-sm font-medium text-gray-700 dark:text-gray-600">
+                    <div className={`font-bold ${colorClasses.text} text-base`}>{record.anwender}</div>
+                    <div className={`text-sm font-medium ${colorClasses.textSecondary}`}>
                       {formatDateTime(record.buchungsdatum)}
                     </div>
                   </div>

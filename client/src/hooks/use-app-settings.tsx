@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 
+export type ColorScheme = 'default' | 'green' | 'blue' | 'yellow';
+
 export interface AppSettings {
   isDarkMode: boolean;
   notificationsEnabled: boolean;
   soundEffectsEnabled: boolean;
   animationsEnabled: boolean;
+  colorScheme: ColorScheme;
 }
 
 const defaultSettings: AppSettings = {
@@ -12,6 +15,7 @@ const defaultSettings: AppSettings = {
   notificationsEnabled: true,
   soundEffectsEnabled: false,
   animationsEnabled: true,
+  colorScheme: 'default',
 };
 
 export function useAppSettings() {

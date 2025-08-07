@@ -104,7 +104,7 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
 
   return (
     <div 
-      className="fixed bottom-4 right-4 z-50 w-96 max-w-[calc(100vw-2rem)]"
+      className="fixed bottom-4 right-4 z-50 w-96 max-w-[calc(100vw-2rem)] flex flex-col items-end"
       data-testid="factory-chat"
     >
       <Card className="bg-white dark:bg-gray-50 shadow-2xl border-2 border-gray-300 dark:border-gray-400">
