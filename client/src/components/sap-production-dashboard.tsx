@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
+import { useAppSettings, ColorScheme } from '@/hooks/use-app-settings';
 import { 
   Database,
   Factory,
@@ -36,12 +37,63 @@ interface SAPProductionDashboardProps {
   onClose: () => void;
 }
 
+const getSAPColorSchemeClasses = (scheme: ColorScheme) => {
+  switch (scheme) {
+    case 'green':
+      return {
+        cardBg: 'bg-green-50 dark:bg-green-900',
+        cardContent: 'bg-green-100 dark:bg-green-800',
+        orderBg: 'bg-green-100 dark:bg-green-800',
+        orderHover: 'hover:bg-green-200 dark:hover:bg-green-700',
+        border: 'border-green-200 dark:border-green-600',
+        text: 'text-green-900 dark:text-green-100',
+        textSecondary: 'text-green-700 dark:text-green-300',
+        headerBg: 'bg-green-100 dark:bg-green-800'
+      };
+    case 'blue':
+      return {
+        cardBg: 'bg-blue-50 dark:bg-blue-900',
+        cardContent: 'bg-blue-100 dark:bg-blue-800',
+        orderBg: 'bg-blue-100 dark:bg-blue-800',
+        orderHover: 'hover:bg-blue-200 dark:hover:bg-blue-700',
+        border: 'border-blue-200 dark:border-blue-600',
+        text: 'text-blue-900 dark:text-blue-100',
+        textSecondary: 'text-blue-700 dark:text-blue-300',
+        headerBg: 'bg-blue-100 dark:bg-blue-800'
+      };
+    case 'yellow':
+      return {
+        cardBg: 'bg-yellow-50 dark:bg-yellow-900',
+        cardContent: 'bg-yellow-100 dark:bg-yellow-800',
+        orderBg: 'bg-yellow-100 dark:bg-yellow-800',
+        orderHover: 'hover:bg-yellow-200 dark:hover:bg-yellow-700',
+        border: 'border-yellow-200 dark:border-yellow-600',
+        text: 'text-yellow-900 dark:text-yellow-100',
+        textSecondary: 'text-yellow-700 dark:text-yellow-300',
+        headerBg: 'bg-yellow-100 dark:bg-yellow-800'
+      };
+    default:
+      return {
+        cardBg: 'bg-white dark:bg-gray-800',
+        cardContent: 'bg-gray-50 dark:bg-gray-700',
+        orderBg: 'bg-white dark:bg-gray-700',
+        orderHover: 'hover:bg-gray-100 dark:hover:bg-gray-600',
+        border: 'border-gray-200 dark:border-gray-600',
+        text: 'text-gray-900 dark:text-gray-100',
+        textSecondary: 'text-gray-700 dark:text-gray-300',
+        headerBg: 'bg-gray-100 dark:bg-gray-700'
+      };
+  }
+};
+
 export function SAPProductionDashboard({ isVisible, onClose }: SAPProductionDashboardProps) {
   const [selectedWorkCenter, setSelectedWorkCenter] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredOrders, setFilteredOrders] = useState<SAPProductionOrder[]>(allSAPOrders);
   const [lastRefresh, setLastRefresh] = useState(new Date());
+  const { settings } = useAppSettings();
+  const colorClasses = getSAPColorSchemeClasses(settings.colorScheme);
 
   useEffect(() => {
     let orders = allSAPOrders;
@@ -137,49 +189,49 @@ export function SAPProductionDashboard({ isVisible, onClose }: SAPProductionDash
           {/* Stats Overview */}
           <div className="p-6 border-b border-gray-200 dark:border-gray-700">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <Card>
-                <CardContent className="p-4">
+              <Card className={colorClasses.cardBg}>
+                <CardContent className={`p-4 ${colorClasses.cardContent}`}>
                   <div className="flex items-center space-x-2">
                     <Package className="h-5 w-5 text-blue-500" />
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Gesamt Aufträge</p>
-                      <p className="text-xl font-bold">{allSAPOrders.length}</p>
+                      <p className={`text-sm ${colorClasses.textSecondary}`}>Gesamt Aufträge</p>
+                      <p className={`text-xl font-bold ${colorClasses.text}`}>{allSAPOrders.length}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardContent className="p-4">
+              <Card className={colorClasses.cardBg}>
+                <CardContent className={`p-4 ${colorClasses.cardContent}`}>
                   <div className="flex items-center space-x-2">
                     <Factory className="h-5 w-5 text-green-500" />
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Arbeitsplätze</p>
-                      <p className="text-xl font-bold">{sapWorkCenters.length}</p>
+                      <p className={`text-sm ${colorClasses.textSecondary}`}>Arbeitsplätze</p>
+                      <p className={`text-xl font-bold ${colorClasses.text}`}>{sapWorkCenters.length}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardContent className="p-4">
+              <Card className={colorClasses.cardBg}>
+                <CardContent className={`p-4 ${colorClasses.cardContent}`}>
                   <div className="flex items-center space-x-2">
                     <TrendingUp className="h-5 w-5 text-purple-500" />
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Effizienz</p>
-                      <p className="text-xl font-bold">{getProductionEfficiency()}%</p>
+                      <p className={`text-sm ${colorClasses.textSecondary}`}>Effizienz</p>
+                      <p className={`text-xl font-bold ${colorClasses.text}`}>{getProductionEfficiency()}%</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card>
-                <CardContent className="p-4">
+              <Card className={colorClasses.cardBg}>
+                <CardContent className={`p-4 ${colorClasses.cardContent}`}>
                   <div className="flex items-center space-x-2">
                     <Clock className="h-5 w-5 text-orange-500" />
                     <div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400">Letzte Aktualisierung</p>
-                      <p className="text-sm font-medium">{lastRefresh.toLocaleTimeString('de-DE')}</p>
+                      <p className={`text-sm ${colorClasses.textSecondary}`}>Letzte Aktualisierung</p>
+                      <p className={`text-sm font-medium ${colorClasses.text}`}>{lastRefresh.toLocaleTimeString('de-DE')}</p>
                     </div>
                   </div>
                 </CardContent>
@@ -239,40 +291,40 @@ export function SAPProductionDashboard({ isVisible, onClose }: SAPProductionDash
               <TabsContent value="orders" className="flex-1 overflow-auto mx-6 mb-6">
                 <div className="space-y-4">
                   {filteredOrders.map((order) => (
-                    <Card key={order.auftrag} className="hover:shadow-md transition-shadow">
-                      <CardContent className="p-4">
+                    <Card key={order.auftrag} className={`${colorClasses.orderBg} ${colorClasses.orderHover} border-2 ${colorClasses.border} shadow-md transition-all`}>
+                      <CardContent className={`p-4 ${colorClasses.cardContent}`}>
                         <div className="grid grid-cols-1 lg:grid-cols-6 gap-4">
                           <div>
-                            <p className="font-semibold text-blue-600 dark:text-blue-400">
+                            <p className={`font-semibold text-blue-600 dark:text-blue-400`}>
                               {order.auftrag}
                             </p>
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                            <p className={`text-sm ${colorClasses.textSecondary}`}>
                               {order.material}
                             </p>
                           </div>
 
                           <div className="lg:col-span-2">
-                            <p className="text-sm font-medium">{order.arbeitsplatz}</p>
-                            <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
+                            <p className={`text-sm font-medium ${colorClasses.text}`}>{order.arbeitsplatz}</p>
+                            <p className={`text-xs ${colorClasses.textSecondary} line-clamp-2`}>
                               {order.bezeichnung}
                             </p>
                           </div>
 
                           <div>
-                            <p className="text-sm">
-                              <span className="text-gray-600 dark:text-gray-400">Von:</span> {order.beginn}
+                            <p className={`text-sm ${colorClasses.text}`}>
+                              <span className={colorClasses.textSecondary}>Von:</span> {order.beginn}
                             </p>
-                            <p className="text-sm">
-                              <span className="text-gray-600 dark:text-gray-400">Bis:</span> {order.ende}
+                            <p className={`text-sm ${colorClasses.text}`}>
+                              <span className={colorClasses.textSecondary}>Bis:</span> {order.ende}
                             </p>
                           </div>
 
                           <div>
-                            <p className="text-sm">
-                              <span className="text-gray-600 dark:text-gray-400">Geplant:</span> {formatQuantity(order.mengeGeplant)}
+                            <p className={`text-sm ${colorClasses.text}`}>
+                              <span className={colorClasses.textSecondary}>Geplant:</span> {formatQuantity(order.mengeGeplant)}
                             </p>
-                            <p className="text-sm">
-                              <span className="text-gray-600 dark:text-gray-400">Geliefert:</span> {formatQuantity(order.mengeGeliefert)}
+                            <p className={`text-sm ${colorClasses.text}`}>
+                              <span className={colorClasses.textSecondary}>Geliefert:</span> {formatQuantity(order.mengeGeliefert)}
                             </p>
                           </div>
 
@@ -297,33 +349,33 @@ export function SAPProductionDashboard({ isVisible, onClose }: SAPProductionDash
               <TabsContent value="workcenters" className="flex-1 overflow-auto mx-6 mb-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {sapWorkCenters.map((wc) => (
-                    <Card key={wc.arbeitsplatz}>
-                      <CardHeader>
-                        <CardTitle className="flex items-center space-x-2">
+                    <Card key={wc.arbeitsplatz} className={`${colorClasses.cardBg} border-2 ${colorClasses.border}`}>
+                      <CardHeader className={colorClasses.headerBg}>
+                        <CardTitle className={`flex items-center space-x-2 ${colorClasses.text}`}>
                           <Factory className="h-5 w-5" />
                           <span>{wc.arbeitsplatz}</span>
                         </CardTitle>
                       </CardHeader>
-                      <CardContent>
+                      <CardContent className={colorClasses.cardContent}>
                         <div className="space-y-3">
-                          <p className="text-sm">{wc.bezeichnung}</p>
+                          <p className={`text-sm ${colorClasses.text}`}>{wc.bezeichnung}</p>
                           
                           <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600 dark:text-gray-400">Status:</span>
+                            <span className={`text-sm ${colorClasses.textSecondary}`}>Status:</span>
                             <Badge className={wc.status === 'Aktiv' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
                               {wc.status}
                             </Badge>
                           </div>
 
                           <div className="flex items-center justify-between">
-                            <span className="text-sm text-gray-600 dark:text-gray-400">Kapazität:</span>
-                            <span className="font-medium">{wc.kapazitaet}</span>
+                            <span className={`text-sm ${colorClasses.textSecondary}`}>Kapazität:</span>
+                            <span className={`font-medium ${colorClasses.text}`}>{wc.kapazitaet}</span>
                           </div>
 
                           <div>
                             <div className="flex items-center justify-between mb-1">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">Auslastung:</span>
-                              <span className="font-medium">{wc.auslastung}%</span>
+                              <span className={`text-sm ${colorClasses.textSecondary}`}>Auslastung:</span>
+                              <span className={`font-medium ${colorClasses.text}`}>{wc.auslastung}%</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-2">
                               <div 
@@ -333,8 +385,8 @@ export function SAPProductionDashboard({ isVisible, onClose }: SAPProductionDash
                             </div>
                           </div>
 
-                          <div className="pt-2 border-t">
-                            <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <div className={`pt-2 border-t ${colorClasses.border}`}>
+                            <p className={`text-sm ${colorClasses.textSecondary}`}>
                               Aktive Aufträge: {getSAPOrdersByWorkCenter(wc.arbeitsplatz).length}
                             </p>
                           </div>
