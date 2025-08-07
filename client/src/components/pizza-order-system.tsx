@@ -93,9 +93,9 @@ export function PizzaOrderSystem({ currentUser }: PizzaOrderSystemProps) {
             <SelectTrigger className="bg-white/20 border-white/30 text-white">
               <SelectValue placeholder="Wybierz pizzę..." />
             </SelectTrigger>
-            <SelectContent className="bg-white dark:bg-gray-800">
+            <SelectContent className="bg-white dark:bg-gray-100">
               {pizzaOptions.map((pizza) => (
-                <SelectItem key={pizza} value={pizza} className="hover:bg-gray-100 dark:hover:bg-gray-700">
+                <SelectItem key={pizza} value={pizza} className="hover:bg-gray-100 dark:hover:bg-gray-200 text-gray-900 dark:text-gray-800">
                   🍕 {pizza === 'Pizza Döner' ? <span className="font-bold">{pizza}</span> : pizza}
                 </SelectItem>
               ))}
