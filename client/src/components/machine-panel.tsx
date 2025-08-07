@@ -59,7 +59,7 @@ export function MachinePanel({
   const [showResetDialog, setShowResetDialog] = useState(false);
   const [resetPassword, setResetPassword] = useState('');
   const [cardboardTheme, setCardboardTheme] = useState<'zielona' | 'niebieska' | 'żółta'>('zielona');
-  const [boxCapacity, setBoxCapacity] = useState(6);
+  const [boxCapacity, setBoxCapacity] = useState(350);
 
   const percentage = Math.min(100, Math.floor((state.itemsInBox / capsuleCount) * 100));
 
@@ -285,22 +285,13 @@ export function MachinePanel({
             </select>
           </div>
           <div className="flex space-x-2 items-end">
-            <div className="flex-1">
+            <div className="flex flex-col">
               <span className="text-xs text-gray-400 mb-1">Kapsle w kartonie</span>
               <input
                 type="number"
                 value={boxCapacity}
                 onChange={(e) => setBoxCapacity(Number(e.target.value))}
-                className="w-full text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-3 py-2"
-                style={{ width: 'calc(100% + 25px)' }}
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Halle</span>
-              <input
-                type="text"
-                defaultValue="5"
-                className="text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1 py-1 w-8 text-center"
+                className="text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-2 w-20"
               />
             </div>
             <div className="flex flex-col">
@@ -316,6 +307,14 @@ export function MachinePanel({
               <div className="text-sm font-medium text-white bg-white/20 border border-white/30 rounded px-2 py-1 w-24 text-center">
                 {machineNumber === 61 ? '24min / 3k' : machineNumber === 62 ? '21min / 2k' : machineNumber === 59 ? '19min / 6k' : '30min / 2k'}
               </div>
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xs text-gray-400 mb-1">Halle</span>
+              <input
+                type="text"
+                defaultValue="5"
+                className="text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1 py-1 w-8 text-center"
+              />
             </div>
           </div>
         </div>
