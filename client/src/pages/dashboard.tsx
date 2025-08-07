@@ -14,6 +14,10 @@ import { CompanyProfits } from '@/components/company-profits';
 import { LotteryWheel } from '@/components/lottery-wheel';
 import { UserBalance } from '@/components/user-balance';
 import { PizzaOrderSystem } from '@/components/pizza-order-system';
+import { UserRewardsSystem } from '@/components/user-rewards-system';
+import { DailyChallenges } from '@/components/daily-challenges';
+import { Leaderboard } from '@/components/leaderboard';
+import { GamificationCenter } from '@/components/gamification-center';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
 import { useAppSettings } from '@/hooks/use-app-settings';
@@ -205,6 +209,35 @@ export default function Dashboard() {
           <LotteryWheel />
           <UserBalance username={currentUser} />
           <PizzaOrderSystem currentUser={currentUser} />
+        </div>
+
+        {/* Interactive User Rewards System */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <UserRewardsSystem 
+            username={currentUser}
+            totalBoxes={totalBoxes}
+            efficiency={oscillatingEfficiency}
+            uptime={uptime}
+            onRewardEarned={(amount, reason) => showToast(`+${amount} EUR za ${reason}`, 'success')}
+          />
+          <DailyChallenges 
+            totalBoxes={totalBoxes}
+            efficiency={oscillatingEfficiency}
+            activeMachines={activeMachines}
+            onRewardClaimed={(amount, reason) => showToast(`+${amount} EUR za ${reason}`, 'success')}
+          />
+          <Leaderboard currentUser={currentUser} />
+        </div>
+
+        {/* Gamification Center */}
+        <div className="mb-8">
+          <GamificationCenter 
+            username={currentUser}
+            totalBoxes={totalBoxes}
+            efficiency={oscillatingEfficiency}
+            activeMachines={activeMachines}
+            uptime={uptime}
+          />
         </div>
 
         {/* Statistics Cards - Hidden by default */}
