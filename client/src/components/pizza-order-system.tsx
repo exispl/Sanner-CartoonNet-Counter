@@ -151,6 +151,26 @@ export function PizzaOrderSystem({ currentUser }: PizzaOrderSystemProps) {
             )}
           </div>
         )}
+        
+        {/* Help button */}
+        <div className="mt-3 text-center">
+          <Button 
+            onClick={() => {
+              // Find and expand the chat component
+              const chatElement = document.querySelector('[data-testid="factory-chat"]');
+              if (chatElement) {
+                const expandButton = chatElement.querySelector('button');
+                if (expandButton) {
+                  expandButton.click();
+                }
+              }
+            }}
+            className="bg-white/20 hover:bg-white/30 text-white border-white/30 text-xs px-3 py-1"
+            size="sm"
+          >
+            Fragen?
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );

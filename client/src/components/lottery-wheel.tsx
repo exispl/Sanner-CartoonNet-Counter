@@ -105,7 +105,10 @@ export function LotteryWheel() {
 
   return (
     <div className="bg-gradient-to-br from-purple-700 to-purple-900 rounded-xl p-4 border-2 border-purple-500/30 shadow-lg">
-      <h3 className="text-lg font-bold text-white mb-3 text-center">🎰 Loteria Pracownicza</h3>
+      <div className="text-center mb-3">
+        <h3 className="text-lg font-bold text-white">🎰 Loteria Pracownicza</h3>
+        <div className="text-xs text-purple-200">Koszt zakręcenia: 1 EUR</div>
+      </div>
       
       <div className="flex items-center space-x-6">
         {/* Wheel */}

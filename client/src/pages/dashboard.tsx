@@ -162,12 +162,16 @@ export default function Dashboard() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2">
-                <span className="text-white/80 text-sm ml-8">Zalogowany:</span>
-                <UserLoginSelector 
-                  currentUser={currentUser} 
-                  onUserChange={setCurrentUser} 
-                />
+              <div className="flex flex-col items-end space-y-2">
+                <div className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2">
+                  <span className="text-white/80 text-sm ml-8">Zalogowany:</span>
+                  <UserLoginSelector 
+                    currentUser={currentUser} 
+                    onUserChange={setCurrentUser} 
+                  />
+                </div>
+                {/* User Balance directly under user */}
+                <UserBalance username={currentUser} />
               </div>
               
               {/* User Rewards in Header */}
@@ -216,11 +220,10 @@ export default function Dashboard() {
           <AuftragDisplay machineId="MA61" />
         </div>
 
-        {/* Company Profits, Lottery, User Balance and Pizza Orders */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {/* Company Profits, Lottery and Pizza Orders */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <CompanyProfits />
           <LotteryWheel />
-          <UserBalance username={currentUser} />
           <PizzaOrderSystem currentUser={currentUser} />
         </div>
 
