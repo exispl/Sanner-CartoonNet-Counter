@@ -5,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { 
   getProductionStats, 
   getProductionRecords, 
+  getLatestProductionRecords,
+  getAllProductionRecords,
   formatDateTime,
   ProductionRecord 
 } from '@/lib/production-data';
@@ -25,8 +27,19 @@ interface ProductionDashboardProps {
 
 export function ProductionDashboard({ t }: ProductionDashboardProps) {
   const [showDetails, setShowDetails] = useState(false);
+  const [dataSource, setDataSource] = useState<'latest' | 'previous' | 'all'>('latest');
+  
+  const getRecords = () => {
+    switch (dataSource) {
+      case 'latest': return getLatestProductionRecords();
+      case 'previous': return getProductionRecords();
+      case 'all': return getAllProductionRecords();
+      default: return getLatestProductionRecords();
+    }
+  };
+  
+  const records = getRecords();
   const stats = getProductionStats();
-  const records = getProductionRecords();
 
   return (
     <div className="space-y-6">
@@ -89,16 +102,45 @@ export function ProductionDashboard({ t }: ProductionDashboardProps) {
           <CardTitle className="flex items-center gap-2">
             <Activity className="h-5 w-5" />
             Ostatnie Rekordy Produkcyjne
+            <Badge variant="outline" className="ml-2">
+              {dataSource === 'latest' ? '07.08.2025' : dataSource === 'previous' ? '06.08.2025' : 'Wszystkie'}
+            </Badge>
           </CardTitle>
-          <Button 
-            variant="outline" 
-            size="sm"
-            onClick={() => setShowDetails(!showDetails)}
-            className="flex items-center gap-2"
-          >
-            <BarChart3 className="h-4 w-4" />
-            {showDetails ? 'Ukryj szczegóły' : 'Pokaż szczegóły'}
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant={dataSource === 'latest' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setDataSource('latest')}
+              data-testid="latest-data-button"
+            >
+              Najnowsze
+            </Button>
+            <Button
+              variant={dataSource === 'previous' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setDataSource('previous')}
+              data-testid="previous-data-button"
+            >
+              Poprzednie
+            </Button>
+            <Button
+              variant={dataSource === 'all' ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setDataSource('all')}
+              data-testid="all-data-button"
+            >
+              Wszystkie
+            </Button>
+            <Button 
+              variant="outline" 
+              size="sm"
+              onClick={() => setShowDetails(!showDetails)}
+              className="flex items-center gap-2"
+            >
+              <BarChart3 className="h-4 w-4" />
+              {showDetails ? 'Ukryj szczegóły' : 'Pokaż szczegóły'}
+            </Button>
+          </div>
         </CardHeader>
         <CardContent className="bg-gray-50 dark:bg-gray-100">
           <div className="space-y-3">
