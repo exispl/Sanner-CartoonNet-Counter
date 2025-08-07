@@ -47,14 +47,9 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: 
               : 'linear-gradient(to bottom, #fffbeb, #fefce8, #fef3c7)'
         }}
       >
-        {/* Box texture lines */}
-        <div className="absolute inset-2 border border-orange-500/30 rounded"></div>
-        <div className="absolute top-4 left-2 right-2 h-px bg-orange-500/40"></div>
-        <div className="absolute bottom-4 left-2 right-2 h-px bg-orange-500/40"></div>
-        
         {/* MA59 Beutel visualization - 2 silver bags */}
         {size === '10T' && (
-          <div className="absolute bottom-2 left-2 right-2 top-8 flex flex-col space-y-1">
+          <div className="absolute bottom-2 left-2 right-2 top-2 flex flex-col space-y-1">
             {/* Beutel 1 - Top half */}
             <div 
               className={`flex-1 rounded-sm border border-gray-400 transition-all duration-500 ${
@@ -68,10 +63,10 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: 
                   : 'none'
               }}
             >
-              <div className="text-center text-[8px] text-gray-700 mt-1 font-semibold">
+              <div className="text-center text-[10px] text-gray-700 mt-1 font-semibold">
                 Beutel 1
               </div>
-              <div className="text-center text-[7px] text-gray-600">
+              <div className="text-center text-[9px] text-gray-600 font-bold">
                 3000
               </div>
             </div>
@@ -89,10 +84,10 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: 
                   : 'none'
               }}
             >
-              <div className="text-center text-[8px] text-gray-700 mt-1 font-semibold">
+              <div className="text-center text-[10px] text-gray-700 mt-1 font-semibold">
                 Beutel 2
               </div>
-              <div className="text-center text-[7px] text-gray-600">
+              <div className="text-center text-[9px] text-gray-600 font-bold">
                 3000
               </div>
             </div>
@@ -114,11 +109,6 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: 
             </div>
           </div>
         )}
-        
-        {/* SANNER label - smaller and lower */}
-        <div className="absolute top-3 left-1 right-1 text-center text-[10px] font-bold text-orange-600 opacity-70">
-          SANNER
-        </div>
         
         {/* Size indicator - show number with T */}
         <div className="absolute bottom-1 right-1 text-xs font-bold text-orange-800">
