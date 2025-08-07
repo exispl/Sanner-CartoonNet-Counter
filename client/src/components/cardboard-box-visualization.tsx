@@ -7,9 +7,11 @@ interface CardboardBoxProps {
   index: number;
   isCompleted?: boolean;
   theme: 'zielona' | 'niebieska' | 'żółta';
+  selectedBeutels?: { beutel1: boolean; beutel2: boolean };
+  onBeutelSelect?: (beutelNumber: 1 | 2) => void;
 }
 
-function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: CardboardBoxProps) {
+function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme, selectedBeutels, onBeutelSelect }: CardboardBoxProps) {
   const boxHeight = size === '10T' ? 144 : size === '6T' ? 100 : 80;  // MA59 (10T): 120*1.2 = 144
   const boxWidth = size === '10T' ? 48 : 60;  // MA59 (10T): 60*0.8 = 48 (20% narrower)
   const fillHeight = (fillLevel / 100) * (boxHeight - 20);
@@ -52,44 +54,72 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: 
           <div className="absolute bottom-2 left-2 right-2 top-2 flex flex-col space-y-1">
             {/* Beutel 1 - Top half */}
             <div 
-              className={`flex-1 rounded-sm border border-gray-400 transition-all duration-500 ${
-                isActive && fillLevel >= 50 
-                  ? 'bg-gradient-to-t from-gray-300 to-gray-400 shadow-md opacity-90' 
-                  : 'bg-gradient-to-t from-gray-100 to-gray-200 opacity-60'
+              className={`flex-1 rounded-sm border-2 transition-all duration-500 cursor-pointer hover:scale-105 ${
+                selectedBeutels?.beutel1
+                  ? 'border-blue-500 bg-gradient-to-t from-blue-200 to-blue-300 shadow-lg shadow-blue-400/50'
+                  : isActive && fillLevel >= 50 
+                  ? 'border-gray-400 bg-gradient-to-t from-gray-300 to-gray-400 shadow-md opacity-90' 
+                  : 'border-gray-400 bg-gradient-to-t from-gray-100 to-gray-200 opacity-60 hover:opacity-80'
               }`}
               style={{
-                backgroundImage: isActive && fillLevel >= 50 
+                backgroundImage: selectedBeutels?.beutel1
+                  ? 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent), radial-gradient(circle at 70% 70%, rgba(255,255,255,0.6), transparent)'
+                  : isActive && fillLevel >= 50 
                   ? 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), transparent), radial-gradient(circle at 70% 70%, rgba(255,255,255,0.4), transparent)'
                   : 'none'
               }}
+              onClick={() => onBeutelSelect?.(1)}
             >
-              <div className="text-center text-[10px] text-gray-700 mt-1 font-semibold">
+              <div className={`text-center text-[10px] mt-1 font-semibold ${
+                selectedBeutels?.beutel1 ? 'text-blue-800' : 'text-gray-700'
+              }`}>
                 Beutel 1
               </div>
-              <div className="text-center text-[9px] text-gray-600 font-bold">
+              <div className={`text-center text-[9px] font-bold ${
+                selectedBeutels?.beutel1 ? 'text-blue-700' : 'text-gray-600'
+              }`}>
                 3000
               </div>
+              {selectedBeutels?.beutel1 && (
+                <div className="absolute top-1 right-1 w-3 h-3 bg-blue-500 rounded-full flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                </div>
+              )}
             </div>
             
             {/* Beutel 2 - Bottom half */}
             <div 
-              className={`flex-1 rounded-sm border border-gray-400 transition-all duration-500 ${
-                isActive && fillLevel >= 100 
-                  ? 'bg-gradient-to-t from-gray-300 to-gray-400 shadow-md opacity-90' 
-                  : 'bg-gradient-to-t from-gray-100 to-gray-200 opacity-60'
+              className={`flex-1 rounded-sm border-2 transition-all duration-500 cursor-pointer hover:scale-105 relative ${
+                selectedBeutels?.beutel2
+                  ? 'border-green-500 bg-gradient-to-t from-green-200 to-green-300 shadow-lg shadow-green-400/50'
+                  : isActive && fillLevel >= 100 
+                  ? 'border-gray-400 bg-gradient-to-t from-gray-300 to-gray-400 shadow-md opacity-90' 
+                  : 'border-gray-400 bg-gradient-to-t from-gray-100 to-gray-200 opacity-60 hover:opacity-80'
               }`}
               style={{
-                backgroundImage: isActive && fillLevel >= 100 
+                backgroundImage: selectedBeutels?.beutel2
+                  ? 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.8), transparent), radial-gradient(circle at 70% 70%, rgba(255,255,255,0.6), transparent)'
+                  : isActive && fillLevel >= 100 
                   ? 'radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), transparent), radial-gradient(circle at 70% 70%, rgba(255,255,255,0.4), transparent)'
                   : 'none'
               }}
+              onClick={() => onBeutelSelect?.(2)}
             >
-              <div className="text-center text-[10px] text-gray-700 mt-1 font-semibold">
+              <div className={`text-center text-[10px] mt-1 font-semibold ${
+                selectedBeutels?.beutel2 ? 'text-green-800' : 'text-gray-700'
+              }`}>
                 Beutel 2
               </div>
-              <div className="text-center text-[9px] text-gray-600 font-bold">
+              <div className={`text-center text-[9px] font-bold ${
+                selectedBeutels?.beutel2 ? 'text-green-700' : 'text-gray-600'
+              }`}>
                 3000
               </div>
+              {selectedBeutels?.beutel2 && (
+                <div className="absolute top-1 right-1 w-3 h-3 bg-green-500 rounded-full flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -133,9 +163,29 @@ interface CardboardBoxVisualizationProps {
 
 export function CardboardBoxVisualization({ currentProgress, boxSize, completedBoxes, theme = 'zielona' }: CardboardBoxVisualizationProps) {
   const [activeBoxIndex, setActiveBoxIndex] = useState(0);
+  const [selectedBeutels, setSelectedBeutels] = useState<Array<{ beutel1: boolean; beutel2: boolean }>>([
+    { beutel1: false, beutel2: false },
+    { beutel1: false, beutel2: false },
+    { beutel1: false, beutel2: false },
+    { beutel1: false, beutel2: false }
+  ]);
   
   // Pattern: 0 -> 3 -> 1 -> 2 (cross pattern: top-left -> bottom-right -> top-right -> bottom-left)
   const crossPattern = [0, 3, 1, 2];
+
+  const handleBeutelSelect = (boxIndex: number, beutelNumber: 1 | 2) => {
+    if (boxSize !== '10T') return; // Only for MA59 machines
+    
+    setSelectedBeutels(prev => {
+      const newSelected = [...prev];
+      if (beutelNumber === 1) {
+        newSelected[boxIndex] = { ...newSelected[boxIndex], beutel1: !newSelected[boxIndex].beutel1 };
+      } else {
+        newSelected[boxIndex] = { ...newSelected[boxIndex], beutel2: !newSelected[boxIndex].beutel2 };
+      }
+      return newSelected;
+    });
+  };
   
   useEffect(() => {
     if (currentProgress >= 100) {
@@ -179,6 +229,8 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
                 index={index}
                 isCompleted={index < activeBoxIndex}
                 theme={theme}
+                selectedBeutels={selectedBeutels[index]}
+                onBeutelSelect={(beutelNumber) => handleBeutelSelect(index, beutelNumber)}
               />
             </div>
             {/* Better spacing line between cartons */}
