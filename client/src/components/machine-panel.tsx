@@ -52,7 +52,7 @@ export function MachinePanel({
   const [prufungExpired, setPrufungExpired] = useState(false);
   const [showMachineIcon, setShowMachineIcon] = useState(false);
   const [nrAuftrag, setNrAuftrag] = useState('210044');
-  const [dasgColor, setDasgColor] = useState('white');
+  const [dasgColor, setDasgColor] = useState('DASG-1');
   const [showHalleMap, setShowHalleMap] = useState(false);
   const [bestellungText, setBestellungText] = useState('');
   const [bestellungHistory, setBestellungHistory] = useState<string[]>([]);
@@ -265,7 +265,7 @@ export function MachinePanel({
             <select
               value={dasgColor}
               onChange={(e) => setDasgColor(e.target.value)}
-              className="text-sm font-medium border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-40"
+              className="text-sm font-medium border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-48"
               style={{
                 backgroundColor: dasgColor === 'DASG-1' ? 'white' : 
                   dasgColor === 'blue' ? '#3b82f6' :
