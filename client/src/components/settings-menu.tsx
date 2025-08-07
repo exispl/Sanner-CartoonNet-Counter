@@ -53,7 +53,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
 
       {/* Expanded Menu */}
       {isOpen && (
-        <div className="absolute top-0 right-0 w-80 bg-white/95 dark:bg-gray-900/95 rounded-2xl shadow-2xl border-4 border-machine-blue/40 z-50 overflow-hidden backdrop-blur-sm">
+        <div className="absolute top-0 right-0 w-80 bg-white/98 dark:bg-gray-800/98 rounded-2xl shadow-2xl border-4 border-machine-blue/40 z-50 overflow-hidden backdrop-blur-md">
           {/* Header */}
           <div className="bg-gradient-to-r from-machine-blue to-machine-green p-4">
             <div className="flex items-center justify-between">
@@ -99,8 +99,8 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                       title={option.label}
                       className={`p-2 rounded border transition-all text-center ${
                         currentLang === option.code
-                          ? 'border-machine-blue bg-machine-blue/10'
-                          : 'border-gray-300 dark:border-gray-600 hover:border-machine-blue/50 text-gray-800 dark:text-gray-200'
+                          ? 'border-machine-blue bg-machine-blue/20 text-machine-blue font-semibold'
+                          : 'border-gray-300 dark:border-gray-500 hover:border-machine-blue/50 text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700'
                       }`}
                       data-testid={`language-${option.code}`}
                     >
@@ -130,8 +130,8 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                     onClick={() => updateSettings({ isDarkMode: false })}
                     className={`p-2 rounded border transition-all text-center text-xs ${
                       !settings.isDarkMode
-                        ? 'border-machine-blue bg-machine-blue/10 text-machine-blue'
-                        : 'border-gray-300 dark:border-gray-600 hover:border-machine-blue/50 text-gray-800 dark:text-gray-200'
+                        ? 'border-machine-blue bg-machine-blue/20 text-machine-blue font-semibold'
+                        : 'border-gray-300 dark:border-gray-500 hover:border-machine-blue/50 text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700'
                     }`}
                     data-testid="theme-light"
                   >
@@ -142,8 +142,8 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
                     onClick={() => updateSettings({ isDarkMode: true })}
                     className={`p-2 rounded border transition-all text-center text-xs ${
                       settings.isDarkMode
-                        ? 'border-machine-blue bg-machine-blue/10 text-machine-blue'
-                        : 'border-gray-300 dark:border-gray-600 hover:border-machine-blue/50 text-gray-800 dark:text-gray-200'
+                        ? 'border-machine-blue bg-machine-blue/20 text-machine-blue font-semibold'
+                        : 'border-gray-300 dark:border-gray-500 hover:border-machine-blue/50 text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700'
                     }`}
                     data-testid="theme-dark"
                   >
