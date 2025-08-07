@@ -185,7 +185,7 @@ export function GamificationCenter({
   }
 
   return (
-    <Card className="bg-white dark:bg-gray-800 border-2 border-green-200 dark:border-green-700 shadow-2xl">
+    <Card className="bg-white dark:bg-gray-100 border-2 border-green-200 dark:border-green-300 shadow-2xl">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <div className="flex items-center space-x-3">
           <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-600 rounded-xl flex items-center justify-center">
@@ -193,7 +193,7 @@ export function GamificationCenter({
           </div>
           <div>
             <CardTitle className="text-xl font-bold">Centrum Gamifikacji</CardTitle>
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-gray-600 dark:text-gray-700">
               {username} • Poziom {userLevel}
             </div>
           </div>
@@ -226,18 +226,18 @@ export function GamificationCenter({
         {/* Stats Overview */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {gamificationStats.map((stat, index) => (
-            <div key={index} className="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div key={index} className="text-center p-4 bg-gray-50 dark:bg-white rounded-lg">
               <div className="flex items-center justify-center mb-2">
                 {stat.icon}
               </div>
               <div className={`text-lg font-bold ${stat.color}`}>{stat.value}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-700">{stat.label}</div>
             </div>
           ))}
         </div>
 
         {/* Level Progress */}
-        <div className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 rounded-lg p-4">
+        <div className="bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-50 dark:to-teal-50 rounded-lg p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
               <Crown className="w-5 h-5 text-yellow-500" />
@@ -259,7 +259,7 @@ export function GamificationCenter({
                 style={{ width: `${xpProgress}%` }}
               />
             </div>
-            <div className="text-xs text-gray-600 dark:text-gray-400 text-center">
+            <div className="text-xs text-gray-600 dark:text-gray-700 text-center">
               {100 - xpProgress} XP do następnego poziomu
             </div>
           </div>
@@ -273,12 +273,12 @@ export function GamificationCenter({
           </h3>
           <div className="space-y-3 max-h-48 overflow-y-auto">
             {recentActivity.map((activity, index) => (
-              <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div key={index} className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-white rounded-lg">
                 <div className="mt-0.5">{activity.icon}</div>
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium">{activity.title}</div>
-                  <div className="text-xs text-gray-600 dark:text-gray-400">{activity.description}</div>
-                  <div className="text-xs text-gray-500 mt-1">{activity.time}</div>
+                  <div className="text-xs text-gray-600 dark:text-gray-700">{activity.description}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-600 mt-1">{activity.time}</div>
                 </div>
                 <Badge variant="outline" className="text-xs whitespace-nowrap">
                   {activity.reward}
