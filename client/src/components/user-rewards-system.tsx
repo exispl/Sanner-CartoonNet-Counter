@@ -48,7 +48,7 @@ export function UserRewardsSystem({
 
   const userLevels: UserLevel[] = [
     { level: 1, name: 'Praktykant', minXP: 0, maxXP: 100, color: 'bg-gray-400', icon: '👶' },
-    { level: 2, name: 'Operator', minXP: 100, maxXP: 300, color: 'bg-blue-500', icon: '🔧' },
+    { level: 2, name: 'SoGXXX', minXP: 100, maxXP: 300, color: 'bg-blue-500', icon: '🔧' },
     { level: 3, name: 'Specjalista', minXP: 300, maxXP: 600, color: 'bg-green-500', icon: '⚙️' },
     { level: 4, name: 'Ekspert', minXP: 600, maxXP: 1000, color: 'bg-purple-500', icon: '🎯' },
     { level: 5, name: 'Mistrz', minXP: 1000, maxXP: 1500, color: 'bg-orange-500', icon: '👑' },
