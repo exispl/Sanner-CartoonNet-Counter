@@ -19,6 +19,7 @@ import { DailyChallenges } from '@/components/daily-challenges';
 import { Leaderboard } from '@/components/leaderboard';
 import { GamificationCenter } from '@/components/gamification-center';
 import { AuftragDisplay } from '@/components/auftrag-display';
+import { FactoryChat } from '@/components/factory-chat';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
 import { useAppSettings } from '@/hooks/use-app-settings';
@@ -355,6 +356,12 @@ export default function Dashboard() {
           duration={2000}
         />
       )}
+
+      {/* Factory Chat - Fixed at bottom right */}
+      <FactoryChat 
+        currentUser={currentUser}
+        onUserChange={setCurrentUser}
+      />
     </div>
   );
 }
