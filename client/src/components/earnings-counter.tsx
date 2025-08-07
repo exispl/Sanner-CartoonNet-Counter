@@ -48,11 +48,6 @@ export function EarningsCounter({ isRunning, totalBoxes }: EarningsCounterProps)
             )}
           </div>
           <div className="flex items-center gap-2">
-            {!isOpen && (
-              <span className="text-white/80 text-sm font-medium">
-                €{estimatedRevenue.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </span>
-            )}
             {isOpen ? (
               <ChevronDown className="w-5 h-5 text-white" />
             ) : (

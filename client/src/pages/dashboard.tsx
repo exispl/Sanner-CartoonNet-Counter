@@ -20,6 +20,7 @@ import { Leaderboard } from '@/components/leaderboard';
 import { GamificationCenter } from '@/components/gamification-center';
 import { AuftragDisplay } from '@/components/auftrag-display';
 import { FactoryChat } from '@/components/factory-chat';
+import { UserRewardsDisplay } from '@/components/user-rewards-display';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
 import { useAppSettings } from '@/hooks/use-app-settings';
@@ -167,6 +168,11 @@ export default function Dashboard() {
                   currentUser={currentUser} 
                   onUserChange={setCurrentUser} 
                 />
+              </div>
+              
+              {/* User Rewards in Header */}
+              <div className="bg-white/10 rounded-lg px-3 py-2">
+                <UserRewardsDisplay username={currentUser} />
               </div>
               <SettingsMenu 
                 currentLang={currentLang} 

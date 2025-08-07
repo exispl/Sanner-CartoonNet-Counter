@@ -106,6 +106,61 @@ export function Leaderboard({ currentUser }: LeaderboardProps) {
     },
     {
       rank: 8,
+      username: 'TurboWorker',
+      level: 2,
+      totalBoxes: 523,
+      efficiency: 88.3,
+      totalEarnings: 95.20,
+      achievements: 7,
+      isCurrentUser: false,
+      title: 'Turbo Pracownik'
+    },
+    {
+      rank: 9,
+      username: 'MorningShift',
+      level: 1,
+      totalBoxes: 445,
+      efficiency: 81.6,
+      totalEarnings: 78.50,
+      achievements: 6,
+      isCurrentUser: false,
+      title: 'Poranny Ptak'
+    },
+    {
+      rank: 10,
+      username: 'PrecisionMaster',
+      level: 2,
+      totalBoxes: 412,
+      efficiency: 95.1,
+      totalEarnings: 85.75,
+      achievements: 8,
+      isCurrentUser: false,
+      title: 'Mistrz Precyzji'
+    },
+    {
+      rank: 11,
+      username: 'TeamPlayer',
+      level: 1,
+      totalBoxes: 356,
+      efficiency: 79.4,
+      totalEarnings: 65.30,
+      achievements: 5,
+      isCurrentUser: false,
+      title: 'Gracz Zespołowy'
+    },
+    {
+      rank: 12,
+      username: 'NewHope',
+      level: 1,
+      totalBoxes: 234,
+      efficiency: 76.8,
+      totalEarnings: 42.15,
+      achievements: 3,
+      isCurrentUser: false,
+      title: 'Nowa Nadzieja'
+    },
+    {
+      rank: 8,
       username: 'NewbiePro',
       level: 1,
       totalBoxes: 423,
