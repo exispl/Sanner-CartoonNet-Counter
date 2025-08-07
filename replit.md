@@ -8,7 +8,7 @@ This is a full-stack industrial machine management application called "Kartonowy
 - **Achievement System**: Multi-category achievements (production, efficiency, time, special) with progress tracking and instant rewards
 - **Daily Challenges System**: Time-limited daily tasks with streak bonuses, difficulty levels, and automatic reward distribution
 - **Leaderboard System**: Real-time ranking with user levels, efficiency comparison, and competitive elements
-- **Gamification Center**: Central hub for all game elements with activity tracking and quick action buttons
+- **Gamification Center**: Central hub for all game elements with activity tracking and quick action buttons (renamed to "Doświadczenie")
 - **User Balance Integration**: 10 EUR starting balance with lottery system (1 EUR per spin) and reward accumulation
 - **Dynamic User Levels**: Level 2 now shows "SoG" + user number (e.g. "SoG001" for uzytkownik1)
 - **Pizza Ordering System**: Daily pizza orders with messaging, timestamps, and collaborative ordering features

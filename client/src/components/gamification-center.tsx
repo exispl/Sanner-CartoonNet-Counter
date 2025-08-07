@@ -137,7 +137,7 @@ export function GamificationCenter({
           <div className="flex items-center space-x-2">
             <Gamepad2 className="h-6 w-6 text-yellow-400" />
             <div>
-              <CardTitle className="text-lg font-bold">Centrum Gier</CardTitle>
+              <CardTitle className="text-lg font-bold">Doświadczenie</CardTitle>
               <div className="text-sm text-green-100">
                 Poziom {userLevel} • {xpProgress}/100 XP
               </div>
