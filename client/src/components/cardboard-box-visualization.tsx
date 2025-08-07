@@ -10,7 +10,8 @@ interface CardboardBoxProps {
 }
 
 function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: CardboardBoxProps) {
-  const boxHeight = size === '10T' ? 120 : size === '6T' ? 100 : 80;
+  const boxHeight = size === '10T' ? 144 : size === '6T' ? 100 : 80;  // MA59 (10T): 120*1.2 = 144
+  const boxWidth = size === '10T' ? 48 : 60;  // MA59 (10T): 60*0.8 = 48 (20% narrower)
   const fillHeight = (fillLevel / 100) * (boxHeight - 20);
   
   return (
@@ -25,7 +26,7 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: 
             : 'border-orange-400 bg-gradient-to-b from-orange-100 to-orange-200'
         }`}
         style={{ 
-          width: '60px', 
+          width: `${boxWidth}px`, 
           height: `${boxHeight}px`,
           background: isCompleted
             ? theme === 'zielona' 
@@ -119,9 +120,9 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme }: 
           SANNER
         </div>
         
-        {/* Size indicator - show just the number */}
+        {/* Size indicator - show number with T */}
         <div className="absolute bottom-1 right-1 text-xs font-bold text-orange-800">
-          {size === '6T' ? '6' : size === '5T' ? '5' : size === '10T' ? '10' : size}
+          {size === '6T' ? '6T' : size === '5T' ? '5T' : size === '10T' ? '10T' : size}
         </div>
       </div>
       
