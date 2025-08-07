@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { MessageCircle, Send, User, Clock, ChevronUp, ChevronDown } from 'lucide-react';
+import { MessageCircle, Send, User, Clock, ChevronUp, ChevronDown, Smile } from 'lucide-react';
 
 interface ChatMessage {
   id: string;
@@ -23,6 +23,7 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
   const [newMessage, setNewMessage] = useState('');
   const [selectedUser, setSelectedUser] = useState(currentUser);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showEmojis, setShowEmojis] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const userProfiles = [
@@ -34,6 +35,13 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
     { login: 'MA62_OP', fullName: 'Operator MA62' },
     { login: 'Supervisor', fullName: 'Shift Supervisor' },
     { login: 'Maintenance', fullName: 'Technical Support' }
+  ];
+
+  const emojis = [
+    '😀', '😊', '😂', '🤣', '😍', '🥰', '😘', '😋',
+    '😎', '🤔', '😴', '😢', '😭', '😡', '🤯', '😱',
+    '👍', '👎', '👏', '🙌', '🤝', '💪', '🙏', '❤️',
+    '🔥', '💯', '✅', '❌', '⚠️', '📊', '🎉', '🚀'
   ];
 
   const scrollToBottom = () => {
@@ -85,6 +93,11 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
     if (onUserChange) {
       onUserChange(newUser);
     }
+  };
+
+  const addEmoji = (emoji: string) => {
+    setNewMessage(prev => prev + emoji);
+    setShowEmojis(false);
   };
 
   return (
@@ -149,7 +162,7 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
             </div>
             
             {/* Input Area */}
-            <div className="p-3 border-t border-gray-200 dark:border-gray-300 bg-white dark:bg-gray-50 space-y-2">
+            <div className="p-3 border-t border-gray-200 dark:border-gray-300 bg-white dark:bg-gray-50 space-y-2 relative">
               {/* User Selection */}
               <div className="flex items-center space-x-2">
                 <User className="h-4 w-4 text-gray-600 dark:text-gray-700" />
@@ -173,14 +186,24 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
               
               {/* Message Input */}
               <div className="flex space-x-2">
-                <Input
-                  value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Napisz wiadomość..."
-                  className="flex-1 h-8 text-xs bg-gray-50 dark:bg-gray-200 border-gray-300 dark:border-gray-400 text-gray-900 dark:text-gray-800 placeholder:text-gray-500 dark:placeholder:text-gray-600"
-                  data-testid="chat-message-input"
-                />
+                <div className="flex-1 relative">
+                  <Input
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    placeholder="Napisz wiadomość..."
+                    className="h-8 text-xs bg-gray-50 dark:bg-gray-200 border-gray-300 dark:border-gray-400 text-gray-900 dark:text-gray-800 placeholder:text-gray-500 dark:placeholder:text-gray-600 pr-10"
+                    data-testid="chat-message-input"
+                  />
+                  <Button
+                    onClick={() => setShowEmojis(!showEmojis)}
+                    size="sm"
+                    className="absolute right-1 top-1 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-300 text-gray-600 dark:text-gray-700 border-0 h-6 w-6 p-0"
+                    data-testid="emoji-toggle-button"
+                  >
+                    <Smile className="h-3 w-3" />
+                  </Button>
+                </div>
                 <Button
                   onClick={sendMessage}
                   disabled={!newMessage.trim()}
@@ -191,6 +214,24 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
                   <Send className="h-3 w-3" />
                 </Button>
               </div>
+
+              {/* Emoji Picker */}
+              {showEmojis && (
+                <div className="absolute bottom-full left-0 right-0 mb-2 bg-white dark:bg-gray-100 border border-gray-300 dark:border-gray-400 rounded-lg p-2 shadow-lg max-h-32 overflow-y-auto">
+                  <div className="grid grid-cols-8 gap-1">
+                    {emojis.map((emoji, index) => (
+                      <Button
+                        key={index}
+                        onClick={() => addEmoji(emoji)}
+                        className="h-8 w-8 p-0 text-base hover:bg-gray-100 dark:hover:bg-gray-200 bg-transparent border-0"
+                        data-testid={`emoji-${index}`}
+                      >
+                        {emoji}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
+              )}
               
               <div className="text-xs text-gray-500 dark:text-gray-600 text-center">
                 Naciśnij Enter aby wysłać wiadomość
