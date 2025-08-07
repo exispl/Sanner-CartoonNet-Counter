@@ -30,11 +30,13 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
     { login: 'SoG1917', fullName: 'Stefan Göhner' },
     { login: 'SoG1', fullName: 'Sophie Göhner' },
     { login: 'SoGTest', fullName: 'Test User' },
-    { login: 'MA61_OP', fullName: 'Operator MA61' },
-    { login: 'MA59_OP', fullName: 'Operator MA59' },
-    { login: 'MA62_OP', fullName: 'Operator MA62' },
-    { login: 'Supervisor', fullName: 'Shift Supervisor' },
-    { login: 'Maintenance', fullName: 'Technical Support' }
+    { login: 'MA61_Kartonowy_Napełniacz', fullName: 'Operator MA61 Kartonowy Napełniacz' },
+    { login: 'MA59_Beutel_Machine', fullName: 'Operator MA59 Beutel Machine' },
+    { login: 'MA62_Production_Line', fullName: 'Operator MA62 Production Line' },
+    { login: 'MA63_Quality_Control', fullName: 'Operator MA63 Quality Control' },
+    { login: 'MA64_Packaging_Unit', fullName: 'Operator MA64 Packaging Unit' },
+    { login: 'Supervisor_Production', fullName: 'Production Shift Supervisor' },
+    { login: 'Maintenance_Team', fullName: 'Technical Maintenance Team' }
   ];
 
   const emojis = [
