@@ -104,7 +104,7 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
 
   return (
     <div 
-      className="fixed bottom-4 right-4 z-50 w-96 max-w-[calc(100vw-2rem)] flex flex-col items-end"
+      className="fixed bottom-4 right-4 z-50 w-[32rem] max-w-[calc(100vw-2rem)] flex flex-col items-end"
       data-testid="factory-chat"
     >
       <Card className="bg-white dark:bg-gray-50 shadow-2xl border-2 border-gray-300 dark:border-gray-400">
@@ -131,7 +131,7 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
         {isExpanded && (
           <CardContent className="p-0">
             {/* Messages Area */}
-            <div className="h-64 overflow-y-auto p-3 space-y-2 bg-gray-50 dark:bg-gray-100">
+            <div className="h-80 overflow-y-auto p-4 space-y-3 bg-gray-50 dark:bg-gray-100">
               {messages.length === 0 ? (
                 <div className="text-center text-gray-500 dark:text-gray-600 py-8">
                   <MessageCircle className="h-8 w-8 mx-auto mb-2 opacity-50" />
@@ -141,10 +141,10 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
                 messages.map((msg) => (
                   <div 
                     key={msg.id} 
-                    className={`p-2 rounded-lg ${
+                    className={`p-3 rounded-lg shadow-sm ${
                       msg.user === selectedUser 
-                        ? 'bg-blue-100 dark:bg-blue-200 ml-8' 
-                        : 'bg-white dark:bg-gray-200 mr-8'
+                        ? 'bg-blue-100 dark:bg-blue-200 ml-12' 
+                        : 'bg-white dark:bg-gray-200 mr-12'
                     }`}
                   >
                     <div className="flex items-center space-x-2 mb-1">
@@ -167,7 +167,7 @@ export function FactoryChat({ currentUser, onUserChange }: FactoryChatProps) {
             </div>
             
             {/* Input Area */}
-            <div className="p-3 border-t border-gray-200 dark:border-gray-300 bg-white dark:bg-gray-50 space-y-2 relative">
+            <div className="p-4 border-t border-gray-200 dark:border-gray-300 bg-white dark:bg-gray-50 space-y-3 relative">
               {/* User Selection */}
               <div className="flex items-center space-x-2">
                 <User className="h-4 w-4 text-gray-600 dark:text-gray-700" />
