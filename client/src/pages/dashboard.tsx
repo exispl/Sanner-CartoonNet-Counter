@@ -160,7 +160,7 @@ export default function Dashboard() {
 
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2">
-                <span className="text-white/80 text-sm">Zalogowany:</span>
+                <span className="text-white/80 text-sm ml-8">Zalogowany:</span>
                 <UserLoginSelector 
                   currentUser={currentUser} 
                   onUserChange={setCurrentUser} 

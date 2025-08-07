@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { 
+  insertUserSchema,
   insertMachineSchema, 
   insertMachineConfigurationSchema,
   insertProductionSessionSchema,
@@ -9,6 +10,49 @@ import {
 } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // User/Auth routes
+  app.post("/api/login", async (req, res) => {
+    try {
+      const { username, password } = req.body;
+      
+      if (!username || !username.trim()) {
+        return res.status(400).json({ error: "Username is required" });
+      }
+      
+      // Check if user exists
+      let user = await storage.getUserByUsername(username.trim());
+      
+      if (!user) {
+        // Create new user (passwordless for now)
+        user = await storage.createUser({
+          username: username.trim(),
+          password: password || '' // Allow empty password for now
+        });
+      }
+      
+      res.json({ 
+        success: true, 
+        user: { id: user.id, username: user.username }
+      });
+    } catch (error) {
+      console.error('Login error:', error);
+      res.status(500).json({ error: "Failed to login" });
+    }
+  });
+  
+  app.get("/api/users", async (req, res) => {
+    try {
+      // For testing - get all users (in production would need auth)
+      res.json([
+        { username: 'SoG1917' },
+        { username: 'SoG1' }, 
+        { username: 'SoGTest' }
+      ]);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch users" });
+    }
+  });
+
   // Machine routes
   app.get("/api/machines", async (req, res) => {
     try {
