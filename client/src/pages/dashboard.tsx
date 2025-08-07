@@ -20,6 +20,7 @@ import { Leaderboard } from '@/components/leaderboard';
 import { GamificationCenter } from '@/components/gamification-center';
 import { AuftragDisplay } from '@/components/auftrag-display';
 import { FactoryChat } from '@/components/factory-chat';
+import { SAPProductionDashboard } from '@/components/sap-production-dashboard';
 import { UserRewardsDisplay } from '@/components/user-rewards-display';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
@@ -31,6 +32,7 @@ export default function Dashboard() {
   const [uptime, setUptime] = useState('00:00:00');
   const [currentUser, setCurrentUser] = useState('SoG1917');
   const [sessionBoxes, setSessionBoxes] = useState(0);
+  const [showSAPDashboard, setShowSAPDashboard] = useState(false);
   const { settings } = useAppSettings();
   const [toast, setToast] = useState<{
     visible: boolean;
@@ -178,6 +180,16 @@ export default function Dashboard() {
               <div className="bg-white/10 rounded-lg px-3 py-2">
                 <UserRewardsDisplay username={currentUser} />
               </div>
+              
+              {/* SAP Integration Button */}
+              <Button
+                onClick={() => setShowSAPDashboard(true)}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium"
+                data-testid="sap-dashboard-button"
+              >
+                📊 SAP
+              </Button>
+              
               <SettingsMenu 
                 currentLang={currentLang} 
                 onLanguageChange={handleLanguageChange} 
@@ -370,6 +382,12 @@ export default function Dashboard() {
       <FactoryChat 
         currentUser={currentUser}
         onUserChange={setCurrentUser}
+      />
+
+      {/* SAP Production Dashboard Modal */}
+      <SAPProductionDashboard 
+        isVisible={showSAPDashboard}
+        onClose={() => setShowSAPDashboard(false)}
       />
     </div>
   );

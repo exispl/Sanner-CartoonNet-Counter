@@ -14,6 +14,7 @@ This is a full-stack industrial machine management application called "Kartonowy
 - **Pizza Ordering System**: Daily pizza orders with messaging, timestamps, and collaborative ordering features
 - **Enhanced Cardboard Visualization**: Improved 2x2 grid layout with realistic textures, progress indicators, and theme-based coloring
 - **UI Label Updates**: "Test" → "1M", "Szacowany czas" → "Średnio napełnienie worka", enhanced field sizing and positioning
+- **SAP Integration**: Real SAP production data dashboard with authentic order management, work center monitoring, and production planning overview
 
 # User Preferences
 
