@@ -32,7 +32,8 @@ export function PizzaOrderSystem({ currentUser }: PizzaOrderSystemProps) {
     'Quattro Stagioni',
     'Prosciutto',
     'Funghi',
-    'Salami'
+    'Salami',
+    'Pizza Döner'
   ];
 
   const getTodaysDate = () => {
@@ -92,10 +93,10 @@ export function PizzaOrderSystem({ currentUser }: PizzaOrderSystemProps) {
             <SelectTrigger className="bg-white/20 border-white/30 text-white">
               <SelectValue placeholder="Wybierz pizzę..." />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-white dark:bg-gray-800">
               {pizzaOptions.map((pizza) => (
-                <SelectItem key={pizza} value={pizza}>
-                  🍕 {pizza}
+                <SelectItem key={pizza} value={pizza} className="hover:bg-gray-100 dark:hover:bg-gray-700">
+                  🍕 {pizza === 'Pizza Döner' ? <span className="font-bold">{pizza}</span> : pizza}
                 </SelectItem>
               ))}
             </SelectContent>
