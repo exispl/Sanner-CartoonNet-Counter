@@ -26,7 +26,7 @@ export interface Translation {
   'produced-boxes-session': string;
 }
 
-export type Language = 'pl' | 'en' | 'de' | 'tr' | 'ar' | 'fr' | 'it' | 'hr';
+export type Language = 'pl' | 'en' | 'de' | 'tr' | 'ar' | 'sa' | 'fr' | 'it' | 'hr';
 
 export const translations: Record<Language, Translation> = {
   pl: {
@@ -132,6 +132,33 @@ export const translations: Record<Language, Translation> = {
     'global-controls': 'التحكم العام',
     'start-all': 'ابدأ الكل',
     'pause-all': 'توقف الكل',
+    'reset-all': 'إعادة تعيين الكل',
+    'export': 'تصدير الإعدادات',
+    'session-reset': 'إعادة تعيين الجلسة',
+    'produced-boxes-session': 'الصناديق المنتجة في هذه الجلسة'
+  },
+  sa: {
+    'title': 'ماكينة تعبئة الكرتون السعودية',
+    'active-machines': 'الآلات النشطة',
+    'total-boxes': 'الصناديق المنتجة',
+    'uptime': 'وقت التشغيل',
+    'efficiency': 'الكفاءة',
+    'machine': 'آلة',
+    'progress': 'تقدم التعبئة',
+    'fill-level': 'مستوى التعبئة',
+    'click-to-configure': 'انقر للتكوين',
+    'current-box': 'الصندوق الحالي',
+    'items-in-box': 'العناصر في الصندوق',
+    'machine-settings': 'إعدادات الآلة',
+    'target-limit': 'الحد المستهدف',
+    'cycle-time': 'وقت الدورة (دقيقة)',
+    'start': 'ابدأ',
+    'pause': 'توقف',
+    'reset': 'إعادة تعيين',
+    'close': 'إغلاق',
+    'global-controls': 'التحكم العام',
+    'start-all': 'تشغيل الكل',
+    'pause-all': 'إيقاف الكل',
     'reset-all': 'إعادة تعيين الكل',
     'export': 'تصدير الإعدادات',
     'session-reset': 'إعادة تعيين الجلسة',

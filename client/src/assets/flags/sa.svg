@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600">
+  <!-- Green background -->
+  <rect width="900" height="600" fill="#006c35"/>
+  
+  <!-- White Arabic text and sword area -->
+  <g fill="white">
+    <!-- Shahada text (simplified representation) -->
+    <text x="450" y="250" text-anchor="middle" font-size="60" font-family="Arial">لا إله إلا الله محمد رسول الله</text>
+    
+    <!-- Sword (simplified representation) -->
+    <rect x="200" y="380" width="500" height="8"/>
+    <rect x="200" y="370" width="20" height="28"/>
+    <rect x="680" y="370" width="20" height="28"/>
+  </g>
+</svg>

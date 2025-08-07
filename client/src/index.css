@@ -119,6 +119,20 @@
   }
 }
 
+/* Arabic language styling for larger text */
+.arabic-text {
+  font-size: 1.25rem !important;
+  line-height: 1.5;
+}
+
+[lang="ar"], [lang="sa"] {
+  font-size: 1.15rem !important;
+}
+
+[lang="ar"] *, [lang="sa"] * {
+  font-size: inherit !important;
+}
+
 /* Factory animation enhancements */
 @keyframes bounce-subtle {
   0%, 100% { transform: translateY(0px); }
