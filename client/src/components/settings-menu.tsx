@@ -25,11 +25,11 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
-    // Auto-scroll to bottom when opening menu
+    // Scroll to top when opening menu
     if (!isOpen) {
       setTimeout(() => {
         window.scrollTo({
-          top: document.body.scrollHeight,
+          top: 0,
           behavior: 'smooth'
         });
       }, 100);
@@ -53,7 +53,7 @@ export function SettingsMenu({ currentLang, onLanguageChange }: SettingsMenuProp
 
       {/* Expanded Menu */}
       {isOpen && (
-        <div className="absolute top-0 right-0 w-80 bg-white/98 dark:bg-gray-800/98 rounded-2xl shadow-2xl border-4 border-machine-blue/40 z-50 overflow-hidden backdrop-blur-md">
+        <div className="fixed top-4 right-4 w-80 bg-white/98 dark:bg-gray-800/98 rounded-2xl shadow-2xl border-4 border-machine-blue/40 z-[9999] overflow-hidden backdrop-blur-md">
           {/* Header */}
           <div className="bg-gradient-to-r from-machine-blue to-machine-green p-4">
             <div className="flex items-center justify-between">

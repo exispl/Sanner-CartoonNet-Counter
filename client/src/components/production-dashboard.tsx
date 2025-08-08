@@ -225,45 +225,45 @@ export function ProductionDashboard({ t }: ProductionDashboardProps) {
           </div>
 
           {showDetails && (
-            <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-200 rounded-lg space-y-4">
-              <h4 className="font-bold text-xl text-gray-900 dark:text-gray-800 flex items-center gap-2">
+            <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg space-y-4">
+              <h4 className="font-bold text-xl text-gray-900 dark:text-gray-100 flex items-center gap-2">
                 <BarChart3 className="h-6 w-6" />
                 Szczegółowe Statystyki
               </h4>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="border-2 border-gray-300 dark:border-gray-300">
-                  <CardHeader className="bg-blue-50 dark:bg-blue-100">
-                    <CardTitle className="text-lg font-bold text-gray-900 dark:text-gray-800">Czas Produkcji</CardTitle>
+                <Card className="border-2 border-gray-300 dark:border-gray-500">
+                  <CardHeader className="bg-blue-50 dark:bg-blue-800">
+                    <CardTitle className="text-lg font-bold text-gray-900 dark:text-gray-100">Czas Produkcji</CardTitle>
                   </CardHeader>
-                  <CardContent className="bg-white dark:bg-gray-50">
+                  <CardContent className="bg-white dark:bg-gray-800">
                     <div className="space-y-3">
                       <div className="flex justify-between items-center">
-                        <span className="font-medium text-gray-800 dark:text-gray-700">Łączny czas produkcji:</span>
-                        <span className="font-bold text-gray-900 dark:text-gray-800 text-lg">{stats.totalProductionTime.toFixed(1)} min</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">Łączny czas produkcji:</span>
+                        <span className="font-bold text-gray-900 dark:text-gray-100 text-lg">{stats.totalProductionTime.toFixed(1)} min</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="font-medium text-gray-800 dark:text-gray-700">Czas przestojów:</span>
-                        <span className="font-bold text-gray-900 dark:text-gray-800 text-lg">{stats.totalDowntime.toFixed(1)} min</span>
+                        <span className="font-medium text-gray-800 dark:text-gray-200">Czas przestojów:</span>
+                        <span className="font-bold text-gray-900 dark:text-gray-100 text-lg">{stats.totalDowntime.toFixed(1)} min</span>
                       </div>
-                      <div className="flex justify-between items-center border-t-2 border-gray-200 dark:border-gray-300 pt-3">
-                        <span className="font-bold text-gray-800 dark:text-gray-700">Efektywność:</span>
-                        <span className="font-bold text-green-700 dark:text-green-600 text-xl">{stats.efficiency.toFixed(1)}%</span>
+                      <div className="flex justify-between items-center border-t-2 border-gray-200 dark:border-gray-600 pt-3">
+                        <span className="font-bold text-gray-800 dark:text-gray-200">Efektywność:</span>
+                        <span className="font-bold text-green-700 dark:text-green-400 text-xl">{stats.efficiency.toFixed(1)}%</span>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
 
-                <Card className="border-2 border-gray-300 dark:border-gray-300">
-                  <CardHeader className="bg-purple-50 dark:bg-purple-100">
-                    <CardTitle className="text-lg font-bold text-gray-900 dark:text-gray-800">Aktywni Operatorzy</CardTitle>
+                <Card className="border-2 border-gray-300 dark:border-gray-500">
+                  <CardHeader className="bg-purple-50 dark:bg-purple-800">
+                    <CardTitle className="text-lg font-bold text-gray-900 dark:text-gray-100">Aktywni Operatorzy</CardTitle>
                   </CardHeader>
-                  <CardContent className="bg-white dark:bg-gray-50">
+                  <CardContent className="bg-white dark:bg-gray-800">
                     <div className="space-y-3">
                       {stats.activeOperators.map((operator, index) => (
-                        <div key={index} className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-200 rounded">
+                        <div key={index} className="flex items-center gap-3 p-2 bg-gray-50 dark:bg-gray-700 rounded">
                           <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                          <span className="font-medium text-gray-900 dark:text-gray-800">{operator}</span>
+                          <span className="font-medium text-gray-900 dark:text-gray-200">{operator}</span>
                         </div>
                       ))}
                     </div>
