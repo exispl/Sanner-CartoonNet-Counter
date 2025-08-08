@@ -286,15 +286,6 @@ export function MachinePanel({
           </div>
           <div className="flex space-x-2 items-end">
             <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Kapsle w kartonie</span>
-              <input
-                type="number"
-                value={boxCapacity}
-                onChange={(e) => setBoxCapacity(Number(e.target.value))}
-                className="text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-2 w-20"
-              />
-            </div>
-            <div className="flex flex-col">
               <span className="text-xs text-gray-400 mb-1">Material</span>
               <input
                 type="text"
@@ -336,17 +327,9 @@ export function MachinePanel({
                 style={{ background: 'transparent', animation: 'pulse 2s infinite' }}
               />
               <span className="text-3xl font-mono font-bold text-white">/</span>
-              <input
-                type="number"
-                value={capsuleCount}
-                onChange={(e) => {
-                  const newLimit = Math.max(1, Number(e.target.value));
-                  setCapsuleCount(newLimit);
-                  onUpdateSettings(newLimit, 1537, state.name);
-                }}
-                className="w-24 text-3xl font-mono font-bold text-white bg-transparent border-none outline-none text-center hover:bg-white/10 rounded focus:ring-2 focus:ring-white/50"
-                style={{ background: 'transparent' }}
-              />
+              <span className="text-3xl font-mono font-bold text-white">
+                {capsuleCount}
+              </span>
             </div>
           </div>
         </div>
@@ -452,6 +435,7 @@ export function MachinePanel({
             boxSize={machineNumber === 59 ? '10T' : '6T' as '5T' | '6T' | '10T'}
             completedBoxes={Math.max(0, state.currentBox - 1)}
             theme={cardboardTheme}
+            onReset={onReset}
           />
         </div>
 

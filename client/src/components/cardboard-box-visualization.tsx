@@ -159,9 +159,10 @@ interface CardboardBoxVisualizationProps {
   boxSize: '5T' | '6T' | '10T';
   completedBoxes: number;
   theme?: 'zielona' | 'niebieska' | 'żółta';
+  onReset?: () => void;
 }
 
-export function CardboardBoxVisualization({ currentProgress, boxSize, completedBoxes, theme = 'zielona' }: CardboardBoxVisualizationProps) {
+export function CardboardBoxVisualization({ currentProgress, boxSize, completedBoxes, theme = 'zielona', onReset }: CardboardBoxVisualizationProps) {
   const [activeBoxIndex, setActiveBoxIndex] = useState(0);
   const [selectedBeutels, setSelectedBeutels] = useState<Array<{ beutel1: boolean; beutel2: boolean }>>([
     { beutel1: false, beutel2: false },
@@ -199,7 +200,7 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
   }, [currentProgress, activeBoxIndex, crossPattern]);
 
   return (
-    <div className="bg-white/10 rounded-xl p-4 border-2 border-white/20">
+    <div className="bg-white/20 rounded-xl p-4 border-2 border-white/30">
       <div className="text-center mb-4">
         <div 
           className="text-sm text-white/80 cursor-pointer hover:text-white transition-colors"
@@ -220,6 +221,10 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
               className="cursor-pointer transition-transform duration-200 hover:scale-110"
               onClick={() => {
                 console.log(`Cardboard box ${index + 1} clicked`);
+                // Reset the box if it's completed or active
+                if (index <= activeBoxIndex && onReset) {
+                  onReset();
+                }
               }}
             >
               <CardboardBox
