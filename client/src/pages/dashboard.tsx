@@ -21,6 +21,8 @@ import { GamificationCenter } from '@/components/gamification-center';
 import { AuftragDisplay } from '@/components/auftrag-display';
 import { FactoryChat } from '@/components/factory-chat';
 import { SAPProductionDashboard } from '@/components/sap-production-dashboard';
+import { VacationRequest } from '@/components/vacation-request';
+import { ProjectDeadline } from '@/components/project-deadline';
 import { UserRewardsDisplay } from '@/components/user-rewards-display';
 import { Button } from '@/components/ui/button';
 import { translations, Language } from '@/lib/translations';
@@ -147,8 +149,12 @@ export default function Dashboard() {
             <span className="text-sm text-gray-300">Pizza</span>
           </div>
           <div className="bg-gray-800/80 rounded-lg px-4 py-2 border border-green-400/40 flex items-center space-x-2">
-            <span className="text-2xl">🎁</span>
-            <span className="text-sm text-gray-300">Ciekawostki</span>
+            <span className="text-2xl">🏖️</span>
+            <span className="text-sm text-gray-300">Urlop BBS</span>
+          </div>
+          <div className="bg-gray-800/80 rounded-lg px-4 py-2 border border-green-400/40 flex items-center space-x-2">
+            <span className="text-2xl">📅</span>
+            <span className="text-sm text-gray-300">Ende: 18.08.25</span>
           </div>
         </div>
       </div>
@@ -238,6 +244,18 @@ export default function Dashboard() {
           <AuftragDisplay machineId="MA61" />
         </div>
 
+        {/* Vacation & Deadline Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <PizzaOrderSystem />
+          <VacationRequest />
+          <ProjectDeadline />
+          <EmployeeBonusSystem 
+            currentUser={currentUser}
+            totalBoxes={totalBoxes}
+            isRunning={activeMachines > 0} 
+          />
+        </div>
+
         {/* Company Profits, Lottery */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <CompanyProfits />
@@ -266,14 +284,7 @@ export default function Dashboard() {
           />
         </div>
 
-        {/* Statistics Cards - Hidden by default */}
-        <div className="mb-8 hidden">
-          <EmployeeBonusSystem 
-            currentUser={currentUser}
-            totalBoxes={totalBoxes}
-            isRunning={activeMachines > 0} 
-          />
-        </div>
+
 
         {/* Machine Controls Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
