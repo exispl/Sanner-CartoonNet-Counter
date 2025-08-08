@@ -60,6 +60,7 @@ export function MachinePanel({
   const [resetPassword, setResetPassword] = useState('');
   const [cardboardTheme, setCardboardTheme] = useState<'zielona' | 'niebieska' | 'żółta'>('zielona');
   const [boxCapacity, setBoxCapacity] = useState(350);
+  const [estimatedTime, setEstimatedTime] = useState(1);
 
   const percentage = Math.min(100, Math.floor((state.itemsInBox / capsuleCount) * 100));
 
@@ -213,55 +214,55 @@ export function MachinePanel({
             </div>
           </div>
           
-          <div className="flex flex-col">
-            <span className="text-xs text-gray-400 mb-1">Wybierz maszynę</span>
-            <select
-              value={machineNumber}
-              onChange={(e) => {
-                const newNumber = Number(e.target.value);
-                setMachineNumber(newNumber);
-                // Auto-update all parameters based on machine
-                if (newNumber === 59) {
-                  setCapsuleCount(6000);
-                } else if (newNumber === 62) {
-                  setCapsuleCount(2000);
-                } else if (newNumber === 61) {
-                  setCapsuleCount(3000);
-                }
-              }}
-              className="w-full text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1"
-            >
-              <option value={59}>MA59</option>
-              <option value={61}>MA61</option>
-              <option value={62}>MA62</option>
-            </select>
-          </div>
+
         </div>
         
-        <div className="flex flex-wrap gap-2 mt-2">
-          <div className="flex flex-col">
-            <span className="text-base font-semibold text-gray-300 mb-1">Nr Auftrag</span>
-            <div className="flex space-x-2">
-              <select
-                value={auftragNumber.startsWith('1012') ? '1012' : '1011'}
+
+      </div>
+
+      <div className="p-4 bg-gray-800/30">
+        {/* Editable counter display with larger colorful box */}
+        <div className="mb-4 flex justify-center">
+          <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-xl px-6 py-3 border-2 border-green-400/50 shadow-lg">
+            <div className="flex items-center space-x-3">
+              <input
+                type="number"
+                value={state.itemsInBox}
                 onChange={(e) => {
-                  const prefix = e.target.value;
-                  setAuftragNumber(prefix + '540');
+                  const newValue = Math.max(0, Math.min(capsuleCount, Number(e.target.value)));
+                  onUpdateItemsInBox?.(newValue);
                 }}
-                className="text-lg font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-3 py-2 w-24"
-                style={{ fontFamily: 'monospace' }}
-              >
-                <option value="1012">1012</option>
-                <option value="1011">1011</option>
-              </select>
-              <div className="text-lg font-bold text-white bg-blue-600 border border-white/30 rounded px-3 py-2 w-24 text-center"
-                   style={{ fontFamily: 'monospace' }}>
-                2540
-              </div>
+                className="w-20 text-3xl font-mono font-bold text-gray-200 bg-transparent border-none outline-none text-center transition-opacity duration-300 hover:bg-white/10 rounded focus:ring-2 focus:ring-white/50"
+                style={{ background: 'transparent', animation: 'pulse 2s infinite' }}
+              />
+              <span className="text-3xl font-mono font-bold text-gray-200">/</span>
+              <span className="text-3xl font-mono font-bold text-gray-200">
+                {capsuleCount}
+              </span>
             </div>
           </div>
+        </div>
+
+        {/* Szacowany czas ustawienia */}
+        <div className="mb-4 flex justify-center">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-300">Szacowany czas</span>
+            <input
+              type="number"
+              value={estimatedTime}
+              onChange={(e) => setEstimatedTime(Number(e.target.value))}
+              min={1}
+              max={999}
+              className="w-16 text-sm font-mono font-bold text-white bg-gray-700 border border-green-400/60 rounded px-2 py-1 text-center focus:outline-none focus:ring-2 focus:ring-green-400/50"
+            />
+            <span className="text-sm text-gray-300">(Min.)</span>
+          </div>
+        </div>
+
+        {/* Typ kartonu nad progress barem */}
+        <div className="mb-4 flex justify-center">
           <div className="flex flex-col">
-            <span className="text-xs text-gray-400 mb-1">Typ kartonu / worka</span>
+            <span className="text-xs text-gray-400 mb-1 text-center">Typ kartonu / worka</span>
             <select
               value={dasgColor}
               onChange={(e) => setDasgColor(e.target.value)}
@@ -283,54 +284,6 @@ export function MachinePanel({
               <option value="red">DASG-5-147373</option>
               <option value="lila">DASG-6-147374</option>
             </select>
-          </div>
-          <div className="flex space-x-2 items-end">
-            <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Material</span>
-              <input
-                type="text"
-                defaultValue="210044"
-                className="text-sm font-medium text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-2 py-1 w-20"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Czas / Kapsle</span>
-              <div className="text-sm font-medium text-white bg-white/20 border border-white/30 rounded px-2 py-1 w-24 text-center">
-                {machineNumber === 61 ? '24min / 3k' : machineNumber === 62 ? '21min / 2k' : machineNumber === 59 ? '19min / 6k' : '30min / 2k'}
-              </div>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xs text-gray-400 mb-1">Halle</span>
-              <input
-                type="text"
-                defaultValue="5"
-                className="text-base font-bold text-white bg-white/20 border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 rounded px-1 py-1 w-8 text-center"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-4 bg-white/10">
-        {/* Editable counter display with larger colorful box */}
-        <div className="mb-4 flex justify-center">
-          <div className="bg-gradient-to-r from-green-500 to-blue-500 rounded-xl px-6 py-3 border-2 border-white/30 shadow-lg">
-            <div className="flex items-center space-x-3">
-              <input
-                type="number"
-                value={state.itemsInBox}
-                onChange={(e) => {
-                  const newValue = Math.max(0, Math.min(capsuleCount, Number(e.target.value)));
-                  onUpdateItemsInBox?.(newValue);
-                }}
-                className="w-20 text-3xl font-mono font-bold text-white bg-transparent border-none outline-none text-center transition-opacity duration-300 hover:bg-white/10 rounded focus:ring-2 focus:ring-white/50"
-                style={{ background: 'transparent', animation: 'pulse 2s infinite' }}
-              />
-              <span className="text-3xl font-mono font-bold text-white">/</span>
-              <span className="text-3xl font-mono font-bold text-white">
-                {capsuleCount}
-              </span>
-            </div>
           </div>
         </div>
 

@@ -12,8 +12,8 @@ interface CardboardBoxProps {
 }
 
 function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme, selectedBeutels, onBeutelSelect }: CardboardBoxProps) {
-  const boxHeight = size === '10T' ? 144 : size === '6T' ? 125 : 80;  // 6T: 100+25=125, MA59 (10T): 144
-  const boxWidth = size === '10T' ? 48 : 60;  // MA59 (10T): 60*0.8 = 48 (20% narrower)
+  const boxHeight = size === '10T' ? 144 : size === '6T' ? 140 : 80;  // 6T: 100+40=140, MA59 (10T): 144
+  const boxWidth = size === '10T' ? 48 : size === '6T' ? 80 : 60;  // 6T: 60+20=80, MA59 (10T): 48
   const fillHeight = (fillLevel / 100) * (boxHeight - 20);
   
   return (
@@ -71,14 +71,14 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme, se
               onClick={() => onBeutelSelect?.(1)}
             >
               <div className={`text-center text-[10px] mt-1 font-semibold ${
-                selectedBeutels?.beutel1 ? 'text-blue-800' : 'text-gray-700'
+                selectedBeutels?.beutel1 ? 'text-blue-800' : 'text-gray-200'
               }`}>
-                Beutel 1
+                SANNER
               </div>
               <div className={`text-center text-[9px] font-bold ${
-                selectedBeutels?.beutel1 ? 'text-blue-700' : 'text-gray-600'
+                selectedBeutels?.beutel1 ? 'text-blue-700' : 'text-gray-200'
               }`}>
-                3000
+                6
               </div>
               {selectedBeutels?.beutel1 && (
                 <div className="absolute top-1 right-1 w-3 h-3 bg-blue-500 rounded-full flex items-center justify-center">
@@ -106,14 +106,14 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme, se
               onClick={() => onBeutelSelect?.(2)}
             >
               <div className={`text-center text-[10px] mt-1 font-semibold ${
-                selectedBeutels?.beutel2 ? 'text-green-800' : 'text-gray-700'
+                selectedBeutels?.beutel2 ? 'text-green-800' : 'text-gray-200'
               }`}>
-                Beutel 2
+                SANNER
               </div>
               <div className={`text-center text-[9px] font-bold ${
-                selectedBeutels?.beutel2 ? 'text-green-700' : 'text-gray-600'
+                selectedBeutels?.beutel2 ? 'text-green-700' : 'text-gray-200'
               }`}>
-                3000
+                6
               </div>
               {selectedBeutels?.beutel2 && (
                 <div className="absolute top-1 right-1 w-3 h-3 bg-green-500 rounded-full flex items-center justify-center">
@@ -138,8 +138,8 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme, se
                   key={lineIndex}
                   className={`absolute w-full transition-all duration-300 ${
                     shouldFill 
-                      ? 'bg-gradient-to-r from-cyan-400 to-cyan-300 animate-pulse shadow-sm' 
-                      : 'bg-gray-200/40'
+                      ? 'bg-gradient-to-r from-green-400 to-green-300 animate-pulse shadow-sm' 
+                      : 'bg-gray-600/40'
                   }`}
                   style={{
                     height: `${Math.max(0.8, lineHeight)}px`,
@@ -212,7 +212,7 @@ export function CardboardBoxVisualization({ currentProgress, boxSize, completedB
   }, [currentProgress, activeBoxIndex, crossPattern]);
 
   return (
-    <div className="bg-white/20 rounded-xl p-4 border-2 border-white/30">
+    <div className="bg-gray-800/40 rounded-xl p-4 border-2 border-green-400/60">
       <div className="text-center mb-4">
         <div 
           className="text-sm text-white/80 cursor-pointer hover:text-white transition-colors"

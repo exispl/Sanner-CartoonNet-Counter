@@ -5,6 +5,7 @@ interface CardboardBoxVisualizationProps {
   boxSize: '5T' | '6T' | '10T';
   completedBoxes: number;
   theme: 'zielona' | 'niebieska' | 'żółta';
+  onReset?: () => void;
 }
 
 interface CardboardBoxProps {
@@ -14,6 +15,7 @@ interface CardboardBoxProps {
   index: number;
   isCompleted: boolean;
   theme: 'zielona' | 'niebieska' | 'żółta';
+  onReset?: () => void;
 }
 
 function CardboardBox({ 
@@ -22,7 +24,8 @@ function CardboardBox({
   size, 
   index, 
   isCompleted, 
-  theme 
+  theme,
+  onReset 
 }: CardboardBoxProps) {
   const [animationClass, setAnimationClass] = useState('');
   
@@ -63,20 +66,23 @@ function CardboardBox({
       <div 
         className={`relative rounded-lg border-4 ${animationClass} transition-all duration-500 shadow-lg hover:shadow-xl cursor-pointer`}
         style={{
-          width: 80,
-          height: size === '6T' ? 125 : 100, // Zwiększ wysokość kartonów 6T o 25px
+          width: size === '6T' ? 100 : 80, // Zwiększ szerokość kartonów 6T o 20px
+          height: size === '6T' ? 140 : 100, // Zwiększ wysokość kartonów 6T o 40px
           backgroundColor: isCompleted ? colors.fill : colors.bg,
           borderColor: isActive ? colors.fill : colors.border,
           transform: isActive ? 'scale(1.05)' : 'scale(1)'
         }}
-        onClick={() => console.log(`Cardboard box ${index + 1} clicked`)}
+        onClick={() => {
+          console.log(`Cardboard box ${index + 1} clicked`);
+          if (onReset) onReset();
+        }}
       >
         {/* 100 horizontal lines with 10% step filling */}
         <div className="absolute bottom-1 left-1 right-1 top-1 overflow-hidden">
           {Array.from({ length: 100 }).map((_, lineIndex) => {
             const lineFromBottom = 100 - lineIndex; // Line position from bottom (1-100)
             const shouldFill = isActive && (fillLevel >= (lineFromBottom - 1));
-            const boxContentHeight = (size === '6T' ? 125 : 100) - 8; // Account for padding
+            const boxContentHeight = (size === '6T' ? 140 : 100) - 8; // Account for padding
             const lineHeight = boxContentHeight / 100; // Distribute lines evenly
             
             return (
@@ -155,7 +161,8 @@ export function CardboardBoxVisualization({
   currentProgress, 
   boxSize, 
   completedBoxes,
-  theme 
+  theme,
+  onReset 
 }: CardboardBoxVisualizationProps) {
   const activeBoxIndex = Math.min(3, Math.floor(completedBoxes));
   
@@ -187,6 +194,7 @@ export function CardboardBoxVisualization({
               index={index}
               isCompleted={index < activeBoxIndex}
               theme={theme}
+              onReset={onReset}
             />
           </div>
         ))}

@@ -149,6 +149,20 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen">
+      {/* Top Expandable Icons Bar */}
+      <div className="bg-gray-800/60 backdrop-blur-sm border-b border-green-400/30 p-2">
+        <div className="max-w-7xl mx-auto flex items-center justify-center space-x-6">
+          <div className="bg-gray-800/80 rounded-lg px-4 py-2 border border-green-400/40 flex items-center space-x-2">
+            <span className="text-2xl">🍕</span>
+            <span className="text-sm text-gray-300">Pizza</span>
+          </div>
+          <div className="bg-gray-800/80 rounded-lg px-4 py-2 border border-green-400/40 flex items-center space-x-2">
+            <span className="text-2xl">🎁</span>
+            <span className="text-sm text-gray-300">Ciekawostki</span>
+          </div>
+        </div>
+      </div>
+      
       {/* Header - Enhanced with gradient and bigger emojis */}
       <header className="bg-gradient-to-r from-machine-blue via-machine-green to-machine-amber shadow-2xl border-b-4 border-machine-blue">
         <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
@@ -234,22 +248,14 @@ export default function Dashboard() {
           <AuftragDisplay machineId="MA61" />
         </div>
 
-        {/* Company Profits, Lottery and Pizza Orders */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {/* Company Profits, Lottery */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <CompanyProfits />
           <LotteryWheel />
-          <PizzaOrderSystem currentUser={currentUser} />
         </div>
 
         {/* Interactive User Rewards System */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          <UserRewardsSystem 
-            username={currentUser}
-            totalBoxes={totalBoxes}
-            efficiency={oscillatingEfficiency}
-            uptime={uptime}
-            onRewardEarned={(amount, reason) => showToast(`+${amount} EUR za ${reason}`, 'success')}
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           <DailyChallenges 
             totalBoxes={totalBoxes}
             efficiency={oscillatingEfficiency}
