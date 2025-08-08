@@ -295,7 +295,7 @@ export function UserRewardsSystem({
 
       {/* Enhanced Achievements Panel with Micro-Interactions */}
       {showAchievements && (
-        <Card className="bg-white/95 dark:bg-gray-800/95 border-2 border-indigo-200 dark:border-indigo-700">
+        <Card className="bg-white dark:bg-gray-800 border-2 border-indigo-200 dark:border-indigo-600">
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center space-x-2">

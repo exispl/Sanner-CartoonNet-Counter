@@ -36,30 +36,30 @@ interface AchievementMicroInteractionsProps {
 
 const rarityColors = {
   common: {
-    bg: 'bg-gray-100 dark:bg-gray-800',
-    border: 'border-gray-300 dark:border-gray-600',
-    text: 'text-gray-800 dark:text-gray-200',
+    bg: 'bg-gray-50 dark:bg-gray-700',
+    border: 'border-gray-200 dark:border-gray-500',
+    text: 'text-gray-800 dark:text-gray-100',
     glow: 'shadow-gray-300/50',
     particle: '#9CA3AF'
   },
   rare: {
-    bg: 'bg-blue-100 dark:bg-blue-900',
-    border: 'border-blue-300 dark:border-blue-600',
-    text: 'text-blue-800 dark:text-blue-200',
+    bg: 'bg-blue-50 dark:bg-blue-800',
+    border: 'border-blue-200 dark:border-blue-500',
+    text: 'text-blue-800 dark:text-blue-100',
     glow: 'shadow-blue-400/50',
     particle: '#3B82F6'
   },
   epic: {
-    bg: 'bg-purple-100 dark:bg-purple-900',
-    border: 'border-purple-300 dark:border-purple-600',
-    text: 'text-purple-800 dark:text-purple-200',
+    bg: 'bg-purple-50 dark:bg-purple-800',
+    border: 'border-purple-200 dark:border-purple-500',
+    text: 'text-purple-800 dark:text-purple-100',
     glow: 'shadow-purple-400/50',
     particle: '#8B5CF6'
   },
   legendary: {
-    bg: 'bg-yellow-100 dark:bg-yellow-900',
-    border: 'border-yellow-300 dark:border-yellow-600',
-    text: 'text-yellow-800 dark:text-yellow-200',
+    bg: 'bg-yellow-50 dark:bg-yellow-800',
+    border: 'border-yellow-200 dark:border-yellow-500',
+    text: 'text-yellow-800 dark:text-yellow-100',
     glow: 'shadow-yellow-400/50',
     particle: '#F59E0B'
   }
@@ -269,7 +269,7 @@ function AchievementCard({ achievement, onClick }: {
                       {achievement.progress}/{achievement.maxProgress}
                     </span>
                   </div>
-                  <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                  <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
                     <motion.div
                       className={`h-2 rounded-full ${
                         achievement.rarity === 'legendary' ? 'bg-gradient-to-r from-yellow-400 to-orange-500' :
@@ -344,7 +344,7 @@ export function AchievementMicroInteractions({
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value as any)}
-            className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-sm"
+            className="px-3 py-1 border border-gray-300 dark:border-gray-500 rounded-md bg-white dark:bg-gray-700 text-sm"
             data-testid="achievement-filter"
           >
             <option value="all">Wszystkie</option>
@@ -362,7 +362,7 @@ export function AchievementMicroInteractions({
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="px-3 py-1 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-800 text-sm"
+            className="px-3 py-1 border border-gray-300 dark:border-gray-500 rounded-md bg-white dark:bg-gray-700 text-sm"
             data-testid="achievement-sort"
           >
             <option value="rarity">Rzadkość</option>
