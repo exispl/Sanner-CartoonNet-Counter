@@ -49,11 +49,11 @@ const getColorSchemeClasses = (scheme: ColorScheme) => {
     case 'yellow':
       return {
         cardBg: 'bg-yellow-50',
-        recordBg: 'bg-yellow-100',
-        recordHover: 'hover:bg-yellow-200',
-        border: 'border-yellow-200',
-        text: 'text-yellow-900',
-        textSecondary: 'text-yellow-700'
+        recordBg: 'bg-yellow-200 dark:bg-yellow-800',
+        recordHover: 'hover:bg-yellow-300 dark:hover:bg-yellow-700',
+        border: 'border-yellow-400 dark:border-yellow-600',
+        text: 'text-yellow-900 dark:text-yellow-100',
+        textSecondary: 'text-yellow-800 dark:text-yellow-200'
       };
     default:
       return {
