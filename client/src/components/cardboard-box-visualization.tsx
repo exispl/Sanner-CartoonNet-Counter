@@ -12,7 +12,7 @@ interface CardboardBoxProps {
 }
 
 function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme, selectedBeutels, onBeutelSelect }: CardboardBoxProps) {
-  const boxHeight = size === '10T' ? 144 : size === '6T' ? 100 : 80;  // MA59 (10T): 120*1.2 = 144
+  const boxHeight = size === '10T' ? 144 : size === '6T' ? 125 : 80;  // 6T: 100+25=125, MA59 (10T): 144
   const boxWidth = size === '10T' ? 48 : 60;  // MA59 (10T): 60*0.8 = 48 (20% narrower)
   const fillHeight = (fillLevel / 100) * (boxHeight - 20);
   
@@ -124,19 +124,31 @@ function CardboardBox({ isActive, fillLevel, size, index, isCompleted, theme, se
           </div>
         )}
 
-        {/* Regular fill level indicator for non-MA59 machines */}
-        {size !== '10T' && isActive && fillLevel > 0 && (
-          <div 
-            className="absolute bottom-2 left-2 right-2 bg-gradient-to-t from-cyan-400 to-cyan-300 rounded-sm transition-all duration-500 animate-blink-cyan"
-            style={{ 
-              height: `${fillHeight}px`
-            }}
-          >
-            {/* Cross-hatch pattern */}
-            <div className="absolute inset-0 opacity-30">
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-cyan-600 to-transparent transform rotate-45 scale-150"></div>
-              <div className="absolute inset-0 bg-gradient-to-bl from-transparent via-cyan-600 to-transparent transform -rotate-45 scale-150"></div>
-            </div>
+        {/* 100 horizontal lines with 10% step filling for non-MA59 machines */}
+        {size !== '10T' && (
+          <div className="absolute bottom-2 left-2 right-2 top-2 overflow-hidden">
+            {/* 100 horizontal lines */}
+            {Array.from({ length: 100 }).map((_, lineIndex) => {
+              const lineFromBottom = 100 - lineIndex; // Line position from bottom (1-100)
+              const shouldFill = isActive && (fillLevel >= (lineFromBottom - 1));
+              const lineHeight = (boxHeight - 16) / 100; // Distribute lines evenly
+              
+              return (
+                <div
+                  key={lineIndex}
+                  className={`absolute w-full transition-all duration-300 ${
+                    shouldFill 
+                      ? 'bg-gradient-to-r from-cyan-400 to-cyan-300 animate-pulse shadow-sm' 
+                      : 'bg-gray-200/40'
+                  }`}
+                  style={{
+                    height: `${Math.max(0.8, lineHeight)}px`,
+                    bottom: `${lineIndex * lineHeight}px`,
+                    opacity: shouldFill ? 0.9 : 0.3
+                  }}
+                />
+              );
+            })}
           </div>
         )}
         

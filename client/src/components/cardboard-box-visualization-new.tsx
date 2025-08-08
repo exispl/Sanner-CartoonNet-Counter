@@ -64,24 +64,39 @@ function CardboardBox({
         className={`relative rounded-lg border-4 ${animationClass} transition-all duration-500 shadow-lg hover:shadow-xl cursor-pointer`}
         style={{
           width: 80,
-          height: 100,
+          height: size === '6T' ? 125 : 100, // Zwiększ wysokość kartonów 6T o 25px
           backgroundColor: isCompleted ? colors.fill : colors.bg,
           borderColor: isActive ? colors.fill : colors.border,
           transform: isActive ? 'scale(1.05)' : 'scale(1)'
         }}
         onClick={() => console.log(`Cardboard box ${index + 1} clicked`)}
       >
-        {/* Fill level indicator */}
-        {isActive && (
-          <div 
-            className="absolute bottom-0 left-0 right-0 rounded-b-md transition-all duration-1000"
-            style={{
-              height: `${fillLevel}%`,
-              backgroundColor: colors.fill,
-              opacity: 0.8
-            }}
-          />
-        )}
+        {/* 100 horizontal lines with 10% step filling */}
+        <div className="absolute bottom-1 left-1 right-1 top-1 overflow-hidden">
+          {Array.from({ length: 100 }).map((_, lineIndex) => {
+            const lineFromBottom = 100 - lineIndex; // Line position from bottom (1-100)
+            const shouldFill = isActive && (fillLevel >= (lineFromBottom - 1));
+            const boxContentHeight = (size === '6T' ? 125 : 100) - 8; // Account for padding
+            const lineHeight = boxContentHeight / 100; // Distribute lines evenly
+            
+            return (
+              <div
+                key={lineIndex}
+                className={`absolute w-full transition-all duration-300 ${
+                  shouldFill 
+                    ? `animate-pulse shadow-sm` 
+                    : 'bg-gray-200/30'
+                }`}
+                style={{
+                  height: `${Math.max(0.8, lineHeight)}px`,
+                  bottom: `${lineIndex * lineHeight}px`,
+                  backgroundColor: shouldFill ? colors.fill : 'rgba(156, 163, 175, 0.3)',
+                  opacity: shouldFill ? 0.9 : 0.4
+                }}
+              />
+            );
+          })}
+        </div>
 
         {/* Cardboard texture - realistic corrugated pattern */}
         <div className="absolute inset-0 rounded-md overflow-hidden opacity-30">
