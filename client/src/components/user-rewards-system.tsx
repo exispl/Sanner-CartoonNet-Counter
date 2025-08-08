@@ -4,17 +4,22 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, Star, Award, Gift, Target, Crown, Medal, Zap } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AchievementMicroInteractions } from './achievement-micro-interactions';
+import { AchievementNotification } from './achievement-notification';
 
 interface Achievement {
   id: string;
-  name: string;
+  title: string;
   description: string;
-  icon: string;
+  icon: React.ComponentType<any>;
+  category: 'production' | 'efficiency' | 'time' | 'special';
+  rarity: 'common' | 'rare' | 'epic' | 'legendary';
+  reward: number;
+  progress?: number;
+  maxProgress?: number;
   unlocked: boolean;
-  progress: number;
-  maxProgress: number;
-  reward: number; // EUR reward
-  type: 'production' | 'efficiency' | 'time' | 'special';
+  justUnlocked?: boolean;
 }
 
 interface UserLevel {
@@ -64,69 +69,81 @@ export function UserRewardsSystem({
   const [achievements, setAchievements] = useState<Achievement[]>([
     {
       id: 'first_box',
-      name: 'Pierwszy Karton',
+      title: 'Pierwszy Karton',
       description: 'Wyprodukuj swój pierwszy karton',
-      icon: '📦',
+      icon: Target,
+      category: 'production',
+      rarity: 'common',
       unlocked: totalBoxes >= 1,
       progress: Math.min(totalBoxes, 1),
       maxProgress: 1,
       reward: 2.0,
-      type: 'production'
+      justUnlocked: totalBoxes >= 1 && totalBoxes < 5
     },
     {
       id: 'hundred_boxes',
-      name: 'Setka na Karcie',
+      title: 'Setka na Karcie',
       description: 'Wyprodukuj 100 kartonów',
-      icon: '💯',
+      icon: Medal,
+      category: 'production',
+      rarity: 'rare',
       unlocked: totalBoxes >= 100,
       progress: Math.min(totalBoxes, 100),
       maxProgress: 100,
       reward: 25.0,
-      type: 'production'
+      justUnlocked: totalBoxes >= 100 && totalBoxes < 105
     },
     {
       id: 'efficiency_master',
-      name: 'Mistrz Wydajności',
+      title: 'Mistrz Wydajności',
       description: 'Osiągnij 95% wydajności',
-      icon: '🎯',
+      icon: Zap,
+      category: 'efficiency',
+      rarity: 'epic',
       unlocked: efficiency >= 95,
       progress: Math.min(efficiency, 95),
       maxProgress: 95,
       reward: 15.0,
-      type: 'efficiency'
+      justUnlocked: efficiency >= 95 && efficiency < 96
     },
     {
       id: 'marathon_worker',
-      name: 'Maratończyk',
+      title: 'Maratończyk',
       description: 'Pracuj przez 8 godzin bez przerwy',
-      icon: '🏃‍♂️',
-      unlocked: false, // This would need uptime calculation
-      progress: 0,
+      icon: Award,
+      category: 'time',
+      rarity: 'epic',
+      unlocked: uptime.includes('8:') || uptime.includes('9:') || uptime.includes('10:'),
+      progress: parseInt(uptime.split(':')[0]) || 0,
       maxProgress: 8,
       reward: 50.0,
-      type: 'time'
+      justUnlocked: false
     },
     {
       id: 'perfect_day',
-      name: 'Idealny Dzień',
+      title: 'Idealny Dzień',
       description: 'Wyprodukuj 500 kartonów w jednej sesji',
-      icon: '✨',
+      icon: Crown,
+      category: 'special',
+      rarity: 'legendary',
       unlocked: totalBoxes >= 500,
       progress: Math.min(totalBoxes, 500),
       maxProgress: 500,
       reward: 100.0,
-      type: 'special'
+      justUnlocked: totalBoxes >= 500 && totalBoxes < 505
     },
     {
       id: 'speed_demon',
-      name: 'Demon Prędkości',
+      title: 'Demon Prędkości',
       description: 'Wyprodukuj 10 kartonów w 5 minut',
-      icon: '⚡',
+      icon: Trophy,
+      category: 'production',
+      rarity: 'rare',
       unlocked: false,
       progress: 0,
       maxProgress: 10,
       reward: 30.0,
-      type: 'production'
+      justUnlocked: false
     }
   ]);
 
@@ -151,7 +168,7 @@ export function UserRewardsSystem({
   const claimReward = (achievement: Achievement) => {
     setTotalEarnings(prev => prev + achievement.reward);
     setUserXP(prev => prev + Math.floor(achievement.reward * 10)); // 10 XP per EUR
-    onRewardEarned?.(achievement.reward, `Osiągnięcie: ${achievement.name}`);
+    onRewardEarned?.(achievement.reward, `Osiągnięcie: ${achievement.title}`);
     
     // Mark achievement as claimed
     setAchievements(prev => prev.map(a => 
@@ -163,8 +180,8 @@ export function UserRewardsSystem({
     setTimeout(() => setNewAchievement(null), 5000);
   };
 
-  const getTypeIcon = (type: Achievement['type']) => {
-    switch (type) {
+  const getTypeIcon = (category: Achievement['category']) => {
+    switch (category) {
       case 'production': return <Target className="w-4 h-4" />;
       case 'efficiency': return <Zap className="w-4 h-4" />;
       case 'time': return <Trophy className="w-4 h-4" />;
@@ -276,89 +293,45 @@ export function UserRewardsSystem({
         </CardContent>
       </Card>
 
-      {/* Achievements Panel */}
+      {/* Enhanced Achievements Panel with Micro-Interactions */}
       {showAchievements && (
         <Card className="bg-white/95 dark:bg-gray-800/95 border-2 border-indigo-200 dark:border-indigo-700">
           <CardHeader>
-            <CardTitle className="flex items-center space-x-2">
-              <Medal className="w-5 h-5" />
-              <span>Osiągnięcia</span>
+            <CardTitle className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Medal className="w-5 h-5" />
+                <span>Osiągnięcia</span>
+              </div>
+              <Button 
+                onClick={() => setShowAchievements(false)}
+                variant="ghost"
+                size="sm"
+                className="text-gray-500 hover:text-gray-700"
+                data-testid="close-achievements"
+              >
+                ✕
+              </Button>
             </CardTitle>
           </CardHeader>
           
-          <CardContent className="space-y-4">
-            {/* Unlocked Achievements */}
-            {unlockedAchievements.length > 0 && (
-              <div className="space-y-2">
-                <h4 className="font-semibold text-green-600 dark:text-green-400 flex items-center space-x-1">
-                  <Star className="w-4 h-4" />
-                  <span>Odblokowane ({unlockedAchievements.length})</span>
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {unlockedAchievements.map(achievement => (
-                    <div 
-                      key={achievement.id}
-                      className="p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <span className="text-2xl">{achievement.icon}</span>
-                        <div className="flex-1">
-                          <div className="font-medium text-sm">{achievement.name}</div>
-                          <div className="text-xs text-gray-600 dark:text-gray-400">{achievement.description}</div>
-                          <Badge className={`mt-1 text-xs ${getTypeColor(achievement.type)} text-white`}>
-                            +{achievement.reward} EUR
-                          </Badge>
-                        </div>
-                        <div className="text-green-600 dark:text-green-400">
-                          <Award className="w-5 h-5" />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Available Achievements */}
-            {availableAchievements.length > 0 && (
-              <div className="space-y-2">
-                <h4 className="font-semibold text-gray-600 dark:text-gray-400 flex items-center space-x-1">
-                  <Target className="w-4 h-4" />
-                  <span>Do zdobycia ({availableAchievements.length})</span>
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {availableAchievements.map(achievement => (
-                    <div 
-                      key={achievement.id}
-                      className="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg opacity-75"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <span className="text-2xl grayscale">{achievement.icon}</span>
-                        <div className="flex-1">
-                          <div className="font-medium text-sm">{achievement.name}</div>
-                          <div className="text-xs text-gray-500 dark:text-gray-400">{achievement.description}</div>
-                          <div className="mt-2 space-y-1">
-                            <Progress 
-                              value={(achievement.progress / achievement.maxProgress) * 100} 
-                              className="h-1"
-                            />
-                            <div className="text-xs text-gray-500 dark:text-gray-400">
-                              {achievement.progress}/{achievement.maxProgress}
-                            </div>
-                          </div>
-                          <Badge variant="outline" className="mt-1 text-xs">
-                            {getTypeIcon(achievement.type)} {achievement.reward} EUR
-                          </Badge>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+          <CardContent>
+            <AchievementMicroInteractions 
+              achievements={achievements}
+              onAchievementClick={(achievement) => {
+                if (achievement.unlocked) {
+                  claimReward(achievement);
+                }
+              }}
+            />
           </CardContent>
         </Card>
       )}
+
+      {/* Achievement Notification */}
+      <AchievementNotification 
+        achievement={newAchievement}
+        onClose={() => setNewAchievement(null)}
+      />
     </div>
   );
 }
