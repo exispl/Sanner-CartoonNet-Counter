@@ -83,7 +83,7 @@ export function PizzaOrderSystem({ currentUser }: PizzaOrderSystemProps) {
           className="bg-white/20 hover:bg-white/30 text-white border-white/30 text-xs h-6 px-2"
           size="sm"
         >
-          {showOrders ? 'Ukryj' : `Pokaż (${orders.length})`}
+          {showOrders ? 'Ukryj' : `Pokaż (${userOrders.length})`}
         </Button>
       </CardHeader>
       

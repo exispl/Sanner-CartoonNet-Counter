@@ -165,8 +165,10 @@ export default function Dashboard() {
 
             <div className="flex items-center space-x-4">
               <div className="flex flex-col items-end space-y-2">
-                <div className="flex items-center space-x-2 bg-white/10 rounded-lg px-3 py-2">
-                  <span className="text-white/80 text-sm ml-8">Zalogowany:</span>
+                <div className="flex items-center space-x-4 bg-white/10 rounded-lg px-4 py-2">
+                  <span className="text-white/80 text-sm">Zalogowany:</span>
+                </div>
+                <div className="bg-white/10 rounded-lg px-3 py-2">
                   <UserLoginSelector 
                     currentUser={currentUser} 
                     onUserChange={setCurrentUser} 
@@ -181,14 +183,7 @@ export default function Dashboard() {
                 <UserRewardsDisplay username={currentUser} />
               </div>
               
-              {/* SAP Integration Button */}
-              <Button
-                onClick={() => setShowSAPDashboard(true)}
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium"
-                data-testid="sap-dashboard-button"
-              >
-                📊 SAP
-              </Button>
+
               
               <SettingsMenu 
                 currentLang={currentLang} 
@@ -199,9 +194,16 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* Session Reset Button */}
+      {/* SAP Dashboard and Session Reset */}
       <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
-        <div className="flex justify-center">
+        <div className="flex justify-center space-x-4">
+          <Button
+            onClick={() => setShowSAPDashboard(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium"
+            data-testid="sap-dashboard-button"
+          >
+            📊 SAP
+          </Button>
           <Button
             onClick={resetSession}
             className="bg-white/20 hover:bg-white/30 text-industrial-800 dark:text-white border-2 border-white/30 rounded-xl px-6 py-2 text-sm font-medium backdrop-blur-sm transition-all"

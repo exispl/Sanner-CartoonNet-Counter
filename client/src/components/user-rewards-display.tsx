@@ -36,10 +36,20 @@ export function UserRewardsDisplay({ username }: UserRewardsDisplayProps) {
       emoji: '🍕',
       name: 'Pizza dla zespołu',
       description: 'Darmowa pizza dla całej zmiany',
-      claimInfo: 'Umów się z kierownikiem zmiany na wspólne zamówienie',
-      location: 'Sala socjalna, piętro 1',
-      timeLimit: 'Do wykorzystania w ciągu 7 dni',
-      contact: 'Kierownik zmiany lub recepcja'
+      claimInfo: 'Złóż wniosek urlopowy z kodem: BBS\nW polu Bemerkung wpisz: Lokalizacja: Biuro, Termin wykorzystania: do 30.06.2027',
+      location: 'Biuro',
+      timeLimit: 'Do 30.06.2027',
+      contact: 'kamil.kowalczyk@sanner.gmbh'
+    },
+    {
+      id: '5', 
+      emoji: '🍕',
+      name: 'Pizza #2',
+      description: 'Druga pizza dla zespołu',
+      claimInfo: 'Złóż wniosek urlopowy z kodem: BBS\nW polu Bemerkung wpisz: Lokalizacja: Biuro, Termin wykorzystania: do 30.06.2027',
+      location: 'Biuro',
+      timeLimit: 'Do 30.06.2027',
+      contact: 'kamil.kowalczyk@sanner.gmbh'
     },
     {
       id: '3',
@@ -67,8 +77,8 @@ export function UserRewardsDisplay({ username }: UserRewardsDisplayProps) {
     <div className="mb-4">
       <div className="flex items-center space-x-2 mb-2">
         <Gift className="h-4 w-4 text-green-600 dark:text-green-500" />
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-          Nagrody użytkownika {username}:
+        <span className="text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">
+          Nagrody {username}:
         </span>
       </div>
       

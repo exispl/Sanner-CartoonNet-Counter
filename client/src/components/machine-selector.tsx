@@ -30,14 +30,14 @@ export function MachineSelector({ currentNumber, onMachineChange, machineId }: M
           </div>
         </SelectValue>
       </SelectTrigger>
-      <SelectContent className="bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-lg shadow-xl">
+      <SelectContent className="bg-white dark:bg-gray-700 border-2 border-gray-300 dark:border-gray-500 rounded-lg shadow-xl">
         {machineNumbers.map((number) => {
           const config = getMachineConfig(number);
           return (
-            <SelectItem key={number} value={number.toString()} className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700">
+            <SelectItem key={number} value={number.toString()} className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100">
               <div className="flex items-center gap-3 py-1">
                 <div className={`w-4 h-4 rounded ${config.color} border border-gray-600`}></div>
-                <span className="font-medium text-gray-800 dark:text-white text-xs">
+                <span className="font-medium text-gray-800 dark:text-gray-100 text-xs">
                   MA{number} - {config.status} ({config.limit} szt.)
                 </span>
               </div>

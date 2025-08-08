@@ -185,7 +185,7 @@ export function GamificationCenter({
   }
 
   return (
-    <Card className="bg-white dark:bg-gray-100 border-2 border-green-200 dark:border-green-300 shadow-2xl">
+    <Card className="bg-white dark:bg-gray-800 border-2 border-green-200 dark:border-green-600 shadow-2xl">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
         <div className="flex items-center space-x-3">
           <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-600 rounded-xl flex items-center justify-center">
@@ -193,7 +193,7 @@ export function GamificationCenter({
           </div>
           <div>
             <CardTitle className="text-xl font-bold">Centrum Gamifikacji</CardTitle>
-            <div className="text-sm text-gray-600 dark:text-gray-700">
+            <div className="text-sm text-gray-600 dark:text-gray-300">
               {username} • Poziom {userLevel}
             </div>
           </div>
