@@ -1,4 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Euro } from 'lucide-react';
 
 interface Prize {
   name: string;
@@ -7,16 +10,15 @@ interface Prize {
   emoji: string;
 }
 
-export function LotteryWheel() {
+interface LotteryWheelProps {
+  currentUser?: string;
+}
+
+export function LotteryWheel({ currentUser = 'SoG1917' }: LotteryWheelProps) {
   const [isSpinning, setIsSpinning] = useState(false);
   const [result, setResult] = useState<string | null>(null);
   const [rotation, setRotation] = useState(0);
-  const [isSlowingDown, setIsSlowingDown] = useState(false);
-  const [finalPrize, setFinalPrize] = useState<Prize | null>(null);
-  const [handlePressed, setHandlePressed] = useState(false);
-  const [spinIntensity, setSpinIntensity] = useState(1);
-  const spinIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const holdTimeRef = useRef(0);
+  const [animationPhase, setAnimationPhase] = useState<'idle' | 'accelerating' | 'spinning' | 'decelerating'>('idle');
 
   const prizes: Prize[] = [
     { name: 'Pizza', color: '#ff6b6b', probability: 0.15, emoji: '🍕' },
@@ -26,6 +28,25 @@ export function LotteryWheel() {
     { name: 'Dzień urlopu', color: '#feca57', probability: 0.05, emoji: '🌴' },
     { name: 'Nic', color: '#95a5a6', probability: 0.50, emoji: '😐' }
   ];
+
+  const handleSpin = () => {
+    if (isSpinning) return;
+    
+    // Check if user has enough balance
+    const userBalance = localStorage.getItem(`balance_${currentUser}`);
+    const balance = userBalance ? parseFloat(userBalance) : 10;
+    
+    if (balance < 1) {
+      alert('Nie masz wystarczająco środków! Potrzebujesz 1 EUR do zakręcenia.');
+      return;
+    }
+    
+    // Deduct cost
+    const updateBalance = (window as any)[`updateBalance_${currentUser}`];
+    if (updateBalance) updateBalance(-1);
+    
+    spinWheel();
+  };
 
   const handleMouseDown = () => {
     if (isSpinning) return;
@@ -56,8 +77,7 @@ export function LotteryWheel() {
     
     setIsSpinning(true);
     setResult(null);
-    setFinalPrize(null);
-    setIsSlowingDown(false);
+    setAnimationPhase('accelerating');
     
     // Determine prize based on probability
     const random = Math.random();
@@ -72,36 +92,33 @@ export function LotteryWheel() {
       }
     }
     
-    setFinalPrize(selectedPrize);
-    
-    // Calculate rotation (multiple full rotations + final position)
-    const baseRotation = rotation;
-    const extraRotations = (3 + Math.random() * 2) * spinIntensity; // 3-5 base rotations * intensity
+    // Calculate final rotation
+    const totalRotations = 8 + Math.random() * 5; // 8-13 full rotations  
     const prizeAngle = prizes.findIndex(p => p.name === selectedPrize.name) * (360 / prizes.length);
-    const finalRotation = baseRotation + (extraRotations * 360) + (360 - prizeAngle);
+    const finalRotation = (totalRotations * 360) + (360 - prizeAngle);
+    
+    // Animate phases
+    setTimeout(() => setAnimationPhase('spinning'), 800);
+    setTimeout(() => setAnimationPhase('decelerating'), 2200);
     
     setRotation(finalRotation);
     
-    // Start slowing down after 70% of spin time
-    setTimeout(() => {
-      setIsSlowingDown(true);
-    }, 2100);
-    
-    // Stop spinning
+    // Stop spinning and show result
     setTimeout(() => {
       setIsSpinning(false);
-      setResult(`${selectedPrize.emoji} ${selectedPrize.name}`);
-      setSpinIntensity(1);
-    }, 3000);
+      setAnimationPhase('idle');
+      setResult(`Wygrywasz: ${selectedPrize.name} ${selectedPrize.emoji}`);
+      
+      // Update user balance if won money
+      if (selectedPrize.name.includes('EUR')) {
+        const amount = parseFloat(selectedPrize.name);
+        const updateBalance = (window as any)[`updateBalance_${currentUser}`];
+        if (updateBalance) updateBalance(amount);
+      }
+    }, 4000);
   };
 
-  useEffect(() => {
-    return () => {
-      if (spinIntervalRef.current) {
-        clearInterval(spinIntervalRef.current);
-      }
-    };
-  }, []);
+
 
   return (
     <div className="bg-gradient-to-br from-purple-700 to-purple-900 rounded-xl p-4 border-2 border-purple-500/30 shadow-lg">
@@ -116,9 +133,9 @@ export function LotteryWheel() {
           <div 
             className={`w-full h-full rounded-full border-4 border-white/30 ${
               isSpinning 
-                ? isSlowingDown 
-                  ? 'transition-transform duration-1000 ease-out' 
-                  : 'transition-transform duration-2000 ease-out'
+                ? animationPhase === 'decelerating'
+                  ? 'transition-transform duration-[1800ms] ease-out' 
+                  : 'transition-transform duration-[3000ms] ease-in-out'
                 : 'transition-transform duration-500 ease-out'
             }`}
             style={{ 
@@ -156,50 +173,35 @@ export function LotteryWheel() {
             <div className="w-0 h-0 border-l-4 border-r-4 border-b-6 border-transparent border-b-white"></div>
           </div>
           
-          {/* Winning prize indicator */}
-          {finalPrize && isSlowingDown && (
-            <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-yellow-400 text-black px-3 py-1 rounded-full text-sm font-bold animate-pulse">
-              Zatrzymuje się na: {finalPrize.emoji}
-            </div>
-          )}
         </div>
 
-        {/* Manual Handle */}
+        {/* Spin Button */}
         <div className="flex flex-col items-center space-y-2">
-          <div className="text-white text-xs font-medium">Kręć ręcznie</div>
-          <button
-            onMouseDown={handleMouseDown}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-            onTouchStart={handleMouseDown}
-            onTouchEnd={handleMouseUp}
+          <div className="text-white text-xs font-medium">Zakręć kołem</div>
+          <Button
+            onClick={handleSpin}
             disabled={isSpinning}
-            className={`relative w-12 h-24 bg-gradient-to-b from-red-500 to-red-700 rounded-full border-2 border-red-800 transition-all duration-150 ${
-              handlePressed ? 'scale-95 shadow-inner' : 'shadow-lg hover:shadow-xl'
-            } ${isSpinning ? 'opacity-50 cursor-not-allowed' : 'hover:from-red-400 hover:to-red-600 active:scale-95'}`}
-            style={{
-              transform: handlePressed ? 'translateY(2px)' : 'translateY(0px)'
-            }}
+            className={`bg-gradient-to-b from-red-500 to-red-700 hover:from-red-400 hover:to-red-600 text-white border-2 border-red-800 px-6 py-3 rounded-lg font-bold transition-all ${
+              isSpinning ? 'opacity-50 cursor-not-allowed animate-pulse' : 'hover:scale-105 active:scale-95'
+            }`}
           >
-            {/* Handle grip lines */}
-            <div className="absolute inset-2 space-y-1">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="h-0.5 bg-red-800/50 rounded-full"></div>
-              ))}
-            </div>
-            
-            {/* Intensity indicator */}
-            {handlePressed && (
-              <div 
-                className="absolute -right-8 top-1/2 transform -translate-y-1/2 bg-yellow-400 text-black px-2 py-1 rounded text-xs font-bold"
-                style={{ minWidth: '40px' }}
-              >
-                {spinIntensity.toFixed(1)}x
+            {isSpinning ? (
+              <div className="flex items-center space-x-2">
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Kręci...</span>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Euro className="h-4 w-4" />
+                <span>Zakręć (1€)</span>
               </div>
             )}
-          </button>
-          <div className="text-white text-xs text-center max-w-20">
-            {isSpinning ? 'Kręci się...' : 'Przytrzymaj dla większej mocy'}
+          </Button>
+          <div className="text-white text-xs text-center max-w-32">
+            {animationPhase === 'accelerating' && 'Rozpędzanie...'}
+            {animationPhase === 'spinning' && 'Pełna prędkość!'}
+            {animationPhase === 'decelerating' && 'Zwalnia...'}
+            {animationPhase === 'idle' && !isSpinning && 'Kliknij aby zakręcić'}
           </div>
         </div>
       </div>

@@ -109,35 +109,25 @@ export default function Dashboard() {
     }
   }, []);
 
-  // Track uptime
+  // Track uptime from page refresh
   useEffect(() => {
-    if (activeMachines > 0 && !startTime) {
-      setStartTime(new Date());
-    } else if (activeMachines === 0 && startTime) {
-      setStartTime(null);
-      setUptime('00:00:00');
-    }
-  }, [activeMachines, startTime]);
+    const pageLoadTime = new Date();
+    setStartTime(pageLoadTime);
+    
+    const interval = setInterval(() => {
+      const now = new Date();
+      const diff = now.getTime() - pageLoadTime.getTime();
+      const hours = Math.floor(diff / 3600000);
+      const minutes = Math.floor((diff % 3600000) / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
 
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (startTime) {
-      interval = setInterval(() => {
-        const now = new Date();
-        const diff = now.getTime() - startTime.getTime();
-        const hours = Math.floor(diff / 3600000);
-        const minutes = Math.floor((diff % 3600000) / 60000);
-        const seconds = Math.floor((diff % 60000) / 1000);
-
-        setUptime(
-          `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-        );
-      }, 1000);
-    }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [startTime]);
+      setUptime(
+        `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
+      );
+    }, 1000);
+    
+    return () => clearInterval(interval);
+  }, []); // Empty dependency array - runs once on mount
 
   // Show welcome message
   useEffect(() => {
@@ -251,7 +241,7 @@ export default function Dashboard() {
         {/* Company Profits, Lottery */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <CompanyProfits />
-          <LotteryWheel />
+          <LotteryWheel currentUser={currentUser} />
         </div>
 
         {/* Interactive User Rewards System */}
