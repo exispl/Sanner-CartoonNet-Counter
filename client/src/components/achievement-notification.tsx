@@ -196,15 +196,20 @@ export function AchievementNotification({ achievement, onClose }: AchievementNot
                   
                   {/* Reward */}
                   <motion.div
-                    className="flex items-center space-x-2"
+                    className="space-y-2"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ delay: 0.5, type: "spring" }}
                   >
-                    <Gift className="h-4 w-4 text-green-500" />
-                    <span className="font-bold text-green-600 dark:text-green-400">
-                      +{achievement.reward} EUR
-                    </span>
+                    <div className="flex items-center space-x-2">
+                      <Gift className="h-4 w-4 text-green-500" />
+                      <span className="font-bold text-green-600 dark:text-green-400">
+                        +{achievement.reward} EUR
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">
+                      Złóż wniosek z kodem: <span className="font-mono bg-gray-100 dark:bg-gray-800 px-1 rounded">BBS</span>
+                    </div>
                   </motion.div>
                 </div>
               </div>

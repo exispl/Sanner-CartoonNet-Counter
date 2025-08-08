@@ -189,8 +189,8 @@ export function UserRewardsSystem({
     }
   };
 
-  const getTypeColor = (type: Achievement['type']) => {
-    switch (type) {
+  const getTypeColor = (category: Achievement['category']) => {
+    switch (category) {
       case 'production': return 'bg-blue-500';
       case 'efficiency': return 'bg-green-500';
       case 'time': return 'bg-purple-500';
@@ -205,10 +205,12 @@ export function UserRewardsSystem({
         <div className="fixed top-4 right-4 z-50 animate-bounce">
           <Card className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0 shadow-2xl">
             <CardContent className="p-4 flex items-center space-x-3">
-              <div className="text-2xl">{newAchievement.icon}</div>
+              <div className="text-2xl">
+                <newAchievement.icon className="w-6 h-6" />
+              </div>
               <div>
                 <div className="font-bold">Nowe Osiągnięcie!</div>
-                <div className="text-sm">{newAchievement.name}</div>
+                <div className="text-sm">{newAchievement.title}</div>
                 <div className="text-xs opacity-90">+{newAchievement.reward} EUR</div>
               </div>
               <Award className="w-6 h-6" />
@@ -314,7 +316,24 @@ export function UserRewardsSystem({
             </CardTitle>
           </CardHeader>
           
-          <CardContent>
+          <CardContent className="space-y-4">
+            {/* Instrukcje odbioru */}
+            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4 mb-4">
+              <h4 className="font-semibold text-blue-800 dark:text-blue-200 mb-2 flex items-center">
+                <Gift className="w-4 h-4 mr-2" />
+                Jak odebrać bonus:
+              </h4>
+              <div className="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                <p><strong>1.</strong> Złóż wniosek urlopowy z kodem: <span className="font-mono bg-blue-100 dark:bg-blue-800 px-1 rounded">BBS</span></p>
+                <p><strong>2.</strong> W polu Bemerkung wpisz:</p>
+                <div className="bg-blue-100 dark:bg-blue-800 p-2 rounded font-mono text-xs ml-4 mt-1">
+                  Lokalizacja: Biuro<br/>
+                  Termin wykorzystania: do 30.06.2027
+                </div>
+                <p className="mt-2"><strong>Kontakt:</strong> <a href="mailto:kamil.kowalczyk@sanner.gmbh" className="text-blue-600 dark:text-blue-400 underline">kamil.kowalczyk@sanner.gmbh</a></p>
+              </div>
+            </div>
+
             <AchievementMicroInteractions 
               achievements={achievements}
               onAchievementClick={(achievement) => {
